@@ -11,9 +11,12 @@ in
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
 
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   sops.secrets.t3u_password_hash = {
+    neededForUsers = true;
+  };
+  sops.secrets.root_password_hash = {
     neededForUsers = true;
   };
 
@@ -50,9 +53,12 @@ in
     ];
   };
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
-  ];
+  users.users.root = {
+    hashedPasswordFile = config.sops.secrets.root_password_hash.path;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
+    ];
+  };
 
   services.openssh = {
     enable = true;
