@@ -22,8 +22,10 @@ in
 
   networking.hostName = "torii-chan";
   # networking.networkmanager.enable = true; # Using static config below
+  networking.useDHCP = false;
 
   networking.interfaces.end0 = {
+    useDHCP = false;
     ipv4.addresses = [{
       address = "192.168.0.128";
       prefixLength = 24;
