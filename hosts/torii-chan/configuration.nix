@@ -28,7 +28,7 @@ in
       address = "192.168.0.128";
       prefixLength = 24;
     }];
-    macAddress = "02:00:63:9d:fd:24";
+    macAddress = "36:43:64:11:45:14";
   };
 
   networking.defaultGateway = "192.168.0.1";
