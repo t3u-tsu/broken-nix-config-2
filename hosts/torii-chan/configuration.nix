@@ -6,7 +6,7 @@ in
 {
   nixpkgs.overlays = [
     (final: prev: {
-      qemu = prev.qemu;
+      qemu = prev.qemu_test;
     })
   ];
 
