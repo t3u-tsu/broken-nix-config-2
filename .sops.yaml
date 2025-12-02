@@ -1,9 +1,11 @@
 keys:
   - &user_t3u age1nsprt0asqmy9wmc09yffwy34hx5v2a6hvat0cnzvr8h03f8ymezqguqtmy
   - &host_torii_chan age1kl8ht2dmefskx0s9mzwy7p6n0t8adwufn7jzjz8ef6dfp9h939uq9j55ed
+  - &shared_key age127yfl2v82srpnq9jm70gh4l57jgt6vj7znw8an70luguwk8jv94qatuqvc
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
     - age:
       - *user_t3u
       - *host_torii_chan
+      - *shared_key
