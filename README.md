@@ -80,6 +80,22 @@ The `flake.nix` exposes two main configurations:
       ```
     - **After Deployment:** Once you deploy the production configuration (Phase 2), `sudo` will revert to requiring a password.
 
+### Phase 1.5: Update on SD Card (Optional)
+
+If you want to update the system configuration (e.g., add packages, configure WireGuard) *before* migrating to HDD, use the `torii-chan-sd-live` configuration. This applies settings to the running SD system.
+
+```bash
+nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@192.168.0.128 --sudo
+```
+
+**Troubleshooting Signature Errors:**
+If you get "lacks a signature by a trusted key", you may need to temporarily trust the user on the Orange Pi:
+```bash
+# On Orange Pi
+sudo bash -c 'echo "trusted-users = root t3u" >> /etc/nix/nix.conf'
+sudo systemctl restart nix-daemon
+```
+
 ### Phase 2: Migrate to HDD (Root on HDD)
 
 To extend SD card life, we move the root filesystem to an HDD.

@@ -79,9 +79,25 @@
       ```bash
       sudo chmod 600 /var/lib/sops-nix/key.txt
       ```
-    - **デプロイ後:** 本番構成 (フェーズ 2) をデプロイすると、`sudo` は再びパスワードを要求するようになります。
+    - **デプロイ後:** 本番構成（Phase 2）を適用すると、`sudo` はパスワードを要求するようになります。
 
-### フェーズ 2: HDDへの移行 (Root on HDD)
+### Phase 1.5: SDカード上での設定更新（オプション）
+
+HDDに移行する前に、WireGuard設定の反映やパッケージ追加などを行いたい場合は、`torii-chan-sd-live` 構成を使用してください。
+
+```bash
+nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@192.168.0.128 --sudo
+```
+
+**署名エラーのトラブルシューティング:**
+もし "lacks a signature by a trusted key" というエラーが出る場合は、Orange Pi側で一時的にユーザーを信頼する必要があります:
+```bash
+# Orange Pi上で実行
+sudo bash -c 'echo "trusted-users = root t3u" >> /etc/nix/nix.conf'
+sudo systemctl restart nix-daemon
+```
+
+### Phase 2: HDDへの移行 (Root on HDD)
 
 SDカードの寿命を延ばすため、ルートファイルシステムをHDDに移動します。
 

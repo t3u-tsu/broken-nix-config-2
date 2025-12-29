@@ -6,29 +6,30 @@
 
 ## 現在の状況 (2025-12-29)
 
-**SDイメージビルド完了。WireGuard Peer設定済み。**
+**実機起動 & WireGuard接続成功。SD運用構成のデプロイ試行中。**
 
 ### 達成したマイルストーン
 
-1.  **SD/HDD構成の確立:** `torii-chan-sd` (初期) / `torii-chan` (運用) の構成済み。
-2.  **サービス設定:** DDNS, WireGuard (サーバー) 設定済み。
-3.  **シークレット:** `secrets/secrets.yaml` に全必要キー設定済み。
-4.  **WireGuardクライアント設定 (管理PC):**
-    - 管理PC (`/etc/wireguard/torii-chan.conf`) の設定を作成済み。
-    - サーバー側 (`hosts/torii-chan/services/wireguard.nix`) に管理PCのPeer (`10.0.0.2`) を追加済み。
-5.  **SDイメージビルド:** 最新の設定（Peer追加含む）でイメージ (`.img`) を生成済み。
+1.  **実機セットアップ完了:**
+    - SDイメージ書き込み & 起動。
+    - `key.txt` 配置 & WireGuard サービス起動（`sops-nix` 正常動作）。
+    - 管理PCからの VPN 接続 (`10.0.0.1`) 成功。
+2.  **新構成の追加:**
+    - `torii-chan-sd-live`: HDDなしでSDカード運用のまま、最新設定（セキュリティ、ユーザー等）を反映するための構成を追加。
+    - `hosts/torii-chan/fs-sd.nix`: SDカード用パーティション設定を作成。
 
-### 次のステップ（デプロイ & 起動）
+### 現在の課題（デプロイエラー）
 
-1.  **SDカード作成:** ビルドしたイメージを物理SDカードに書き込む。
-2.  **初回起動 & 鍵配置:**
-    - 実機起動後、SSH (`t3u@192.168.0.128`) で接続。
-    - `/var/lib/sops-nix/key.txt` を配置（`sudo` パスワード不要）。
-3.  **接続確認:** WireGuard (`wg-quick up torii-chan`) を接続し、VPN経由のSSH (`ssh t3u@10.0.0.1` or `192.168.0.128`) を確認。
-4.  **HDD移行:** 運用構成 (`.#torii-chan`) への移行作業。
+管理PCから `nixos-rebuild` で `torii-chan-sd-live` をデプロイしようとすると、署名エラー (`lacks a signature by a trusted key`) が発生。
+- **原因:** 実機のNixデーモンが管理PC（ビルド元）を信頼していない、または `t3u` ユーザーが信頼されていないため。
+- **対策:** 実機の `/etc/nix/nix.conf` に `trusted-users = root t3u` を追加してデーモンを再起動する。
 
-### デプロイコマンド
-- SDイメージ作成: `nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage`
-- SD書き込み: `sudo dd if=result/sd-image/nixos-image-sd-card-*.img of=/dev/sdX bs=4M status=progress conv=fsync`
-- リモート更新 (HDD構成): `nixos-rebuild switch --flake .#torii-chan --target-host t3u@192.168.0.128 --use-remote-sudo`
+### 次のステップ
+
+1.  **実機設定変更:** SSHで入り、Nixの信頼ユーザー設定を変更。
+2.  **デプロイ再試行:** `torii-chan-sd-live` を適用し、SSHポート制限等の本番セキュリティを有効化。
+3.  **HDD移行:** HDD入手後、データコピーと `torii-chan` 構成への切り替え。
+
+### デプロイコマンド（SD運用版）
+`nix --extra-experimental-features "nix-command flakes" run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@192.168.0.128 --sudo`
 
