@@ -11,7 +11,7 @@
     # WireGuard needs to read this
     owner = "root";
     mode = "0400";
-    # サービス再起動のトリガー
+    # Restart service
     restartUnits = [ "wireguard-wg0.service" ];
   };
 
@@ -25,6 +25,9 @@
     enable = true;
     externalInterface = "end0"; # WAN interface
     internalInterfaces = [ "wg0" ];
+    # wg0:
+      # WireGuard interface dedicated to host management.
+      # SSH and other administrative access are ONLY permitted via this network.
   };
 
   # 4. WireGuard Interface
