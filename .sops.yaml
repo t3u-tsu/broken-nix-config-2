@@ -1,5 +1,5 @@
 keys:
-  - &shared_key age127yfl2v82srpnq9jm70gh4l57jgt6vj7znw8an70luguwk8jv94qatuqvc
+  - &shared_key age1rcwjh7jwm48qjv0rg6q2wza3a5sn4u4fgvxawjlj5jl4vylla4vq6d4adu
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
