@@ -18,4 +18,8 @@
   # 初回起動時はSOPS鍵がなくパスワードハッシュが読み込めないため、
   # sudoをパスワードなしで実行できるようにする（ロックアウト回避）。
   security.sudo.wheelNeedsPassword = lib.mkForce false;
+
+  # Allow root login via SSH for initial setup/deployment convenience.
+  # This avoids 'trusted-users' issues when deploying the first configuration.
+  services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
 }

@@ -85,16 +85,10 @@
 
 HDDに移行する前に、WireGuard設定の反映やパッケージ追加などを行いたい場合は、`torii-chan-sd-live` 構成を使用してください。
 
-```bash
-nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@192.168.0.128 --sudo
-```
+**注意:** 初回のデプロイを容易にするため、初期SDイメージではSSHでのrootログインが許可されています。署名検証エラーを回避するため、`root@...` を使用してください。
 
-**署名エラーのトラブルシューティング:**
-もし "lacks a signature by a trusted key" というエラーが出る場合は、Orange Pi側で一時的にユーザーを信頼する必要があります:
 ```bash
-# Orange Pi上で実行
-sudo bash -c 'echo "trusted-users = root t3u" >> /etc/nix/nix.conf'
-sudo systemctl restart nix-daemon
+nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@192.168.0.128
 ```
 
 ### Phase 2: HDDへの移行 (Root on HDD)
