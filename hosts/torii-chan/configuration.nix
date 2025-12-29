@@ -15,6 +15,12 @@ in
   sops.defaultSopsFormat = "yaml";
 
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.sshKeyPaths = [ ];
+  sops.age.generateKey = false;
+
+  environment.variables = {
+    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+  };
 
   sops.secrets.torii_chan_t3u_password_hash = {
     neededForUsers = true;
