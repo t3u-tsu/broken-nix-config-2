@@ -81,14 +81,12 @@
       ```
     - **デプロイ後:** 本番構成（Phase 2）を適用すると、`sudo` はパスワードを要求するようになります。
 
-### Phase 1.5: SDカード上での設定更新（オプション）
+### Phase 1.5: SDカード上での設定更新
 
-HDDに移行する前に、WireGuard設定の反映やパッケージ追加などを行いたい場合は、`torii-chan-sd-live` 構成を使用してください。
-
-**注意:** 初回のデプロイを容易にするため、初期SDイメージではSSHでのrootログインが許可されています。署名検証エラーを回避するため、`root@...` を使用してください。
+初回セットアップが完了し、age鍵が配置された後は、WireGuardまたはLAN経由で直接デプロイが可能です。
 
 ```bash
-nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@192.168.0.128
+nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@10.0.0.1 --use-remote-sudo
 ```
 
 ### Phase 2: HDDへの移行 (Root on HDD)

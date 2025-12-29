@@ -80,14 +80,12 @@ The `flake.nix` exposes two main configurations:
       ```
     - **After Deployment:** Once you deploy the production configuration (Phase 2), `sudo` will revert to requiring a password.
 
-### Phase 1.5: Update on SD Card (Optional)
+### Phase 1.5: Update on SD Card
 
-If you want to update the system configuration (e.g., add packages, configure WireGuard) *before* migrating to HDD, use the `torii-chan-sd-live` configuration.
-
-**Note:** The initial SD image allows root login via SSH to facilitate this first deployment. Use `root@...` to avoid signature verification issues.
+Once the initial setup is complete and you have configured the age key, you can deploy updates directly via WireGuard or LAN.
 
 ```bash
-nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@192.168.0.128
+nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@10.0.0.1 --use-remote-sudo
 ```
 
 ### Phase 2: Migrate to HDD (Root on HDD)

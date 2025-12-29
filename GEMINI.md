@@ -2,33 +2,29 @@
 
 ## 目的
 
-`.` ディレクトリにて、Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築中。最終目標はSDカードイメージの生成と実機へのデプロイです。
+Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用からHDD運用への移行準備を完了する。
 
 ## 現在の状況 (2025-12-29)
 
-**デプロイ環境の安定化とDDNS認証の修正完了。**
+**全サービス（WireGuard, DDNS, sops-nix）の正常動作を確認。**
 
 ### 達成したマイルストーン
 
-1.  **実機セットアップ検証:**
-    - Root SSH許可版のSDイメージで起動成功。
-2.  **sops-nixの正常動作確認:**
-    - `/var/lib/sops-nix/key.txt` に正しい age 秘密鍵を配置。
-    - パスワードハッシュの反映に成功 (`users.mutableUsers = false` 設定済み)。
-3.  **デプロイ権限の改善:**
-    - `nix.settings.trusted-users = [ "root" "t3u" ]` を追加し、非特権ユーザーからのリモートデプロイを許可。
-4.  **Cloudflare DDNSの修正:**
-    - **Global API Key への対応**: `CF_API_EMAIL` と `CF_API_KEY` を使用する形式に `secrets.yaml` を修正。
-    - タイムアウト延長 (`15s`) と IPv6 検出の無効化による安定化。
+1.  **WireGuard**: サーバー起動およびクライアントからの `10.0.0.1` 経由の接続を確認。
+2.  **sops-nix**: `key.txt` による復号、および `mutableUsers = false` によるパスワード同期の成功。
+3.  **Cloudflare DDNS**: 
+    - `favonia/cloudflare-ddns` が API Token 専用であることを特定。
+    - 正しい API Token 形式への修正により、IP検出に成功。
+4.  **デプロイ環境**: `trusted-users` の設定により、非特権ユーザーからのデプロイが可能になった。
+
+### 確定した設定知識
+- **DDNS**: `CLOUDFLARE_API_TOKEN` を使用し、`ip4Domains` で指定する。Global API Key は非対応。
+- **Secrets**: `cloudflare_api_env` は `"CLOUDFLARE_API_TOKEN=..."` の 1 行形式が最も安定する。
 
 ### 次のステップ
 
-1.  **HDD移行の実行:**
-    - `fs-hdd.nix` を適用し、ルートパーティションを外付けHDDへ移動する。
-2.  **本番セキュリティの適用:**
-    - 全ての設定が安定した後、LAN側のSSHポートを閉じ、WireGuard経由のみにする。
+1.  **HDD移行**: `fs-hdd.nix` を適用し、実データの移行を行う。
+2.  **セキュリティ**: 全ての動作が安定したため、LAN側のSSHを閉じる。
 
-### デプロイコマンド
-- SDイメージ作成: `nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage`
-- 初回デプロイ (SD運用): `nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@10.0.0.1`
-- 通常デプロイ (t3u使用): `nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@10.0.0.1 --use-remote-sudo`
+### 主要コマンド
+- デプロイ: `nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host t3u@10.0.0.1 --use-remote-sudo`
