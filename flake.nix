@@ -64,6 +64,7 @@
           targetSystem = "aarch64-linux";
           extraModules = [
              ./hosts/torii-chan/fs-hdd.nix
+             ./hosts/torii-chan/production-security.nix
           ];
         };
       };

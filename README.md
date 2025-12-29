@@ -92,6 +92,15 @@ To extend SD card life, we move the root filesystem to an HDD.
 
 ---
 
+## 🔐 Security & Access Control
+
+### SSH Access
+- **Port:** `22` (Standard)
+- **Initial Setup (SD Image):** Open on all interfaces.
+- **Production (HDD Config):** Restricted to **WireGuard VPN Interface (`wg0`) ONLY**.
+  - **WARNING:** Before deploying the production config (`torii-chan`), you **MUST** add your WireGuard peer configuration to `hosts/torii-chan/services/wireguard.nix`.
+  - If you deploy without a working VPN connection, you will be locked out of SSH.
+
 ## 🔐 Secrets Management (SOPS)
 
 - **Edit Secrets:**

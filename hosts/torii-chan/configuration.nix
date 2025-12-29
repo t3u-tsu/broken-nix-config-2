@@ -44,7 +44,7 @@ in
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 42540 ];
+    allowedTCPPorts = [ 22 ];
   };
 
   users.users.${username} = {
@@ -69,7 +69,7 @@ in
 
   services.openssh = {
     enable = true;
-    ports = [ 42540 ];
+    ports = [ 22 ];
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
