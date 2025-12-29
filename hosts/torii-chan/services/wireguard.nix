@@ -41,11 +41,10 @@
 
       # List of allowed peers.
       peers = [
-        # Example Peer (You can add real peers later)
-        # { 
-        #   publicKey = "CLIENT_PUBLIC_KEY";
-        #   allowedIPs = [ "10.0.0.2/32" ];
-        # }
+        {
+          publicKey = "bd7DKPnKfc7s73oYT3uHP0jM+6TrSvf2nr83Cb6kZhU=";
+          allowedIPs = [ "10.0.0.2/32" ];
+        }
       ];
     };
   };

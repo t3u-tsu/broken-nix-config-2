@@ -23,18 +23,42 @@
 
 ## 🚀 セットアップガイド
 
-### フェーズ 1: SDイメージの作成と起動
+### Phase 0: 管理用PCのセットアップ (WireGuard)
+
+**重要:** 本番環境では、SSHアクセスはWireGuard VPN経由のみに制限されます。管理用PCをWireGuardピアとして設定する必要があります。
+
+1.  **鍵の生成:**
+    ```bash
+    wg genkey | tee client_private.key | wg pubkey > client_public.key
+    ```
+2.  **サーバー設定への追加:**
+    `client_public.key` の内容を `hosts/torii-chan/services/wireguard.nix` に追加します（初期設定では実施済み）。
+3.  **クライアント設定:**
+    `/etc/wireguard/torii-chan.conf` を作成します:
+    ```ini
+    [Interface]
+    PrivateKey = <あなたの秘密鍵>
+    Address = 10.0.0.2/32
+
+    [Peer]
+    PublicKey = <SOPSから取得したサーバー公開鍵>
+    Endpoint = torii-chan.t3u.uk:51820
+    AllowedIPs = 10.0.0.0/24
+    PersistentKeepalive = 25
+    ```
+
+### Phase 1: SDイメージのビルドと書き込み
 
 1.  **SDイメージのビルド:**
     ```bash
     nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage
     ```
-    成果物は `result/sd-image/nixos-image-sd-card-....img.zst` に生成されます。
+    出力ファイルは `result/sd-image/nixos-image-sd-card-....img` に生成されます。
 
 2.  **SDカードへの書き込み:**
-    `/dev/sdX` は実際のSDカードデバイスに置き換えてください。
+    `/dev/sdX` を実際のSDカードデバイス名に置き換えてください。
     ```bash
-    zstdcat result/sd-image/nixos-image-sd-card-*.img.zst | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
+    sudo dd if=result/sd-image/nixos-image-sd-card-*.img of=/dev/sdX bs=4M status=progress conv=fsync
     ```
 
 3.  **起動とネットワーク:**

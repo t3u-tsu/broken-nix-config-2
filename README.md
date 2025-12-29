@@ -22,18 +22,42 @@ The `flake.nix` exposes two main configurations:
 
 ## 🚀 Setup Guide
 
+### Phase 0: Management PC Setup (WireGuard)
+
+**Crucial:** In production, SSH access is restricted to the WireGuard VPN. You must set up your management PC as a WireGuard peer.
+
+1.  **Generate Keys:**
+    ```bash
+    wg genkey | tee client_private.key | wg pubkey > client_public.key
+    ```
+2.  **Add Peer to Server Config:**
+    Add the content of `client_public.key` to `hosts/torii-chan/services/wireguard.nix` (already done for initial setup).
+3.  **Configure Client:**
+    Create `/etc/wireguard/torii-chan.conf`:
+    ```ini
+    [Interface]
+    PrivateKey = <YOUR_PRIVATE_KEY>
+    Address = 10.0.0.2/32
+    
+    [Peer]
+    PublicKey = <SERVER_PUBLIC_KEY_FROM_SOPS>
+    Endpoint = torii-chan.t3u.uk:51820
+    AllowedIPs = 10.0.0.0/24
+    PersistentKeepalive = 25
+    ```
+
 ### Phase 1: Build & Flash SD Image
 
 1.  **Build the SD Image:**
     ```bash
     nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage
     ```
-    The output will be in `result/sd-image/nixos-image-sd-card-....img.zst`.
+    The output will be in `result/sd-image/nixos-image-sd-card-....img`.
 
 2.  **Flash to SD Card:**
     Replace `/dev/sdX` with your actual SD card device.
     ```bash
-    zstdcat result/sd-image/nixos-image-sd-card-*.img.zst | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
+    sudo dd if=result/sd-image/nixos-image-sd-card-*.img of=/dev/sdX bs=4M status=progress conv=fsync
     ```
 
 3.  **Boot & Network:**

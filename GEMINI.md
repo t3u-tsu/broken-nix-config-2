@@ -6,41 +6,29 @@
 
 ## 現在の状況 (2025-12-29)
 
-**SDイメージとHDD運用設定の準備完了。DDNS, WireGuardの基本設定を追加。**
+**SDイメージビルド完了。WireGuard Peer設定済み。**
 
 ### 達成したマイルストーン
 
-1.  **SD/HDD構成の確立:**
-    - `torii-chan-sd`: 初期インストール用SDイメージ。
-    - `torii-chan`: HDDルート運用/デプロイ用。
-    - 初回起動時のロックアウト回避策 (sudoパスワードなし) を実装。
-2.  **SOPS鍵の再生成:** 秘密鍵紛失のため再暗号化済み。
-3.  **サービス設定の追加:**
-    - `hosts/torii-chan/services/` ディレクトリを作成。
-    - `ddns.nix`: Cloudflare DDNS (**Go版 `services.cloudflare-ddns`**) を設定。軽量化のため採用。
-    - `wireguard.nix`: WireGuardサーバー設定。
-        - **Subnet:** `10.0.0.1/24` (変更済み)。
-        - **Mode:** Gateway (NAT/IP Forwarding有効)。
-    - シークレットはSOPS経由で管理。
+1.  **SD/HDD構成の確立:** `torii-chan-sd` (初期) / `torii-chan` (運用) の構成済み。
+2.  **サービス設定:** DDNS, WireGuard (サーバー) 設定済み。
+3.  **シークレット:** `secrets/secrets.yaml` に全必要キー設定済み。
+4.  **WireGuardクライアント設定 (管理PC):**
+    - 管理PC (`/etc/wireguard/torii-chan.conf`) の設定を作成済み。
+    - サーバー側 (`hosts/torii-chan/services/wireguard.nix`) に管理PCのPeer (`10.0.0.2`) を追加済み。
+5.  **SDイメージビルド:** 最新の設定（Peer追加含む）でイメージ (`.img`) を生成済み。
 
-### 次のステップ（シークレット設定）
+### 次のステップ（デプロイ & 起動）
 
-以下のシークレットを `secrets/secrets.yaml` に追加する必要がある。
-- `cloudflare_api_env`: DDNS用APIトークン環境変数ファイル。
-    - **内容形式:** `CLOUDFLARE_API_TOKEN=your_token_here`
-- `torii_chan_wireguard_private_key`: WireGuardサーバー秘密鍵。
+1.  **SDカード作成:** ビルドしたイメージを物理SDカードに書き込む。
+2.  **初回起動 & 鍵配置:**
+    - 実機起動後、SSH (`t3u@192.168.0.128`) で接続。
+    - `/var/lib/sops-nix/key.txt` を配置（`sudo` パスワード不要）。
+3.  **接続確認:** WireGuard (`wg-quick up torii-chan`) を接続し、VPN経由のSSH (`ssh t3u@10.0.0.1` or `192.168.0.128`) を確認。
+4.  **HDD移行:** 運用構成 (`.#torii-chan`) への移行作業。
 
-### デプロイフロー
-
-1.  **SDカード作成 & 初回起動:**
-    - `nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage`
-    - 起動後、SSHでログインし `/var/lib/sops-nix/key.txt` を配置。
-2.  **HDD移行作業 (実機上):**
-    - HDDフォーマット & データコピー。
-3.  **設定適用 (リモート):**
-    - `nixos-rebuild switch --flake .#torii-chan --target-host ...` を実行。
-
-## デプロイコマンド
+### デプロイコマンド
 - SDイメージ作成: `nix build .#nixosConfigurations.torii-chan-sd.config.system.build.sdImage`
+- SD書き込み: `sudo dd if=result/sd-image/nixos-image-sd-card-*.img of=/dev/sdX bs=4M status=progress conv=fsync`
 - リモート更新 (HDD構成): `nixos-rebuild switch --flake .#torii-chan --target-host t3u@192.168.0.128 --use-remote-sudo`
 
