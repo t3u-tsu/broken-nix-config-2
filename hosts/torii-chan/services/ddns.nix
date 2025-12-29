@@ -9,7 +9,9 @@
   # CLOUDFLARE_API_TOKEN=your_token_here
   sops.secrets.cloudflare_api_env = {
     # Service user needs to read this
-    owner = "root"; # Systemd service usually runs as root or dynamic user with root group access, but we'll stick to root for now
+    owner = "root";
+    # Restart the service automatically when the secret changes
+    restartUnits = [ "cloudflare-ddns.service" ];
   };
 
   services.cloudflare-ddns = {
