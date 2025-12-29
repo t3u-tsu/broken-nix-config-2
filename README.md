@@ -113,4 +113,30 @@ To extend SD card life, we move the root filesystem to an HDD.
 ## 🛠 Troubleshooting
 
 - **U-Boot / BL31 Issues:** The flake uses an overlay to inject `BL31` firmware into the U-Boot build process to satisfy `binman`. If build fails, check `flake.nix` overlays.
-- **SSH Access:** SSH runs on port `42540`, not 22.
+- **SSH Access:** SSH runs on port `22`. Note the access restrictions in production mode.
+
+---
+
+## ⚠️ CRITICAL: Before You Deploy Production Config
+
+To prevent being locked out of the system (since SSH is blocked on LAN in production):
+
+1.  **Add Your WireGuard Peer:**
+    Edit `hosts/torii-chan/services/wireguard.nix` and add your client's public key.
+    ```nix
+    peers = [
+      {
+        publicKey = "YOUR_CLIENT_PUBLIC_KEY";
+        allowedIPs = [ "10.0.0.2/32" ];
+      }
+    ];
+    ```
+    *Without this, you cannot connect to the VPN, and thus cannot access SSH.*
+
+2.  **Verify Secrets:**
+    Ensure `secrets/secrets.yaml` contains:
+    - `cloudflare_api_env` (for DDNS)
+    - `torii_chan_wireguard_private_key` (for Server)
+
+3.  **Prepare HDD:**
+    Ensure the HDD is formatted with label `NIXOS_HDD` and data is copied from the SD card.
