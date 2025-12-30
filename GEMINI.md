@@ -29,7 +29,9 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 13. **WireGuard ネットワーク拡張**: `kagutsuchi-sama` (10.0.0.3) および `shosoin-tan` (10.0.0.4) を追加。管理用PCは `10.0.0.100`。
 14. **アプリ間通信用ネットワーク (wg1)**: `10.0.1.0/24` を構築。サーバー間の自由な通信を許可。
 15. **sando-kun 設定追加**: i7 860 / 250GB HDD 構成の初期設定を完了。WireGuard (10.0.0.2 / 10.0.1.2) 設定済み。
-16. **Minecraftサーバー更新**: `lobby` を 1.21.4 (Latest) に更新し、ViaVersion / ViaBackwards を導入。
+16. **Minecraftサーバー更新**: `lobby` を 1.21.11 (Latest) に更新し、ViaVersion / ViaBackwards を導入。
+17. **シークレット同期の安定化**: `preStart` スクリプトによる動的なシークレット埋め込みを実装し、Velocity-Lobby間の認証問題を解決。
+18. **Lobby構成の完成**: Y=64のスーパーフラット、構造物なし、全Mobスポーン無効、アドベンチャーモード固定設定を適用。`.reset_world` フラグによる初期化フローを確立。
 
 ### 次のステップ
 

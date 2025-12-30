@@ -9,6 +9,7 @@
 ├── flake.nix           # 構成のエントリポイント
 ├── hosts/              # ホスト固有の設定
 │   └── torii-chan/     # Orange Pi Zero3 の設定
+├── services/           # 共通サービス（Minecraft, 等）の設定
 ├── lib/                # mkSystem などの共通ライブラリ関数
 ├── secrets/            # 暗号化された秘密情報 (SOPS)
     └── secrets.yaml
