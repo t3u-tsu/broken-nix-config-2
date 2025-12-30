@@ -12,7 +12,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
-**kagutsuchi-sama: 新規追加。Disko 完了。現在 nixos-install により OS インストール中（NVIDIA ドライバのビルド段階）。**
+**kagutsuchi-sama: インストール完了。正常起動確認待ち。**
 
 
 
@@ -64,7 +64,11 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
-10. **kagutsuchi-sama Disko**: ライブUSB環境からの SSH リモート Disko 実行に成功。ディスクの初期化と `/mnt` へのマウントを完了。
+10. **kagutsuchi-sama Disko**: ライブUSB環境からの SSH リモート Disko 実行に成功。
+
+
+
+11. **kagutsuchi-sama OSインストール**: `nixos-install` を実行し、NVIDIAドライバビルドを含む全工程を完了。
 
 
 
@@ -80,11 +84,15 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
-1.  **kagutsuchi-sama OSインストール**: `nixos-install` を実行し、ブートローダーの設定を含めた環境構築を完了させる。
+1.  **kagutsuchi-sama 起動確認**: 再起動後、`t3u` ユーザーでのログインおよび NVIDIA ドライバの動作を確認。
 
 
 
 2.  **shosoin-tan 実機確認**: モニターアダプタ入手後、ディスクの `by-id` を確認し Disko 設定を最適化、インストール実施。
+
+
+
+
 
 
 
