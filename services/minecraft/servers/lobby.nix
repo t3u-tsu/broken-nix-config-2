@@ -5,7 +5,7 @@
     enable = true;
     package = pkgs.paperServers.paper; # 常にその時点の最新安定版を指す属性
 
-    jvmOpts = "-Xms2G -Xmx4G";
+    jvmOpts = "-Xms512M -Xmx1G";
 
     serverProperties = {
       server-port = 25566;
@@ -13,6 +13,7 @@
       white-list = false;
       gamemode = "adventure";
       force-gamemode = true;
+      difficulty = "peaceful";
       level-type = "flat";
       spawn-monsters = false;
       spawn-animals = false;
