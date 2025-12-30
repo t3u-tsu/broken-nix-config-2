@@ -39,6 +39,7 @@ Detailed documentation is distributed across the repository. Please refer to the
 - **sops-nix:** For encrypting secrets (passwords, API keys) via `age`.
 - **nvfetcher:** For managing external binary assets with automatic version tracking.
 - **WireGuard:** For secure management (wg0) and application (wg1) networks.
+- **Self-healing Auto Updates:** Daily automated system & plugin updates with Git sync and self-healing repository recovery.
 - **Cross-Compilation:** Building aarch64 (ARM) images on x86_64 machines.
 
 ---
