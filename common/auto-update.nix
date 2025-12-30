@@ -11,6 +11,11 @@ in {
       type = types.str;
       description = "Absolute path to the nix-config repository";
     };
+    remoteUrl = mkOption {
+      type = types.str;
+      default = "github.com/t3u-tsu/nix-config.git";
+      description = "Remote URL (without https://) for the repository";
+    };
     gitUserName = mkOption {
       type = types.str;
       default = "t3u-daemon";
@@ -22,7 +27,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # GitHub Token の取得設定
     sops.secrets.github_token = {
       owner = "root";
     };
@@ -34,7 +38,6 @@ in {
       serviceConfig = {
         Type = "oneshot";
         User = "root";
-        WorkingDirectory = cfg.flakePath;
       };
       path = with pkgs; [
         nix
@@ -48,8 +51,18 @@ in {
       ];
       script = ''
         export NIX_CONFIG="extra-experimental-features = nix-command flakes"
+        GITHUB_TOKEN=$(cat ${config.sops.secrets.github_token.path})
+
+        # 0. リポジトリが存在しない場合はクローン
+        if [ ! -d "${cfg.flakePath}/.git" ]; then
+          echo "Repository not found at ${cfg.flakePath}. Cloning..."
+          mkdir -p "$(dirname "${cfg.flakePath}")"
+          git clone "https://x-access-token:$GITHUB_TOKEN@${cfg.remoteUrl}" "${cfg.flakePath}"
+        fi
+
+        cd "${cfg.flakePath}"
         
-        # 1. Nix Flake の更新 (nixpkgs 等)
+        # 1. Nix Flake の更新
         nix flake update
 
         # 2. nvfetcher によるプラグイン更新
@@ -63,14 +76,11 @@ in {
         if ! git diff --cached --exit-code; then
           git commit -m "chore(auto): update system and plugins $(date +%F)"
           
-          # 4. GitHub へ Push (Token を使用)
-          GITHUB_TOKEN=$(cat ${config.sops.secrets.github_token.path})
-          # リモートURLからドメイン部分を抽出して認証情報を埋め込む
-          REMOTE_URL=$(git remote get-url origin | sed 's|https://||')
-          git push "https://x-access-token:$GITHUB_TOKEN@$REMOTE_URL" main
+          # 4. GitHub へ Push
+          git push "https://x-access-token:$GITHUB_TOKEN@${cfg.remoteUrl}" main
         fi
 
-        # 5. システムに反映 (再起動を含む)
+        # 5. システムに反映
         nixos-rebuild switch --flake .
       '';
     };
