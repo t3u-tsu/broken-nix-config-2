@@ -6,7 +6,7 @@
     version = "5.7.0";
     src = fetchurl {
       url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.7.0/ViaVersion-5.7.0.jar";
-      sha256 = "sha256-9qwEGBYqOrUUVTVAOSi4iGCvhhlRkCD39Pebe0/3Yro=";
+      sha256 = "sha256-9qwEGBYqOrUUVTVAOSi4uGBi9VHGGUAg97G31Pe2K6U=";
     };
   };
   viabackwards = {
@@ -14,7 +14,7 @@
     version = "5.7.0";
     src = fetchurl {
       url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.7.0/ViaBackwards-5.7.0.jar";
-      sha256 = "sha256-dxN2z1y1Lp6PFPfGJiOERKRE6ZlVUrUSu5lXTfd2aqU=";
+      sha256 = "sha256-dxN2z1y1Lp6PgU9iYoTWS2VI5JmYbnVRUrmV1PdWqjU=";
     };
   };
 }
