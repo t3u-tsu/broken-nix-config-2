@@ -39,7 +39,13 @@ NixOS インストーラー環境から、外部マシン（BrokenPC）経由で
    ```
 
 ## 🔐 アクセス
+- **管理用IP:** `10.0.0.3` (WireGuard)
+- **SSH アクセス制限:** セキュリティ強化のため、SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限されています。
 - **ユーザー:** `t3u` (wheel/sudo 権限あり)
 - **パスワード:** `secrets.yaml` で定義 (sops-nix で管理)
-- **SSH 鍵:** `t3u` および `root` ユーザーで有効
+
+管理用PCからのアクセス：
+```bash
+ssh kagutsuchi-sama  # 10.0.0.3
+```
 

@@ -16,30 +16,18 @@
 
 ## ホスト一覧
 
-| ホスト名 | ハードウェア詳細 | プラットフォーム | 役割 | ドキュメント |
-| :--- | :--- | :--- | :--- | :--- |
-| `torii-chan` | Orange Pi Zero3 (H618 / 1GB RAM / 500GB HDD) | aarch64-linux | WireGuard / DDNS | [README](hosts/torii-chan/README.ja.md) |
-| `shosoin-tan` | Core i7 870 / 16GB RAM / K2200 / ZFS | x86_64-linux | ZFS Server | [README](hosts/shosoin-tan/README.ja.md) |
-| `kagutsuchi-sama` | Xeon E5-2650 v2 / 16GB RAM / GTX 980 Ti | x86_64-linux | Compute Server | - |
+| ホスト名 | 管理IP (WG) | 役割 | ハードウェア詳細 |
+| :--- | :--- | :--- | :--- |
+| `torii-chan` | `10.0.0.1` | Gateway / WG Server | Orange Pi Zero3 (H618 / 1GB) |
+| `shosoin-tan` | `10.0.0.4` | ZFS / Home Server | Core i7 870 / 16GB / K2200 |
+| `kagutsuchi-sama` | `10.0.0.3` | Compute Server | Xeon E5-2650 v2 / 16GB / GTX 980 Ti |
+| `sando-kun` | `10.0.0.2` | (Reserved) | - |
 
-### 詳細スペック
+## セキュリティ構成
 
-#### torii-chan
-- **CPU:** Allwinner H618
-- **RAM:** 1GB
-- **ストレージ:** 64GB microSD (Boot), 500GB HDD (Root)
-
-#### shosoin-tan
-- **CPU:** Core i7 870
-- **GPU:** Quadro K2200
-- **RAM:** 16GB
-- **ストレージ:** 480GB SSD (Root), 1TB x2 + 320GB x2 (ZFS), 2TB HDD (Backup)
-
-#### kagutsuchi-sama
-- **CPU:** Xeon E5-2650 v2
-- **GPU:** GTX 980 Ti (Maxwell)
-- **RAM:** 16GB
-- **ストレージ:** 500GB SSD (Root), 3TB + 160GB HDD
+- **管理用ネットワーク:** WireGuardによる `10.0.0.0/24` のプライベートネットワークを構築。
+- **SSH 制限:** セキュリティ強化のため、**SSHアクセスは WireGuard (`wg0`) インターフェース経由のみ**に制限されています。LAN側（192.168.x.x）からのアクセスは遮断されます。
+- **秘密情報管理:** `sops-nix` と `age` を使用し、パスワードやAPIキーを暗号化して管理しています。
 
 ## 使用テクノロジー
 

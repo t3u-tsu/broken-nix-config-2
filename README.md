@@ -17,19 +17,23 @@ This repository manages multiple NixOS configurations using Flakes. It is design
 ## Hosts
 
 - **torii-chan**: Orange Pi Zero3 (Allwinner H618)
-  - Role: Gateway, WireGuard Server, DDNS
+  - Role: Gateway, WireGuard Server (10.0.0.1), DDNS
   - CPU: Allwinner H618, RAM: 1GB
   - Storage: 64GB microSD (Boot), 500GB HDD (Root)
 - **shosoin-tan**: Tower Server
-  - Role: Home Server, ZFS Storage
+  - Role: Home Server, ZFS Storage, WireGuard Client (10.0.0.4)
   - CPU: Core i7 870, GPU: Quadro K2200, RAM: 16GB
   - Storage: 480GB SSD (Root), 1TB x2 + 320GB x2 (ZFS Mirror), 2TB HDD (Backup)
 - **kagutsuchi-sama**: High-power Tower Server
-  - Role: Compute / Heavy Workloads
+  - Role: Compute / Heavy Workloads, WireGuard Client (10.0.0.3)
   - CPU: Xeon E5-2650 v2, GPU: GTX 980 Ti, RAM: 16GB
   - Storage: 500GB SSD (Root), 3TB + 160GB HDD
 
-## Key Technologies
+## Security
+
+- **WireGuard Management Network:** All hosts are connected via a private 10.0.0.0/24 network.
+- **SSH Hardening:** SSH access is strictly limited to the WireGuard (`wg0`) interface. External access from LAN/WAN is blocked.
+- **SOPS:** Secrets are managed via `sops-nix` and `age`.
 
 - **Flakes:** For reproducible builds and dependency management.
 - **sops-nix:** For encrypting secrets (passwords, API keys) via `age`.

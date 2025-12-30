@@ -42,6 +42,13 @@
    *現在はHDDをルートとして、SDカードを/bootとして運用されています。*
 
 ## 🔐 サービスと秘密情報
-- **WireGuard:** ポート51820のVPNサーバー。
+- **WireGuard:** 管理用VPNサーバー (10.0.0.1)。
+- **SSH アクセス制限:** セキュリティ強化のため、SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限されています。
 - **DDNS:** Cloudflare DDNS (favonia)。APIトークンが必要です。
 - **秘密情報:** `sops-nix` で管理。 `sops secrets/secrets.yaml` で編集。
+
+## 🌐 ネットワークと接続
+管理用PCからのアクセス：
+```bash
+ssh torii-chan  # 10.0.0.1
+```
