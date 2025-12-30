@@ -45,6 +45,10 @@ in
   networking.hostId = "5a4d0001";
   networking.hostName = "sando-kun";
 
+  # ZFS Support
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+
   # SSH and basic settings
   services.openssh = {
     enable = true;

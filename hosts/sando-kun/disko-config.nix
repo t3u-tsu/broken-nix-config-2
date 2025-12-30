@@ -33,12 +33,11 @@
         content = {
           type = "gpt";
           partitions = {
-            storage = {
+            zfs = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/mnt/data1";
+                type = "zfs";
+                pool = "tank-80gb";
               };
             };
           };
@@ -50,16 +49,22 @@
         content = {
           type = "gpt";
           partitions = {
-            storage = {
+            zfs = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/mnt/data2";
+                type = "zfs";
+                pool = "tank-80gb";
               };
             };
           };
         };
+      };
+    };
+    zpool = {
+      tank-80gb = {
+        type = "zpool";
+        mode = "mirror";
+        mountpoint = "/mnt/tank-80gb";
       };
     };
   };
