@@ -62,7 +62,11 @@
           publicKey = "nTYFHpES11zywOPDkVg5Y9jlsFF6vEg5y8WVFSVHKhg=";
           allowedIPs = [ "10.0.0.4/32" ];
         }
-        # Reserved: 10.0.0.2 for sando-kun
+        {
+          # sando-kun
+          publicKey = "eg7Y3QgbJvefcPJn7FfVIC9hPU4rH8Q2t+qfXBzgd10=";
+          allowedIPs = [ "10.0.0.2/32" ];
+        }
       ];
     };
 
@@ -82,6 +86,11 @@
           # shosoin-tan
           publicKey = "qTA8ah+HdiygId07yViqQ/KFsZP51/EV9U8aE7/Jzno=";
           allowedIPs = [ "10.0.1.4/32" ];
+        }
+        {
+          # sando-kun
+          publicKey = "4rxYZxUdPbu86bKCwcKwNDYHq4DGN38k0tjG6yhDwCA=";
+          allowedIPs = [ "10.0.1.2/32" ];
         }
       ];
     };

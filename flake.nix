@@ -90,6 +90,12 @@
           name = "kagutsuchi-sama";
           system = "x86_64-linux";
         };
+
+        # 6. Sando Server (sando-kun)
+        "sando-kun" = lib.mkSystem {
+          name = "sando-kun";
+          system = "x86_64-linux";
+        };
       };
     };
 }
