@@ -38,7 +38,20 @@
       "velocity-forwarding.secret" = config.sops.secrets.minecraft_forwarding_secret.path;
     };
 
-    # files = { ... } は preStart で手動生成するため削除
+    files = {
+      "config/paper-world-defaults.yml".value = {
+        entities = {
+          spawning = {
+            spawn-limits = {
+              monsters = 0;
+              animals = 0;
+              water-animals = 0;
+              ambient = 0;
+            };
+          };
+        };
+      };
+    };
   };
 
   # nix-minecraft が生成するサービスを拡張
