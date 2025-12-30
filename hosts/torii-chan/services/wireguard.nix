@@ -4,15 +4,18 @@
   # WireGuard Server Configuration
   
   # 1. Open Firewall
-  networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.allowedUDPPorts = [ 51820 51821 ];
 
-  # 2. Manage Private Key via SOPS
+  # 2. Manage Private Keys via SOPS
   sops.secrets.torii_chan_wireguard_private_key = {
-    # WireGuard needs to read this
     owner = "root";
     mode = "0400";
-    # Restart service
     restartUnits = [ "wireguard-wg0.service" ];
+  };
+  sops.secrets.torii_chan_wireguard_app_private_key = {
+    owner = "root";
+    mode = "0400";
+    restartUnits = [ "wireguard-wg1.service" ];
   };
 
   # 3. Enable IP Forwarding & NAT (Gateway Mode)
@@ -60,6 +63,26 @@
           allowedIPs = [ "10.0.0.4/32" ];
         }
         # Reserved: 10.0.0.2 for sando-kun
+      ];
+    };
+
+    wg1 = {
+      # Application communication network
+      ips = [ "10.0.1.1/24" ];
+      listenPort = 51821;
+      privateKeyFile = config.sops.secrets.torii_chan_wireguard_app_private_key.path;
+
+      peers = [
+        {
+          # kagutsuchi-sama
+          publicKey = "VmFDY7RtuAcGC/qKR6qsTn/jWBp9nfIBraLLpi63Jyo=";
+          allowedIPs = [ "10.0.1.3/32" ];
+        }
+        {
+          # shosoin-tan
+          publicKey = "qTA8ah+HdiygId07yViqQ/KFsZP51/EV9U8aE7/Jzno=";
+          allowedIPs = [ "10.0.1.4/32" ];
+        }
       ];
     };
   };

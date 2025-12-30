@@ -27,6 +27,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 11. **kagutsuchi-sama OSインストール**: `nixos-install` を実行し、NVIDIAドライバビルドを含む全工程を完了。
 12. **kagutsuchi-sama セットアップ完了**: 宣言的パスワード管理の導入と、実機での正常起動・動作を確認。
 13. **WireGuard ネットワーク拡張**: `kagutsuchi-sama` (10.0.0.3) および `shosoin-tan` (10.0.0.4) を追加。管理用PCは `10.0.0.100`。
+14. **アプリ間通信用ネットワーク (wg1)**: `10.0.1.0/24` を構築。サーバー間の自由な通信を許可。
 
 ### 次のステップ
 

@@ -16,18 +16,18 @@
 
 ## ホスト一覧
 
-| ホスト名 | 管理IP (WG) | 役割 | ハードウェア詳細 | ストレージ |
+| ホスト名 | 管理IP (WG0) | アプリIP (WG1) | 役割 | ハードウェア詳細 |
 | :--- | :--- | :--- | :--- | :--- |
-| `torii-chan` | `10.0.0.1` | Gateway / WG Server | Orange Pi Zero3 (H618 / 1GB) | 64GB SD / 500GB HDD |
-| `sando-kun` | `10.0.0.2` | (予約済み) | - | - |
-| `kagutsuchi-sama` | `10.0.0.3` | Compute Server | Xeon E5-2650 v2 / 16GB / GTX 980 Ti | 500GB SSD / 3TB HDD |
-| `shosoin-tan` | `10.0.0.4` | ZFS / Home Server | i7 870 / 16GB / K2200 | 480GB SSD / ZFS Mirror |
-| **管理用PC** | `10.0.0.100` | 管理・クライアント | - | - |
+| `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / WG Server | Orange Pi Zero3 (H618 / 1GB) |
+| `sando-kun` | `10.0.0.2` | - | (予約済み) | - |
+| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server | Xeon E5-2650 v2 / 16GB / GTX 980 Ti |
+| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | ZFS / Home Server | i7 870 / 16GB / K2200 |
+| **管理用PC** | `10.0.0.100` | - | 管理・クライアント | - |
 
 ## セキュリティ構成
 
-- **管理用ネットワーク:** WireGuardによる `10.0.0.0/24` のプライベートネットワークを構築。
-- **SSH 制限:** セキュリティ強化のため、**SSHアクセスは WireGuard (`wg0`) インターフェース経由のみ**に制限されています。LAN側（192.168.x.x）からのアクセスは遮断されます。
+- **管理用ネットワーク (wg0):** WireGuardによる `10.0.0.0/24`。SSHアクセスをこのインターフェースのみに制限。
+- **アプリ間通信ネットワーク (wg1):** WireGuardによる `10.0.1.0/24`。サーバー間のアプリケーション通信（プロキシ等）に使用。
 - **秘密情報管理:** `sops-nix` と `age` を使用し、パスワードやAPIキーを暗号化して管理しています。
 
 ## 使用テクノロジー
