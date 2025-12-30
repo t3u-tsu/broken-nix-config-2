@@ -37,15 +37,14 @@
 
     # プラグインの導入
     symlinks = {
-      # ViaVersion 5.2.1 is incompatible with 1.21.11. Disabled until updated.
-      # "plugins/ViaVersion.jar" = pkgs.fetchurl {
-      #   url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.2.1/ViaVersion-5.2.1.jar";
-      #   sha256 = "sha256-Kx83C9gb5gVd0ebM5GkmvYUrI15kSNZr2myV+6yWKsM=";
-      # };
-      # "plugins/ViaBackwards.jar" = pkgs.fetchurl {
-      #   url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.2.1/ViaBackwards-5.2.1.jar";
-      #   sha256 = "sha256-2wbj6CvMu8hnL260XLf8hqhr6GG/wxh+SU8uX5+x8NY=";
-      # };
+      "plugins/ViaVersion.jar" = pkgs.fetchurl {
+        url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.7.0/ViaVersion-5.7.0.jar";
+        sha256 = "f6ac0418162a3ab5145535403928b8b86062f551c6194020f7b1b7d4f7b62ba5";
+      };
+      "plugins/ViaBackwards.jar" = pkgs.fetchurl {
+        url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.7.0/ViaBackwards-5.7.0.jar";
+        sha256 = "771376cf5cb52e9e8f814f626284d64b6548e499986e755152b995d4f756aa35";
+      };
       # 追加のプラグイン (LunaChat 等は必要に応じてバイナリを指定)
     };
   };
