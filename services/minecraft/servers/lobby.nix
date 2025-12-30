@@ -32,6 +32,8 @@ in
     symlinks = {
       "plugins/ViaVersion.jar" = plugins.viaversion.src;
       "plugins/ViaBackwards.jar" = plugins.viabackwards.src;
+      "plugins/GSit.jar" = plugins.gsit.src;
+      "plugins/LunaChat.jar" = plugins.lunachat.src;
       "velocity-forwarding.secret" = config.sops.secrets.minecraft_forwarding_secret.path;
     };
 

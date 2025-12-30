@@ -43,6 +43,8 @@ in
     symlinks = {
       "plugins/ViaVersion.jar" = plugins.viaversion.src;
       "plugins/ViaBackwards.jar" = plugins.viabackwards.src;
+      "plugins/GSit.jar" = plugins.gsit.src;
+      "plugins/LunaChat.jar" = plugins.lunachat.src;
       # 追加のプラグイン (LunaChat 等は必要に応じてバイナリを指定)
     };
   };
