@@ -23,10 +23,12 @@
 
         servers = {
           lobby = "127.0.0.1:25566";
+          nitac23s = "127.0.0.1:25567";
         };
 
         forced-hosts = {
           "torii-chan.t3u.uk" = [ "lobby" ];
+          "mc.t3u.uk" = [ "nitac23s" ];
         };
 
         try = [ "lobby" ];
