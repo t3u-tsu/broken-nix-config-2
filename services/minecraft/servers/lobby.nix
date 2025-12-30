@@ -11,6 +11,12 @@
       server-port = 25566;
       online-mode = false; # Velocity が認証を行うため false
       white-list = false;
+      gamemode = "adventure";
+      force-gamemode = true;
+      level-type = "flat";
+      spawn-monsters = false;
+      spawn-animals = false;
+      spawn-npcs = false;
     };
 
     symlinks = {
@@ -31,6 +37,13 @@
   # nix-minecraft が生成するサービスを拡張
   systemd.services.minecraft-server-lobby = {
     preStart = ''
+      # ワールドリセットのチェック
+      if [ -f ".reset_world" ]; then
+        echo "Resetting world data as requested..."
+        rm -rf world world_nether world_the_end
+        rm .reset_world
+      fi
+
       # ディレクトリの準備
       mkdir -p config
       
