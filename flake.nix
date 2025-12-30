@@ -15,7 +15,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, disko, sops-nix, nix-minecraft, ... }@inputs:
