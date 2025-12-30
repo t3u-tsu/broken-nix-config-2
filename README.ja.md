@@ -51,24 +51,27 @@
 
 ### x86_64 ホスト (kagutsuchi-sama, shosoin-tan)
 
-`nixos-anywhere` 等の自動ツールが失敗する場合、インストーラー環境から以下の手動手順を実行します：
+NixOS ライブUSBを使用して新規マシンにデプロイする手順：
 
-1. **Disko によるパーティショニングとマウント:**
-   ターゲットマシン上（または SSH 経由）で実行します：
+1. **ターゲットマシンをライブUSBから起動。**
+2. **ターゲット側で SSH をセットアップ:** (アクセスできない場合のみ)
    ```bash
-   sudo nix --extra-experimental-features 'nix-command flakes' run github:nix-community/disko -- \
+   sudo systemctl start sshd
+   sudo passwd root # 一時的なパスワードを設定
+   ```
+3. **Disko によるパーティショニング (ローカルマシンから実行):**
+   ```bash
+   ssh -t root@<ターゲットIP> "nix --extra-experimental-features 'nix-command flakes' run github:nix-community/disko -- \
      --mode destroy,format,mount \
-     --flake github:t3u-tsu/nix-config#<ホスト名>
+     --flake github:t3u-tsu/nix-config#<ホスト名>"
    ```
-
-2. **NixOS のインストール:**
+4. **NixOS のインストール (ローカルマシンから実行):**
    ```bash
-   sudo nixos-install --flake github:t3u-tsu/nix-config#<ホスト名>
+   ssh root@<ターゲットIP> "nixos-install --flake github:t3u-tsu/nix-config#<ホスト名>"
    ```
-
-3. **再起動:**
+5. **再起動:**
    ```bash
-   sudo reboot
+   ssh root@<ターゲットIP> "reboot"
    ```
 
 ---

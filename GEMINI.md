@@ -12,7 +12,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
-**kagutsuchi-sama: 新規追加。Xeon / GTX 980 Ti 構成の初期設定完了。ディスク by-id 特定済み。手動インストール手順を整備中。**
+**kagutsuchi-sama: 新規追加。ライブUSBからの起動準備完了。SSH (root) 経由でのリモート Disko 実行手順を整備。**
 
 
 
@@ -21,6 +21,10 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 ### 達成したマイルストーン
+
+
+
+
 
 
 
@@ -60,6 +64,14 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
+10. **kagutsuchi-sama Live USB**: ライブ環境での SSH 経由リモートインストール手順を確立。
+
+
+
+
+
+
+
 
 
 
@@ -72,11 +84,13 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 
 
-1.  **kagutsuchi-sama 手動インストール**: `disko` 実行後、`nixos-install` を行い、環境構築を完了させる。
+1.  **kagutsuchi-sama ライブ環境デプロイ**: ライブUSBで起動後、外部から SSH 経由で `disko` および `nixos-install` を実行し、環境構築を完了させる。
 
 
 
 2.  **shosoin-tan 実機確認**: モニターアダプタ入手後、ディスクの `by-id` を確認し Disko 設定を最適化、インストール実施。
+
+
 
 
 

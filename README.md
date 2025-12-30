@@ -39,24 +39,27 @@ This repository manages multiple NixOS configurations using Flakes. It is design
 
 ### For x86_64 hosts (kagutsuchi-sama, shosoin-tan)
 
-If automatic deployment via `nixos-anywhere` fails, follow these manual steps from the installer environment:
+To deploy to a new machine using the NixOS Live USB:
 
-1. **Partitioning with Disko:**
-   Run this from the target machine (or via SSH):
+1. **Boot the target machine from the Live USB.**
+2. **Setup SSH on the target:** (if not already accessible)
    ```bash
-   sudo nix --extra-experimental-features 'nix-command flakes' run github:nix-community/disko -- \
+   sudo systemctl start sshd
+   sudo passwd root # Set a temporary password
+   ```
+3. **Partitioning with Disko (from local machine):**
+   ```bash
+   ssh -t root@<target-ip> "nix --extra-experimental-features 'nix-command flakes' run github:nix-community/disko -- \
      --mode destroy,format,mount \
-     --flake github:t3u-tsu/nix-config#<hostname>
+     --flake github:t3u-tsu/nix-config#<hostname>"
    ```
-
-2. **Install NixOS:**
+4. **Install NixOS (from local machine):**
    ```bash
-   sudo nixos-install --flake github:t3u-tsu/nix-config#<hostname>
+   ssh root@<target-ip> "nixos-install --flake github:t3u-tsu/nix-config#<hostname>"
    ```
-
-3. **Reboot:**
+5. **Reboot:**
    ```bash
-   sudo reboot
+   ssh root@<target-ip> "reboot"
    ```
 
 ### For torii-chan (SD to HDD)
