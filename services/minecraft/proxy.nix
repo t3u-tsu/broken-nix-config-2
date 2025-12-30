@@ -19,7 +19,7 @@
         online-mode = true;
         force-key-authentication = true;
         player-info-forwarding-mode = "modern";
-        forwarding-secret-file = "forwarding.secret"; # 後で生成
+        forwarding-secret-file = "forwarding.secret";
 
         servers = {
           lobby = "127.0.0.1:25566";

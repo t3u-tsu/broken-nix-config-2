@@ -25,17 +25,7 @@
       "velocity-forwarding.secret" = config.sops.secrets.minecraft_forwarding_secret.path;
     };
 
-    files = {
-      "config/paper-global.yml".value = {
-        proxies = {
-          velocity = {
-            enabled = true;
-            online-mode = true;
-            secret = "SECRET_HERE";
-          };
-        };
-      };
-    };
+    # files = { ... } は preStart で手動生成するため削除
   };
 
   # nix-minecraft が生成するサービスを拡張
@@ -47,13 +37,25 @@
       # sops の秘密鍵を読み込む
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
       
-      # 設定ファイルがまだ存在しない場合、nix-minecraft の files 属性によって
-      # 生成されるはずのパスから強制的に持ってくるか、
-      # あるいは単純に sed で置換を試みる前にファイルの存在を確認します。
-      if [ -f "config/paper-global.yml" ]; then
-        # 書き込み権限がない場合があるため、一旦コピーして置換
-        sed -i "s/secret: SECRET_HERE/secret: $SECRET/" config/paper-global.yml
+      # 設定ファイルが Nix Store へのリンクなどの場合、書き換えられないため
+      # 一旦削除または退避して、実ファイルとして配置・置換する
+      if [ -L "config/paper-global.yml" ]; then
+        rm "config/paper-global.yml"
       fi
+
+      # テンプレートファイル（nixで生成されたもの）からコピーしてくる必要があるが
+      # nix-minecraft の files 属性は既に symlink を作成しようとしているため
+      # 手動でファイルを生成するか、sed の挙動を調整する。
+      # ここでは、直接ファイルを生成するアプローチをとります。
+      cat <<EOF > config/paper-global.yml
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: $SECRET
+EOF
+      chown minecraft:minecraft config/paper-global.yml
+      chmod 600 config/paper-global.yml
     '';
   };
 }
