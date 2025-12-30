@@ -8,9 +8,10 @@ in
     ./disko-config.nix
     ./services
     ./production-security.nix
+    ../../common
   ];
 
-  # Use the LTS kernel for stability (consistent with kagutsuchi-sama)
+  # GT 210 / GT 710 configuration
   boot.kernelPackages = pkgs.linuxPackages;
 
   nixpkgs.config.allowUnfree = true;

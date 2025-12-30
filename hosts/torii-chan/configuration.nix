@@ -9,6 +9,7 @@ in
 
   imports = [
     ./services
+    ../../common
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;

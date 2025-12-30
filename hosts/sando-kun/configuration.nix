@@ -8,9 +8,10 @@ in
     ./disko-config.nix
     ./services
     ./production-security.nix
+    ../../common
   ];
 
-  # Use the LTS kernel for stability
+  # Bootloader configuration
   boot.kernelPackages = pkgs.linuxPackages;
 
   nixpkgs.config.allowUnfree = true;
