@@ -17,12 +17,17 @@
       enable-command-block = true;
       generate-structures = true;
       view-distance = 12;
-      motd = "The Minecraft World for nitac23s (NixOS Edition)";
-      max-players = 100; # 現実的な値に調整
     };
 
-    # プレイヤー情報の転送設定
     files = {
+      "ops.json".value = [
+        {
+          uuid = "7e954690-4166-4c66-b7bc-3f28bd01641f";
+          name = "coutmeow";
+          level = 4;
+          bypassesPlayerLimit = false;
+        }
+      ];
       # 既存のワールド設定を継承 (必要に応じて)
       "config/paper-world-defaults.yml".value = {
         anticheat.anti-xray.enabled = false;
