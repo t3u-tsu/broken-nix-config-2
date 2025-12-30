@@ -92,5 +92,15 @@ in
 
   nix.settings.trusted-users = [ "root" "t3u" ];
 
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+    tmux
+    htop
+    rsync
+    pciutils
+    usbutils
+  ];
+
   system.stateVersion = "25.05";
 }
