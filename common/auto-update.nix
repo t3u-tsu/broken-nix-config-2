@@ -53,21 +53,27 @@ in {
         export NIX_CONFIG="extra-experimental-features = nix-command flakes"
         TOKEN=$(cat ${config.sops.secrets.github_token.path})
         
-        # リポジトリの準備 (存在しなければクローン、所有権を設定)
+        # リポジトリの準備
         if [ ! -d "${flakePath}/.git" ]; then
-          echo "Cloning repository to ${flakePath}..."
-          mkdir -p "$(dirname "${flakePath}")"
+          echo "Preparing repository at ${flakePath}..."
+          mkdir -p "${flakePath}"
+          # ディレクトリが空でない場合（既に何かある場合）に備えて一度削除してクローン
+          rm -rf "${flakePath}"
           git clone "https://x-access-token:$TOKEN@${cfg.remoteUrl}" "${flakePath}"
           chown -R ${cfg.user}:${targetUser.group} "${flakePath}"
         fi
 
         cd "${flakePath}"
 
+        # 念のため、最新の状態であることを確認
+        git fetch origin main
+        git reset --hard origin/main
+
         # 更新処理
         nix flake update
         nvfetcher -c services/minecraft/plugins/nvfetcher.toml -o services/minecraft/plugins
 
-        # Git操作 (一時的な設定でコミット)
+        # Git操作
         git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" add .
         if ! git diff --cached --exit-code; then
           git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" commit -m "chore(auto): update system and plugins $(date +%F)"
