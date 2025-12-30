@@ -16,8 +16,8 @@
       difficulty = "peaceful";
       level-type = "flat";
       level-seed = "";
-      # スーパーフラットのカスタマイズ（地面を Y=64 に設定してスライム湧き層を避ける）
-      generator-settings = "{\"layers\": [{\"block\": \"minecraft:bedrock\", \"height\": 1}, {\"block\": \"minecraft:stone\", \"height\": 60}, {\"block\": \"minecraft:dirt\", \"height\": 2}, {\"block\": \"minecraft:grass_block\", \"height\": 1}], \"biome\": \"minecraft:plains\"}";
+      # スーパーフラットのカスタマイズ（空気のみ、バイオームは the_void）
+      generator-settings = "{\"layers\": [{\"block\": \"minecraft:air\", \"height\": 1}], \"biome\": \"minecraft:the_void\"}";
       generate-structures = false; # 構造物を生成しない
       spawn-monsters = false;
       spawn-animals = false;
