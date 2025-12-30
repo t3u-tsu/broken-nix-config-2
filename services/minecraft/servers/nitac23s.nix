@@ -23,15 +23,6 @@
 
     # プレイヤー情報の転送設定
     files = {
-      "config/paper-global.yml".value = {
-        proxies = {
-          velocity = {
-            enabled = true;
-            online-mode = true;
-            secret = "SECRET_HERE";
-          };
-        };
-      };
       # 既存のワールド設定を継承 (必要に応じて)
       "config/paper-world-defaults.yml".value = {
         anticheat.anti-xray.enabled = false;
