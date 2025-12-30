@@ -8,9 +8,21 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 **torii-chan: HDD移行完了。NIXOS_HDDをルートとして正常起動。**
 
-**shosoin-tan: 新規追加。ディスク構成(Disko)およびNVIDIAドライバ設定完了。**
+**shosoin-tan: モニターアダプタ待ちのため一時中断。設定をLTSカーネルに同期済み。**
+
+
+
+**kagutsuchi-sama: 新規追加。Xeon / GTX 980 Ti 構成の初期設定完了。インストール実施中。**
+
+
+
+
+
+
 
 ### 達成したマイルストーン
+
+
 
 1.  **WireGuard**: サーバー起動およびクライアントからの `10.0.0.1` 経由の接続を確認。
 2.  **sops-nix**: `key.txt` による復号、および `mutableUsers = false` によるパスワード同期の成功。
@@ -23,7 +35,19 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 ### 次のステップ
 
-1.  **shosoin-tan 実機確認**: ディスクの `by-id` を確認し Disko 設定を最適化、インストール実施。
+
+
+
+
+
+
+1.  **kagutsuchi-sama インストール**: `nixos-anywhere` を使用して SSD/HDD 構成のインストールを完了させる。
+
+
+
+2.  **shosoin-tan 実機確認**: モニターアダプタ入手後、ディスクの `by-id` を確認し Disko 設定を最適化、インストール実施。
+
+
 
 
 
