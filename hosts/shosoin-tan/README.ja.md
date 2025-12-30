@@ -17,5 +17,5 @@ ZFSストレージとNVIDIA Quadroを搭載した汎用サーバー。
 
 管理用PCからのアクセス：
 ```bash
-ssh shosoin-tan  # 10.0.0.4
+ssh t3u@10.0.0.4
 ```

@@ -46,6 +46,6 @@ NixOS インストーラー環境から、外部マシン（BrokenPC）経由で
 
 管理用PCからのアクセス：
 ```bash
-ssh kagutsuchi-sama  # 10.0.0.3
+ssh t3u@10.0.0.3
 ```
 
