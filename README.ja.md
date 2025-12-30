@@ -16,10 +16,30 @@
 
 ## ホスト一覧
 
-| ホスト名 | ハードウェア | プラットフォーム | 役割 | ドキュメント |
+| ホスト名 | ハードウェア詳細 | プラットフォーム | 役割 | ドキュメント |
 | :--- | :--- | :--- | :--- | :--- |
-| `torii-chan` | Orange Pi Zero3 | aarch64-linux | WireGuard / DDNS | [README](hosts/torii-chan/README.ja.md) |
-| `shosoin-tan` | Core i7 870 / K2200 | x86_64-linux | ZFS Server | [README](hosts/shosoin-tan/README.ja.md) |
+| `torii-chan` | Orange Pi Zero3 (H618 / 1GB RAM / 500GB HDD) | aarch64-linux | WireGuard / DDNS | [README](hosts/torii-chan/README.ja.md) |
+| `shosoin-tan` | Core i7 870 / 16GB RAM / K2200 / ZFS | x86_64-linux | ZFS Server | [README](hosts/shosoin-tan/README.ja.md) |
+| `kagutsuchi-sama` | Xeon E5-2650 v2 / 16GB RAM / GTX 980 Ti | x86_64-linux | Compute Server | - |
+
+### 詳細スペック
+
+#### torii-chan
+- **CPU:** Allwinner H618
+- **RAM:** 1GB
+- **ストレージ:** 64GB microSD (Boot), 500GB HDD (Root)
+
+#### shosoin-tan
+- **CPU:** Core i7 870
+- **GPU:** Quadro K2200
+- **RAM:** 16GB
+- **ストレージ:** 480GB SSD (Root), 1TB x2 + 320GB x2 (ZFS), 2TB HDD (Backup)
+
+#### kagutsuchi-sama
+- **CPU:** Xeon E5-2650 v2
+- **GPU:** GTX 980 Ti (Maxwell)
+- **RAM:** 16GB
+- **ストレージ:** 500GB SSD (Root), 3TB + 160GB HDD
 
 ## 使用テクノロジー
 

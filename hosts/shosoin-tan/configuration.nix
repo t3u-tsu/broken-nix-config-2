@@ -5,6 +5,9 @@
     ./disko-config.nix
   ];
 
+  # Use the LTS kernel for stability (consistent with kagutsuchi-sama)
+  boot.kernelPackages = pkgs.linuxPackages;
+
   nixpkgs.config.allowUnfree = true;
 
   # Bootloader configuration
@@ -38,7 +41,10 @@
   # SSH and basic settings
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
   };
 
   users.users.t3u = {
