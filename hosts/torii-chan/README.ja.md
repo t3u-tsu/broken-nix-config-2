@@ -32,13 +32,14 @@
    nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@192.168.0.128
    ```
 
-### Phase 3: HDD移行 (オプション)
+### Phase 3: HDD移行 (完了 ✅)
 1. **HDD準備:** ラベル `NIXOS_HDD` でフォーマットします。
 2. **データコピー:** `/` をHDDパーティションにrsyncします。
 3. **構成切り替え:**
    ```bash
    nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan --target-host t3u@10.0.0.1 --use-remote-sudo
    ```
+   *現在はHDDをルートとして、SDカードを/bootとして運用されています。*
 
 ## 🔐 サービスと秘密情報
 - **WireGuard:** ポート51820のVPNサーバー。

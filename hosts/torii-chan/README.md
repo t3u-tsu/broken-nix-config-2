@@ -32,13 +32,14 @@ This directory contains the NixOS configuration for `torii-chan`, an Orange Pi Z
    nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan-sd-live --target-host root@192.168.0.128
    ```
 
-### Phase 3: Migrate to HDD (Optional)
+### Phase 3: Migrate to HDD (Completed ✅)
 1. **Prepare HDD:** Format with label `NIXOS_HDD`.
 2. **Copy Data:** Rsync `/` to the HDD partition.
 3. **Switch Config:**
    ```bash
    nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan --target-host t3u@10.0.0.1 --use-remote-sudo
    ```
+   *System now boots from HDD with /boot on SD card.*
 
 ## 🔐 Services & Secrets
 - **WireGuard:** VPN server on port 51820.
