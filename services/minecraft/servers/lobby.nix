@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   services.minecraft-servers.servers.lobby = {
@@ -26,14 +26,15 @@
     };
 
     symlinks = {
-      "plugins/ViaVersion.jar" = pkgs.fetchurl {
-        url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.2.1/ViaVersion-5.2.1.jar";
-        sha256 = "sha256-Kx83C9gb5gVd0ebM5GkmvYUrI15kSNZr2myV+6yWKsM=";
-      };
-      "plugins/ViaBackwards.jar" = pkgs.fetchurl {
-        url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.2.1/ViaBackwards-5.2.1.jar";
-        sha256 = "sha256-2wbj6CvMu8hnL260XLf8hqhr6GG/wxh+SU8uX5+x8NY=";
-      };
+      # ViaVersion 5.2.1 is incompatible with 1.21.11. Disabled until updated.
+      # "plugins/ViaVersion.jar" = pkgs.fetchurl {
+      #   url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.2.1/ViaVersion-5.2.1.jar";
+      #   sha256 = "sha256-Kx83C9gb5gVd0ebM5GkmvYUrI15kSNZr2myV+6yWKsM=";
+      # };
+      # "plugins/ViaBackwards.jar" = pkgs.fetchurl {
+      #   url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.2.1/ViaBackwards-5.2.1.jar";
+      #   sha256 = "sha256-2wbj6CvMu8hnL260XLf8hqhr6GG/wxh+SU8uX5+x8NY=";
+      # };
       "velocity-forwarding.secret" = config.sops.secrets.minecraft_forwarding_secret.path;
     };
 
@@ -58,6 +59,9 @@
 
   # nix-minecraft が生成するサービスを拡張
   systemd.services.minecraft-server-lobby = {
+    # Fix udev warning
+    environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
+
     preStart = ''
       # ワールドおよびプレイヤーデータリセットのチェック
       if [ -f ".reset_world" ]; then
@@ -84,6 +88,8 @@
       # 手動でファイルを生成するか、sed の挙動を調整する。
       # ここでは、直接ファイルを生成するアプローチをとります。
       cat <<EOF > config/paper-global.yml
+# Fix global config version warning
+config-version: 31
 proxies:
   velocity:
     enabled: true

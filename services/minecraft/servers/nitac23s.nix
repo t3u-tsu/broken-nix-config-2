@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   services.minecraft-servers.servers.nitac23s = {
@@ -37,20 +37,24 @@
 
     # プラグインの導入
     symlinks = {
-      "plugins/ViaVersion.jar" = pkgs.fetchurl {
-        url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.2.1/ViaVersion-5.2.1.jar";
-        sha256 = "sha256-Kx83C9gb5gVd0ebM5GkmvYUrI15kSNZr2myV+6yWKsM=";
-      };
-      "plugins/ViaBackwards.jar" = pkgs.fetchurl {
-        url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.2.1/ViaBackwards-5.2.1.jar";
-        sha256 = "sha256-2wbj6CvMu8hnL260XLf8hqhr6GG/wxh+SU8uX5+x8NY=";
-      };
+      # ViaVersion 5.2.1 is incompatible with 1.21.11. Disabled until updated.
+      # "plugins/ViaVersion.jar" = pkgs.fetchurl {
+      #   url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.2.1/ViaVersion-5.2.1.jar";
+      #   sha256 = "sha256-Kx83C9gb5gVd0ebM5GkmvYUrI15kSNZr2myV+6yWKsM=";
+      # };
+      # "plugins/ViaBackwards.jar" = pkgs.fetchurl {
+      #   url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.2.1/ViaBackwards-5.2.1.jar";
+      #   sha256 = "sha256-2wbj6CvMu8hnL260XLf8hqhr6GG/wxh+SU8uX5+x8NY=";
+      # };
       # 追加のプラグイン (LunaChat 等は必要に応じてバイナリを指定)
     };
   };
 
   # シークレットの動的注入
   systemd.services.minecraft-server-nitac23s = {
+    # Fix udev warning
+    environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
+
     preStart = ''
       mkdir -p config
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
@@ -58,6 +62,8 @@
       
       # paper-global.yml の生成とシークレット埋め込み
       cat <<EOF > config/paper-global.yml
+# Fix global config version warning
+config-version: 31
 proxies:
   velocity:
     enabled: true
