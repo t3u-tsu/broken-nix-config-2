@@ -43,5 +43,5 @@ This directory contains the NixOS configuration for `torii-chan`, an Orange Pi Z
 
 ## 🔐 Services & Secrets
 - **WireGuard:** VPN server on port 51820.
-- **DDNS:** Cloudflare DDNS (favonia). Requires API Token.
+- **DDNS:** Cloudflare DDNS (favonia). Requires API Token. Manages `torii-chan.t3u.uk` and Minecraft domains `mc.t3u.uk`, `*.mc.t3u.uk`.
 - **Secrets:** Managed via `sops-nix`. Edit with `sops secrets/secrets.yaml`.

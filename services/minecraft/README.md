@@ -6,42 +6,29 @@ This directory manages the Minecraft network consisting of a Velocity proxy and 
 
 - **Proxy (Velocity)**: `proxy.nix`
   - Port: `25565`
-  - Handles authentication and server forwarding.
-  - Uses `modern` forwarding mode.
+  - Domain-based routing:
+    - `mc.t3u.uk` -> `lobby`
+    - `nitac23s.mc.t3u.uk` -> `nitac23s`
 - **Backend (Lobby)**: `servers/lobby.nix`
   - Port: `25566`
-  - Waiting lobby.
-  - Version: Latest (PaperMC)
-  - Plugins: ViaVersion, ViaBackwards
+  - Waiting lobby (Void world).
+- **Backend (nitac23s)**: `servers/nitac23s.nix`
+  - Port: `25567`
+  - Main survival server.
 
-## Security and Secrets
+## Plugin Management (nvfetcher)
 
-### Player Information Forwarding (Forwarding Secret)
-A shared secret is used to secure communication between Velocity and Lobby. To prevent exposing the secret in the Nix Store, we use:
+Plugins (ViaVersion, ViaBackwards) are managed in the `plugins/` directory using **nvfetcher**. This allows automatic fetching of latest hashes and declarative version management.
 
-1. **sops-nix**: Manages the secret encrypted in `secrets.yaml`.
-2. **Dynamic Injection**: The `preStart` script of the `lobby` server injects the decrypted secret into `paper-global.yml` using `sed` just before the server starts.
-
-## Operations
-
-### Full Reset of World and Player Data
-To initialize data after changing terrain generation settings, follow these steps:
-
-1. **Create Reset Flag**:
-   ```bash
-   ssh -t <target-host> "sudo touch /srv/minecraft/lobby/.reset_world && sudo chown minecraft:minecraft /srv/minecraft/lobby/.reset_world"
-   ```
-2. **Deploy or Restart Service**:
-   Run `nixos-rebuild switch`. The startup script will detect the flag, delete `world*` directories and `usercache.json`, and then start fresh.
-
-### Accessing the Console
-```bash
-ssh -t <target-host> "sudo tmux -S /run/minecraft/lobby.sock attach"
-```
-To detach, press `Ctrl+b` followed by `d`.
+- **Update Command**:
+  ```bash
+  nix shell nixpkgs#nvfetcher -c nvfetcher -c services/minecraft/plugins/nvfetcher.toml -o services/minecraft/plugins/generated.nix
+  ```
 
 ## Lobby Server Specifications
-- **Terrain**: Superflat (Ground level at Y=64 to prevent slimes)
+- **Terrain**: Void (Completely empty world with air only)
+- **Biome**: `minecraft:the_void`
 - **Mobs**: Natural spawning and initial placement are completely disabled (Peaceful + Spawn Limits 0).
 - **Mode**: Forced Adventure mode.
 - **Structures**: Disabled.
+

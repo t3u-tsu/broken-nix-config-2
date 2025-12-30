@@ -44,7 +44,7 @@
 ## 🔐 サービスと秘密情報
 - **WireGuard:** 管理用VPNサーバー (10.0.0.1)。
 - **SSH アクセス制限:** セキュリティ強化のため、SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限されています。
-- **DDNS:** Cloudflare DDNS (favonia)。APIトークンが必要です。
+- **DDNS:** Cloudflare DDNS (favonia)。APIトークンが必要です。`torii-chan.t3u.uk` に加え、Minecraft用の `mc.t3u.uk` および `*.mc.t3u.uk` も管理しています。
 - **秘密情報:** `sops-nix` で管理。 `sops secrets/secrets.yaml` で編集。
 
 ## 🌐 ネットワークと接続
