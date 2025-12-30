@@ -9,6 +9,7 @@ This repository manages multiple NixOS configurations using Flakes. It is design
 ├── flake.nix           # Entry point for the configuration
 ├── hosts/              # Host-specific configurations
 │   └── torii-chan/     # Orange Pi Zero3 configuration
+├── common/             # Shared configurations across all hosts
 ├── services/           # Common service configurations (Minecraft, etc.)
 ├── lib/                # Common library functions for mkSystem
 └── secrets/            # Encrypted secrets (SOPS)

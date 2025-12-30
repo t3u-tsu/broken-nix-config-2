@@ -30,14 +30,12 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 14. **アプリ間通信用ネットワーク (wg1)**: `10.0.1.0/24` を構築。サーバー間の自由な通信を許可。
 15. sando-kun 設定追加: i7 860 / 250GB HDD 構成の初期設定を完了。WireGuard (10.0.0.2 / 10.0.1.2) 設定済み。
 16. nitac23s 移行完了: 旧サーバーからのワールドデータ (world, nether, end)、usercache、whitelist の移行および Kagutsuchi-sama での稼働を確認。
-16. **Minecraftサーバー更新**: `lobby` を 1.21.11 (Latest) に更新し、ViaVersion / ViaBackwards を導入。
-17. **シークレット同期の安定化**: `preStart` スクリプトによる動的なシークレット埋め込みを実装し、Velocity-Lobby間の認証問題を解決。
-18. **Lobby構成の完成**: Y=64のスーパーフラット、構造物なし、全Mobスポーン無効、アドベンチャーモード固定設定を適用。`.reset_world` フラグによる初期化フローを確立。
-19. **メインサーバー追加**: `nitac23s` (Survival/Hard) 設定をエクスポート・構築し、Velocity ネットワークに追加。
+17. 基本ツールのモジュール化: 全ホスト共通の基本ツール (`vim`, `git`, `tmux`, `htop`, `rsync` 等) を `common/` に集約し、保守性を向上。
 
 ### 次のステップ
 
 1.  **shosoin-tan 実機確認**: モニターアダプタ入手後、ディスクの `by-id` を確認し Disko 設定を最適化、インストール実施。
+2.  **共通設定の拡充**: シェルの設定 (zsh/fish) や alias など、全ホストで共通化したい設定を `common/` に追加していく。
 
 ### 運用ルール (開発ワークフロー)
 
