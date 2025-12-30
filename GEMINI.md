@@ -32,6 +32,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 16. **Minecraftサーバー更新**: `lobby` を 1.21.11 (Latest) に更新し、ViaVersion / ViaBackwards を導入。
 17. **シークレット同期の安定化**: `preStart` スクリプトによる動的なシークレット埋め込みを実装し、Velocity-Lobby間の認証問題を解決。
 18. **Lobby構成の完成**: Y=64のスーパーフラット、構造物なし、全Mobスポーン無効、アドベンチャーモード固定設定を適用。`.reset_world` フラグによる初期化フローを確立。
+19. **メインサーバー追加**: `nitac23s` (Survival/Hard) 設定をエクスポート・構築し、Velocity ネットワークに追加。
 
 ### 次のステップ
 

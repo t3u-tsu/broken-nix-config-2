@@ -13,6 +13,11 @@
   - 待機ロビー。
   - バージョン: Latest (PaperMC)
   - プラグイン: ViaVersion, ViaBackwards
+- **バックエンド (nitac23s)**: `servers/nitac23s.nix`
+  - ポート: `25567`
+  - メインサバイバルサーバー。
+  - 難易度: Hard
+  - プラグイン: ViaVersion, ViaBackwards
 
 ## セキュリティと秘密情報
 
