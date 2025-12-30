@@ -1,5 +1,13 @@
 { config, pkgs, lib, ... }:
 
+let
+  # Domain to server mapping
+  serverMapping = {
+    "mc.t3u.uk" = "lobby";
+    "nitac23s.mc.t3u.uk" = "nitac23s";
+    "torii-chan.t3u.uk" = "lobby";
+  };
+in
 {
   services.minecraft-servers.servers.velocity = {
     enable = true;
@@ -26,10 +34,7 @@
           nitac23s = "127.0.0.1:25567";
         };
 
-        forced-hosts = {
-          "torii-chan.t3u.uk" = [ "lobby" ];
-          "mc.t3u.uk" = [ "nitac23s" ];
-        };
+        forced-hosts = lib.mapAttrs (_: v: [ v ]) serverMapping;
 
         try = [ "lobby" ];
       };
