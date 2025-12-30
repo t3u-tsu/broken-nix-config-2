@@ -16,7 +16,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 1.  **WireGuard (wg0)**: 管理用ネットワーク (10.0.0.0/24) を構築。全ホストでSSHをこのインターフェースのみに制限。
 2.  **sops-nix**: `key.txt` による復号、および `mutableUsers = false` によるパスワード同期の成功。
-3.  **Cloudflare DDNS**: API Token による正常動作を確認。
+3.  **Cloudflare DDNS**: API Token による正常動作を確認。`mc.t3u.uk` および `*.mc.t3u.uk` を追加。
 4.  **デプロイ権限**: `trusted-users` 設定完了。
 5.  **セキュリティ強化**: `production-security.nix` を適用し、SSHアクセスを WireGuard (wg0) 経由のみに制限。
 6.  **shosoin-tan**: Core i7 870 / Quadro K2200 / ZFS Mirror 構成の初期設定を完了。
