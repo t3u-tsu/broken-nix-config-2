@@ -99,6 +99,7 @@ in
   my.autoUpdate = {
     enable = true;
     user = username;
+    pushChanges = true;
   };
 
   system.stateVersion = "25.05";

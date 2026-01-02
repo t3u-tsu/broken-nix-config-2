@@ -32,6 +32,11 @@ in {
       type = types.str;
       default = "t3u+daemon@t3u.uk";
     };
+    pushChanges = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether this host should update flake.lock and push changes to Git";
+    };
     nvfetcher = mkOption {
       type = types.listOf (types.submodule {
         options = {
@@ -86,24 +91,26 @@ in {
         git fetch origin main
         git reset --hard origin/main
 
-        # 更新処理
-        nix flake update
-        
-        # nvfetcher の実行
-        ${lib.concatMapStringsSep "\n" (target: lib.optionalString target.enable ''
-          echo "Running nvfetcher in ${target.dir}..."
-          if [ -d "${target.dir}" ]; then
-            (cd "${target.dir}" && nvfetcher -c "${target.configFile}")
-          else
-            echo "Warning: Directory ${target.dir} does not exist. Skipping nvfetcher."
-          fi
-        '') cfg.nvfetcher}
+        if [ "${if cfg.pushChanges then "true" else "false"}" = "true" ]; then
+          # 更新処理 (Producer のみ)
+          nix flake update
+          
+          # nvfetcher の実行
+          ${lib.concatMapStringsSep "\n" (target: lib.optionalString target.enable ''
+            echo "Running nvfetcher in ${target.dir}..."
+            if [ -d "${target.dir}" ]; then
+              (cd "${target.dir}" && nvfetcher -c "${target.configFile}")
+            else
+              echo "Warning: Directory ${target.dir} does not exist. Skipping nvfetcher."
+            fi
+          '') cfg.nvfetcher}
 
-        # Git操作
-        git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" add .
-        if ! git diff --cached --exit-code; then
-          git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" commit -m "chore(auto): update system and plugins $(date +%F)"
-          git push "https://x-access-token:$TOKEN@${cfg.remoteUrl}" main
+          # Git操作
+          git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" add .
+          if ! git diff --cached --exit-code; then
+            git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" commit -m "chore(auto): update system and plugins $(date +%F)"
+            git push "https://x-access-token:$TOKEN@${cfg.remoteUrl}" main
+          fi
         fi
 
         # 反映
