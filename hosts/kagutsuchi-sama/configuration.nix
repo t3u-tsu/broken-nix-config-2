@@ -99,12 +99,6 @@ in
   my.autoUpdate = {
     enable = true;
     user = username;
-    nvfetcher = [
-      {
-        enable = true;
-        dir = "services/minecraft/plugins";
-      }
-    ];
   };
 
   system.stateVersion = "25.05";

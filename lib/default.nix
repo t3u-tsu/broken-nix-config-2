@@ -26,4 +26,12 @@
         ../hosts/${name}/configuration.nix
       ] ++ extraModules;
     };
+
+  # Auto-update helpers
+  autoUpdate = {
+    mkNvfetcherTask = dir: {
+      enable = true;
+      inherit dir;
+    };
+  };
 }

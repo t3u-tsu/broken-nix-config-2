@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
@@ -10,4 +10,9 @@
     enable = true;
     eula = true; # 同意
   };
+
+  # Automatically register nvfetcher update task if auto-update is enabled
+  my.autoUpdate.nvfetcher = [
+    (inputs.self.lib.autoUpdate.mkNvfetcherTask "services/minecraft/plugins")
+  ];
 }

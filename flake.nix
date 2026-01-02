@@ -47,6 +47,7 @@
       };
     in
     {
+      inherit lib;
       nixosConfigurations = {
         # 1. For SD card creation (No Disko, uses standard modules)
         "torii-chan-sd" = lib.mkSystem {
