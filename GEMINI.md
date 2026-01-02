@@ -39,6 +39,8 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 23. 自動更新システムの構築: 毎日午前4時に `nix flake update`、`nvfetcher` 更新、Git コミット＆プッシュ、`nixos-rebuild switch` を自動実行する Systemd Timer を構築。
 24. 自動更新モジュールのリファクタリング: `config.users.users` によるパスの動的解決と、未踏環境での自動クローン（セルフヒーリング）機能を実装。
 25. Kagutsuchi-sama 障害復旧と接続性改善: 同じ LAN 内での NAT ループバック問題による VPN 不通を解消するため、`/etc/hosts` によるローカル解決を導入。救出用の一時的な LAN SSH 許可を経て、セキュアな元の状態へ復元。
+26. ネットワーク設定の共通化: NAT ループバック対策用のローカル DNS 解決を `common/local-network.nix` にモジュール化し、フラグ一つで有効化できるように改善。
+27. 自動更新システムの高度化: `pushChanges` フラグを導入し、更新・プッシュ担当（Producer）と適用担当（Consumer）を分離。また、`nvfetcher` タスクをサービス側から動的に登録する構成にリファクタリングし、ホスト間の移動や拡張性を向上。
 
 ### 次のステップ
 

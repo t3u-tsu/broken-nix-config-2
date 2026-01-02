@@ -49,7 +49,7 @@ Run these commands from the NixOS Installer environment:
 When this host is in the same LAN as the VPN server (`torii-chan`), VPN connection might fail due to the router's lack of NAT Loopback support for the domain `torii-chan.t3u.uk`.
 
 ### Solution
-We have a local DNS override in `configuration.nix` under `networking.hosts` that points `torii-chan.t3u.uk` to `192.168.0.128`.
+Set `my.localNetwork.enable = true;` in `configuration.nix`. This automatically resolves `torii-chan.t3u.uk` to the local IP `192.168.0.128`.
 
-**Important:** If you move this host to a different network, you MUST comment out the `networking.hosts` entry and run `nixos-rebuild switch`, otherwise it won't be able to find the VPN server from the outside.
+**Important:** If you move this host to a different network, you MUST set `my.localNetwork.enable = false;` and run `nixos-rebuild switch`, otherwise it won't be able to find the VPN server from the outside.
 

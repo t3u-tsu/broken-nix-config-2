@@ -53,8 +53,8 @@ ssh t3u@10.0.0.3
 VPN サーバー (`torii-chan`) と同じ LAN 内にこのホストを設置する場合、ドメイン名 (`torii-chan.t3u.uk`) による VPN 接続がルーターの制限（NAT ループバック非対応）により失敗することがあります。
 
 ### 対策
-`configuration.nix` 内の `networking.hosts` で、`torii-chan.t3u.uk` をローカル IP (`192.168.0.128`) に解決するように設定しています。
+`configuration.nix` で `my.localNetwork.enable = true;` を設定しています。これにより、`torii-chan.t3u.uk` が自動的にローカル IP (`192.168.0.128`) に解決されます。
 
 **外部ネットワークへ移動する場合:**
-このホストを別のネットワークへ移動させる際は、`networking.hosts` の設定をコメントアウトして `nixos-rebuild switch` を実行してください。そうしないと、外部から VPN サーバーを見つけることができなくなります。
+このホストを別のネットワークへ移動させる際は、`my.localNetwork.enable = false;` に変更して `nixos-rebuild switch` を実行してください。そうしないと、外部から VPN サーバーを見つけることができなくなります。
 

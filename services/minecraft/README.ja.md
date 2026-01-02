@@ -20,9 +20,11 @@
 
 プラグイン（ViaVersion, ViaBackwards）は `plugins/` ディレクトリで **nvfetcher** を使用して管理されています。これにより、最新のハッシュ値を自動取得し、宣言的にプラグインを最新に保つことができます。
 
-- **更新コマンド**:
+- **自動更新**:
+  ホスト側で `my.autoUpdate.enable = true` が設定されていれば、毎日午前4時に自動的に `nvfetcher` が実行され、最新のプラグイン情報がリポジトリにプッシュされます。
+- **手動更新**:
   ```bash
-  nix shell nixpkgs#nvfetcher -c nvfetcher -c services/minecraft/plugins/nvfetcher.toml -o services/minecraft/plugins/generated.nix
+  (cd services/minecraft/plugins && nvfetcher -c nvfetcher.toml)
   ```
 
 ## Lobby サーバーの仕様
