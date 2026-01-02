@@ -32,6 +32,24 @@ in {
       type = types.str;
       default = "t3u+daemon@t3u.uk";
     };
+    nvfetcher = mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          enable = mkEnableOption "Enable nvfetcher for this target";
+          dir = mkOption {
+            type = types.str;
+            description = "Directory containing nvfetcher.toml (relative to flake root)";
+          };
+          configFile = mkOption {
+            type = types.str;
+            default = "nvfetcher.toml";
+            description = "Name of the nvfetcher config file";
+          };
+        };
+      });
+      default = [];
+      description = "List of nvfetcher targets to update";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -71,8 +89,15 @@ in {
         # 更新処理
         nix flake update
         
-        # nvfetcher の実行 (設定ファイルのディレクトリで実行して削除を防ぐ)
-        (cd services/minecraft/plugins && nvfetcher -c nvfetcher.toml)
+        # nvfetcher の実行
+        ${lib.concatMapStringsSep "\n" (target: lib.optionalString target.enable ''
+          echo "Running nvfetcher in ${target.dir}..."
+          if [ -d "${target.dir}" ]; then
+            (cd "${target.dir}" && nvfetcher -c "${target.configFile}")
+          else
+            echo "Warning: Directory ${target.dir} does not exist. Skipping nvfetcher."
+          fi
+        '') cfg.nvfetcher}
 
         # Git操作
         git -c user.name="${cfg.gitUserName}" -c user.email="${cfg.gitUserEmail}" add .
