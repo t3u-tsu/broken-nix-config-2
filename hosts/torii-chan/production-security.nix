@@ -11,7 +11,10 @@
   # We use mkForce to ensure only these ports are open on end0 (WAN)
   networking.firewall.allowedTCPPorts = lib.mkForce [ 25565 ];
 
-  # Open port 22 (SSH) and 8080 (update-hub) ONLY on WireGuard interfaces
+  # Open port 22 (SSH) and 8080 (update-hub) ONLY on WireGuard management interface
   networking.firewall.interfaces.wg0.allowedTCPPorts = [ 22 8080 ];
-  networking.firewall.interfaces.wg1.allowedTCPPorts = [ 8080 ];
+
+  # Allow all application traffic on wg1
+  networking.firewall.interfaces.wg1.allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
+  networking.firewall.interfaces.wg1.allowedUDPPortRanges = [ { from = 0; to = 65535; } ];
 }
