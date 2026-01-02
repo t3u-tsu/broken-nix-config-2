@@ -87,8 +87,6 @@ in
 
   system.stateVersion = "25.05";
 
-  nix.settings.trusted-users = [ "root" "t3u" ];
-
   my.autoUpdate = {
     enable = true;
     user = username;

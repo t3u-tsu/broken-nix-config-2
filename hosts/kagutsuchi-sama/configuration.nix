@@ -94,8 +94,6 @@ in
     ];
   };
 
-  nix.settings.trusted-users = [ "root" "t3u" ];
-
   my.autoUpdate = {
     enable = true;
     user = username;

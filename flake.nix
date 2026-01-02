@@ -66,8 +66,7 @@
         # 2. For Production / HDD operation
         "torii-chan" = lib.mkSystem {
           name = "torii-chan";
-          system = "x86_64-linux"; # Using cross-compilation
-          targetSystem = "aarch64-linux";
+          system = "aarch64-linux";
           extraModules = [
              ./hosts/torii-chan/fs-hdd.nix
              ./hosts/torii-chan/production-security.nix
@@ -77,8 +76,7 @@
         # 3. For continuous development on SD card (No HDD)
         "torii-chan-sd-live" = lib.mkSystem {
           name = "torii-chan";
-          system = "x86_64-linux";
-          targetSystem = "aarch64-linux";
+          system = "aarch64-linux";
           extraModules = [
              ./hosts/torii-chan/fs-sd.nix
              ./hosts/torii-chan/production-security.nix

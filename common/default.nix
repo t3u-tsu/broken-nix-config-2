@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./nix.nix
     ./auto-update.nix
     ./local-network.nix
   ];

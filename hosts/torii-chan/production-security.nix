@@ -8,9 +8,10 @@
   # For production, we strictly limit SSH access to the WireGuard VPN interface.
   
   # Close all ports on global interfaces except for explicitly allowed ones
+  # We use mkForce to ensure only these ports are open on end0 (WAN)
   networking.firewall.allowedTCPPorts = lib.mkForce [ 25565 ];
 
-  # Open port 22 ONLY on WireGuard interface (wg0)
-  # WARNING: You must have a working WireGuard peer connection to SSH into the box after deploying this!
-  networking.firewall.interfaces.wg0.allowedTCPPorts = [ 22 ];
+  # Open port 22 (SSH) and 8080 (update-hub) ONLY on WireGuard interfaces
+  networking.firewall.interfaces.wg0.allowedTCPPorts = [ 22 8080 ];
+  networking.firewall.interfaces.wg1.allowedTCPPorts = [ 8080 ];
 }
