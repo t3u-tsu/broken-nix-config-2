@@ -54,7 +54,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 36. タイムゾーンのJST統一: 全ホスト共通設定として `common/time.nix` を導入し、タイムゾーンを `Asia/Tokyo` (JST) に統一。あわせて `chrony` を有効化し、時刻同期の精度と安定性を向上させた。
 37. Minecraft サーバー移行: マイクラ関連サービス一式 (Velocity, Lobby, nitac23s) を `kagutsuchi-sama` から `shosoin-tan` へ移行。データの `rsync` 同期、`torii-chan` のポート転送先変更 (10.0.1.4)、および自動更新 Producer 権限の移譲を完了。
 38. Velocity 警告の解消: `config-version` を `2.7` に更新し、非推奨の `forwarding-secret-file` パラメータを削除することで、セキュリティ警告および設定バージョン警告を修正。
-39. マイクラバックアップシステムの構築: `restic` を導入し、`shosoin-tan` (/srv/minecraft) からローカルの ZFS Mirror および `kagutsuchi-sama` の HDD への 2重バックアップ（2時間おき）を自動化。SSH 設定の共通化により安定したリモート転送を実現。
+39. バックアップシステムの構築と共通化: `services/backup` を新設し、`restic` による 2重バックアップ（ローカル ZFS & リモート Kagutsuchi）をモジュール化。SSH 設定の共通化により、安全で保守性の高いバックアップ運用を実現。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 
