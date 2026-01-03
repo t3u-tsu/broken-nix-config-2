@@ -43,7 +43,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 25. Kagutsuchi-sama 障害復旧と接続性改善: 同じ LAN 内での NAT ループバック問題による VPN 不通を解消するため、`/etc/hosts` によるローカル解決を導入。救出用の一時的な LAN SSH 許可を経て、セキュアな元の状態へ復元。
 26. ネットワーク設定の共通化: NAT ループバック対策用のローカル DNS 解決を `common/local-network.nix` にモジュール化し、フラグ一つで有効化できるように改善。
 27. 自動更新システムの高度化: `pushChanges` フラグを導入し、更新・プッシュ担当（Producer）と適用担当（Consumer）を分離。また、`nvfetcher` タスクをサービス側から動的に登録する構成にリファクタリングし、ホスト間の移動や拡張性を向上。
-28. Nix設定の共通化と集約: `common/nix.nix` を新設し、実験的機能、バイナリキャッシュ、`trusted-users` 設定を一括管理。各ホストからの重複設定を排除。
+28. Nix設定の共通化と集約: `common/nix.nix` を新設し、実験的機能、バイナリキャッシュ、`trusted-users` 設定を一括管理. 各ホストからの重複設定を排除。
 29. aarch64ビルドの最適化: `torii-chan` のビルドをクロスコンパイルからエミュレーションベースのネイティブビルドに移行。`binfmt` と `extra-platforms` 設定により、x86_64ホスト上で公式のaarch64バイナリキャッシュを利用可能にした。
 30. Coordinated Update Hubの完全稼働: `torii-chan` で `update-hub` を稼働させ、ファイアウォール設定（wg0/wg1）を最適化して外部・内部からのステータス確認を可能にした。
 31. shosoin-tan Disk ID特定: 実機での `lsblk` により 5 台のディスク ID を特定し、`disko-config.nix` に反映。
@@ -53,6 +53,16 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 35. shosoin-tan ネットワーク安定化: USB-LAN アダプタ環境での不安定さを解消するため、WireGuard MTU を 1380 に設定し、`localNetwork` モジュールによるエンドポイントのローカル解決を導入して起動時の接続を確実に安定させた。
 36. タイムゾーンのJST統一: 全ホスト共通設定として `common/time.nix` を導入し、タイムゾーンを `Asia/Tokyo` (JST) に統一。あわせて `chrony` を有効化し、時刻同期の精度と安定性を向上させた。
 37. Minecraft サーバー移行: マイクラ関連サービス一式 (Velocity, Lobby, nitac23s) を `kagutsuchi-sama` から `shosoin-tan` へ移行。データの `rsync` 同期、`torii-chan` のポート転送先変更 (10.0.1.4)、および自動更新 Producer 権限の移譲を完了。
+
+### 運用・デプロイ上の知見 (Operational Notes)
+
+- **Minecraft コンソールへの接続**: 各サービスは `tmux` セッションで動作。
+  - 接続: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
+  - 離脱: `Ctrl+B` -> `D`
+- **非NixOS環境からのデプロイ**: `nixos-rebuild` がない場合、`nix run` 経由で実行。
+  - 例: `nix run nixpkgs#nixos-rebuild -- switch --flake .#<ホスト> --target-host <ユーザー>@<IP> --use-remote-sudo --ask-sudo-password`
+- **Flake への反映**: Nix Flake は Git 管理下のファイルのみを認識するため、新規作成・変更したファイルは必ず `git add` すること。
+- **リソース制限ホストのデプロイ**: `torii-chan` 等の低リソース機へのデプロイ時は、ネットワーク瞬断や SSH タイムアウトに注意。安定しない場合はリモート側で `nixos-rebuild` を実行する。
 
 ### 次のステップ
 
