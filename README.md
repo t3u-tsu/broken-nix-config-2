@@ -30,8 +30,8 @@ Detailed documentation is distributed across the repository. Please refer to the
 | :--- | :--- | :--- | :--- | :--- |
 | `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / DDNS (`mc.t3u.uk`) | SD + HDD |
 | `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | ZFS Mirror |
-| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute / Minecraft Server | SSD + HDD |
-| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | ZFS / Home Server | SSD + ZFS Mirror |
+| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server | SSD + HDD |
+| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | ZFS / Home / Minecraft Server | SSD + ZFS Mirror |
 
 ## 🛠️ Core Technologies
 

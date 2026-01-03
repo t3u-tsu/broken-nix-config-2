@@ -1,6 +1,6 @@
 # Host: kagutsuchi-sama (Xeon E5 Compute Server)
 
-This host is a high-power tower server used for heavy workloads and compute tasks.
+This host is a high-power tower server used for heavy workloads and compute tasks. It previously served as the Minecraft server and Update Producer, roles that have since been migrated to `shosoin-tan`.
 
 ## Hardware Specs
 - **CPU:** Xeon E5-2650 v2 (8C/16T)
@@ -39,7 +39,6 @@ Run these commands from the NixOS Installer environment:
    ```
 
 ## 🔐 Access
-- **Update Producer:** Central update manager for the fleet. Automatically updates `flake.lock` and plugins daily at 04:00, pushes to Git, and notifies the Hub.
 - **Management IP:** `10.0.0.3` (WireGuard)
 - **SSH Restriction:** SSH is restricted to the WireGuard (`wg0`) interface ONLY.
 - **User:** `t3u` (with wheel/sudo privileges)
@@ -53,4 +52,3 @@ When this host is in the same LAN as the VPN server (`torii-chan`), VPN connecti
 Set `my.localNetwork.enable = true;` in `configuration.nix`. This automatically resolves `torii-chan.t3u.uk` to the local IP `192.168.0.128`.
 
 **Important:** If you move this host to a different network, you MUST set `my.localNetwork.enable = false;` and run `nixos-rebuild switch`, otherwise it won't be able to find the VPN server from the outside.
-

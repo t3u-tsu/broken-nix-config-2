@@ -2,6 +2,11 @@
 
 This directory manages the Minecraft network consisting of a Velocity proxy and Paper backend servers.
 
+## Operational Status
+
+- **Current Host**: `shosoin-tan` (10.0.1.4)
+- **Update Producer**: `shosoin-tan` checks for core and plugin updates daily at 04:00 and updates the repository.
+
 ## Overview
 
 - **Proxy (Velocity)**: `proxy.nix`

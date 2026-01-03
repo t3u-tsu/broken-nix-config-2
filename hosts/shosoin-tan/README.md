@@ -1,6 +1,6 @@
 # Host: shosoin-tan (i7-870 Tower Server)
 
-This host is a tower server equipped with an Intel Core i7-870 and a ZFS Mirror configuration, used for data storage and general-purpose services.
+This host is a tower server equipped with an Intel Core i7-870 and a ZFS Mirror configuration, currently serving as the Minecraft server and a general-purpose home server.
 
 ## Hardware Specs
 - **CPU:** Intel Core i7-870 (1st Gen)
@@ -37,9 +37,11 @@ To avoid CPU freezes on the target, build the image on a build host and transfer
 
 ## 🔐 Network and Security
 - **Boot Method:** Legacy BIOS (MBR)
+- **Update Producer:** Central update manager for the fleet. Automatically updates `flake.lock` and plugins daily at 04:00, pushes to Git, and notifies the Hub.
 - **Management IP:** `10.0.0.4` (WireGuard)
+- **App IP:** `10.0.1.4` (Minecraft, etc.)
 - **MTU Setting:** WireGuard MTU is set to `1380` to ensure stability when using USB-LAN adapters.
-- **SSH Access Control:** Limited to the WireGuard (`wg0`) interface for enhanced security.
+- **SSH Access Control:** Limited to the WireGuard (`wg0`) interface ONLY for enhanced security.
 
 ## ⚠️ Notes
 - **Overclocking:** CPU overclocking can cause instability (Kernel Oops) during heavy Nix builds. Running at stock speeds is highly recommended.
