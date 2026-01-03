@@ -45,7 +45,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 27. 自動更新システムの高度化: `pushChanges` フラグを導入し、更新・プッシュ担当（Producer）と適用担当（Consumer）を分離。また、`nvfetcher` タスクをサービス側から動的に登録する構成にリファクタリングし、ホスト間の移動や拡張性を向上。
 28. Nix設定の共通化と集約: `common/nix.nix` を新設し、実験的機能、バイナリキャッシュ、`trusted-users` 設定を一括管理. 各ホストからの重複設定を排除。
 29. aarch64ビルドの最適化: `torii-chan` のビルドをクロスコンパイルからエミュレーションベースのネイティブビルドに移行。`binfmt` と `extra-platforms` 設定により、x86_64ホスト上で公式のaarch64バイナリキャッシュを利用可能にした。
-30. Coordinated Update Hubの完全稼働: `torii-chan` で `update-hub` を稼働させ、ファイアウォール設定（wg0/wg1）を最適化して外部・内部からのステータス確認を可能にした。
+30. Coordinated Update System の確立: `services/update-hub` を新設し、Hub サーバーと各ホスト用の更新ロジックを集約。ファイアウォール設定（wg0/wg1）を最適化して外部・内部からのステータス確認を可能にした。
 31. shosoin-tan Disk ID特定: 実機での `lsblk` により 5 台のディスク ID を特定し、`disko-config.nix` に反映。
 32. Legacy BIOS (GRUB) 対応: i7-870 環境での UEFI 非対応を解決するため、BIOS boot パーティション (EF02) の追加と Legacy GRUB 設定への移行を実施。
 33. リモートビルド・インストール確立: ターゲット機（shosoin-tan）の負荷軽減のため、ビルドホストで `nixos-system` を構築し `nix copy` で転送してから `nixos-install --system` を実行する高安定性インストール手順を確立。
