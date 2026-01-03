@@ -79,10 +79,6 @@ in
           repository = cfg.remoteRepo;
           initialize = true;
           
-          extraOptions = mkIf (cfg.sshKeyFile != null) [
-            "sftp.command='ssh -i ${cfg.sshKeyFile} -s sftp'"
-          ];
-
           pruneOpts = [
             "--keep-daily 7"
             "--keep-weekly 4"
