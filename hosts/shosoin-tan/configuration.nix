@@ -92,5 +92,10 @@ in
     ];
   };
 
+  my.autoUpdate = {
+    enable = true;
+    user = username;
+  };
+
   system.stateVersion = "25.05";
 }
