@@ -22,6 +22,7 @@
   networking.wireguard.interfaces = {
     wg0 = {
       ips = [ "10.0.0.4/24" ];
+      mtu = 1380;
       privateKeyFile = config.sops.secrets.shosoin_tan_wireguard_private_key.path;
 
       peers = [
@@ -37,6 +38,7 @@
 
     wg1 = {
       ips = [ "10.0.1.4/24" ];
+      mtu = 1380;
       privateKeyFile = config.sops.secrets.shosoin_tan_wireguard_app_private_key.path;
 
       peers = [
