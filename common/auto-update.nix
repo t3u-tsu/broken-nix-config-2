@@ -104,11 +104,12 @@ in {
 
         # 現在のローカル状態
         git fetch origin main
-        LOCAL_COMMIT=$(git rev-parse origin/main)
+        LOCAL_LATEST=$(git rev-parse origin/main)
+        CURRENT_HEAD=$(git rev-parse HEAD)
 
         if [ "${if cfg.pushChanges then "true" else "false"}" = "true" ]; then
           # --- Producer Mode ---
-          echo "Producer mode: Updating and pushing changes..."
+          echo "Producer mode: Checking for updates..."
           git reset --hard origin/main
           nix flake update
           
@@ -130,11 +131,13 @@ in {
           fi
           
           NEW_COMMIT=$(git rev-parse HEAD)
-          # ハブに通知
+          # ハブに最新コミットを通知
           curl -X POST -d "{\"commit\": \"$NEW_COMMIT\"}" "$HUB/producer/done"
           
-          # 自分自身も更新
-          nixos-rebuild switch --flake .
+          # 自分自身を更新（必要な場合のみ）
+          if [ "$CURRENT_HEAD" != "$NEW_COMMIT" ]; then
+            nixos-rebuild switch --flake .
+          fi
         else
           # --- Consumer Mode ---
           echo "Consumer mode: Checking hub for updates..."
@@ -142,22 +145,19 @@ in {
           
           if [ -z "$HUB_COMMIT" ]; then
              echo "Hub has no commit info. Skipping update."
-             exit 0
-          fi
-
-          if [ "$LOCAL_COMMIT" = "$HUB_COMMIT" ]; then
-             echo "System is already up to date with hub ($HUB_COMMIT). Skipping."
+          elif [ "$CURRENT_HEAD" = "$HUB_COMMIT" ]; then
+             echo "System is already at the target commit ($HUB_COMMIT)."
           else
-             echo "New update found: $HUB_COMMIT. Applying..."
+             echo "Syncing to commit: $HUB_COMMIT..."
              git reset --hard "$HUB_COMMIT"
              nixos-rebuild switch --flake .
           fi
-
-          # ハブに結果を報告
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          TIMESTAMP=$(date -Iseconds)
-          curl -X POST -d "{\"host\": \"$HOSTNAME\", \"commit\": \"$CURRENT_COMMIT\", \"timestamp\": \"$TIMESTAMP\"}" "$HUB/consumer/reported"
         fi
+
+        # 全モード共通: ハブに現在の自分の状態を報告
+        REPORT_COMMIT=$(git rev-parse HEAD)
+        TIMESTAMP=$(date -Iseconds)
+        curl -X POST -d "{\"host\": \"$HOSTNAME\", \"commit\": \"$REPORT_COMMIT\", \"timestamp\": \"$TIMESTAMP\"}" "$HUB/consumer/reported"
       '';
     };
 
