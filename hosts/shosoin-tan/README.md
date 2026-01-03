@@ -38,6 +38,7 @@ To avoid CPU freezes on the target, build the image on a build host and transfer
 ## 🔐 Network and Security
 - **Boot Method:** Legacy BIOS (MBR)
 - **Management IP:** `10.0.0.4` (WireGuard)
+- **MTU Setting:** WireGuard MTU is set to `1380` to ensure stability when using USB-LAN adapters.
 - **SSH Access Control:** Limited to the WireGuard (`wg0`) interface for enhanced security.
 
 ## ⚠️ Notes

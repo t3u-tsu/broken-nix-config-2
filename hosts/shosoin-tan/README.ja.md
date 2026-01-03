@@ -38,6 +38,7 @@ cat ~/.config/sops/age/keys.txt | ssh nixos@<IP> "sudo tee /mnt/var/lib/sops-nix
 ## 🔐 ネットワークとセキュリティ
 - **ブート方式:** Legacy BIOS (MBR)
 - **管理用IP:** `10.0.0.4` (WireGuard)
+- **MTU設定:** USB-LAN 変換アダプタ使用時の安定性向上のため、WireGuard の MTU を `1380` に設定しています。
 - **SSH アクセス制限:** セキュリティ強化のため、SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限。
 
 ## ⚠️ 注意事項
