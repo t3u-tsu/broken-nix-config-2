@@ -8,8 +8,15 @@ in
     ./disko-config.nix
     ./services
     ./production-security.nix
+    ../../services/minecraft
     ../../common
   ];
+
+  sops.secrets.minecraft_forwarding_secret = {
+    owner = "minecraft"; # nix-minecraft のユーザー
+    group = "minecraft";
+    mode = "0400";
+  };
 
   # GT 210 / GT 710 configuration
   boot.kernelPackages = pkgs.linuxPackages;
@@ -95,6 +102,7 @@ in
   my.autoUpdate = {
     enable = true;
     user = username;
+    pushChanges = true;
   };
 
   system.stateVersion = "25.05";

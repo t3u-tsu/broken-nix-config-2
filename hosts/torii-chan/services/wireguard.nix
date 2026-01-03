@@ -32,7 +32,7 @@
       {
         proto = "tcp";
         sourcePort = 25565;
-        destination = "10.0.1.3:25565";
+        destination = "10.0.1.4:25565";
       }
     ];
   };
@@ -40,7 +40,7 @@
   # Extra iptables rules for proper NAT loopback/hairpin handling from LAN
   networking.firewall.extraCommands = ''
     # Ensure DNATed traffic to Minecraft server is masqueraded so return path is correct
-    iptables -t nat -A POSTROUTING -d 10.0.1.3 -p tcp --dport 25565 -j MASQUERADE
+    iptables -t nat -A POSTROUTING -d 10.0.1.4 -p tcp --dport 25565 -j MASQUERADE
   '';
 
   # 4. WireGuard Interface

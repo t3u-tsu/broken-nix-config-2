@@ -8,15 +8,8 @@ in
     ./disko-config.nix
     ./services
     ./production-security.nix
-    ../../services/minecraft
     ../../common
   ];
-
-  sops.secrets.minecraft_forwarding_secret = {
-    owner = "minecraft"; # nix-minecraft のユーザー
-    group = "minecraft";
-    mode = "0400";
-  };
 
   # Use the LTS kernel for stability
   boot.kernelPackages = pkgs.linuxPackages;
@@ -97,7 +90,7 @@ in
   my.autoUpdate = {
     enable = true;
     user = username;
-    pushChanges = true;
+    pushChanges = false;
   };
 
   system.stateVersion = "25.05";
