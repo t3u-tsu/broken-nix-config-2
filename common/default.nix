@@ -3,7 +3,7 @@
 {
   imports = [
     ./nix.nix
-    ./auto-update.nix
+    ../services/update-hub/client.nix
     ./local-network.nix
     ./time.nix
   ];
