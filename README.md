@@ -18,8 +18,9 @@ Detailed documentation is distributed across the repository. Please refer to the
 ├── hosts/              # Host-specific configurations
 ├── common/             # Shared configurations across all hosts
 ├── services/           # Common service configurations
-│   └── minecraft/
-│       └── plugins/    # Plugin management via nvfetcher
+│   ├── minecraft/      # Minecraft Network (Velocity + Paper)
+│   ├── backup/         # Automated Restic Backups
+│   └── update-hub/     # Coordinated Update System (Hub & Client)
 ├── lib/                # Common library functions
 └── secrets/            # Encrypted secrets (SOPS)
 ```
@@ -28,10 +29,10 @@ Detailed documentation is distributed across the repository. Please refer to the
 
 | Host | Mgmt IP (WG0) | App IP (WG1) | Role | Storage |
 | :--- | :--- | :--- | :--- | :--- |
-| `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / DDNS (`mc.t3u.uk`) | SD + HDD |
-| `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | ZFS Mirror |
-| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server | SSD + HDD |
-| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | ZFS / Home / Minecraft Server | SSD + ZFS Mirror |
+| `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / Update Hub / DDNS | SD + HDD |
+| `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | SSD |
+| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server / Backup Receiver | SSD + 3TB HDD |
+| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Update Producer | SSD + ZFS Mirror |
 
 ## 🛠️ Core Technologies
 
@@ -40,8 +41,9 @@ Detailed documentation is distributed across the repository. Please refer to the
 - **nvfetcher:** For managing external binary assets with automatic version tracking.
 - **WireGuard:** For secure management (wg0) and application (wg1) networks.
 - **Coordinated Auto Updates:** Daily automated updates at 4 AM.
-  - **Hub/Producer/Consumer Model**: A centralized system where `torii-chan` (Hub) tracks status, `kagutsuchi-sama` (Producer) pushes updates, and other hosts (Consumers) apply them.
-  - **Self-healing**: Automatically re-clones the repository if it is corrupted or deleted, ensuring continuous operation.
+  - **Hub/Producer/Consumer Model**: `torii-chan` (Hub) tracks status, `shosoin-tan` (Producer) pushes updates, and other hosts (Consumers) apply them.
+- **Automated Backup (Restic):** Automated backups every 2 hours.
+  - **Dual Protection**: Simultaneous backups to `shosoin-tan`'s local ZFS Mirror and remote `kagutsuchi-sama` (3TB HDD).
 - **Build Optimization:** aarch64 emulation building via `binfmt_misc`. Avoids cross-compilation to fully utilize NixOS official binary caches on x86_64 build hosts.
 
 ---
