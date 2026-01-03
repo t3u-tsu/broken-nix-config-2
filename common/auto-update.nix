@@ -88,6 +88,9 @@ in {
         HUB="${cfg.hubUrl}"
         HOSTNAME="${config.networking.hostName}"
         
+        # Git の所有権エラー対策
+        git config --global --add safe.directory "${flakePath}"
+
         # リポジトリの準備
         if [ ! -d "${flakePath}/.git" ]; then
           echo "Preparing repository at ${flakePath}..."
