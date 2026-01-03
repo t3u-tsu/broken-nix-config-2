@@ -51,6 +51,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 33. リモートビルド・インストール確立: ターゲット機（shosoin-tan）の負荷軽減のため、ビルドホストで `nixos-system` を構築し `nix copy` で転送してから `nixos-install --system` を実行する高安定性インストール手順を確立。
 34. shosoin-tan セットアップ完了: CPU オーバークロック解除による安定化を経て、NixOS のインストールと WireGuard 接続に成功。
 35. shosoin-tan ネットワーク安定化: USB-LAN アダプタ環境での不安定さを解消するため、WireGuard MTU を 1380 に設定し、`localNetwork` モジュールによるエンドポイントのローカル解決を導入して起動時の接続を確実に安定させた。
+36. タイムゾーンのJST統一: 全ホスト共通設定として `common/time.nix` を導入し、タイムゾーンを `Asia/Tokyo` (JST) に統一。あわせて `chrony` を有効化し、時刻同期の精度と安定性を向上させた。
 
 ### 次のステップ
 
