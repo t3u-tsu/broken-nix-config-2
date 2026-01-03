@@ -21,8 +21,8 @@ in
       "velocity.toml".value = {
         config-version = "2.7";
         bind = "0.0.0.0:25565";
-        motd = "Welcome to My NixOS Minecraft Network";
-        show-max-players = 500;
+        motd = "Minecraft server network hosted by t3u";
+        show-max-players = 3939;
         online-mode = true;
         force-key-authentication = true;
         player-info-forwarding-mode = "modern";

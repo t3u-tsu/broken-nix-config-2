@@ -13,6 +13,7 @@ in
 
     serverProperties = {
       server-port = 25567;
+      max-players = 30;
       online-mode = false; # Velocity 経由
       white-list = true;
       allow-flight = true;

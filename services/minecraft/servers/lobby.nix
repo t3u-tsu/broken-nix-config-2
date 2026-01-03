@@ -13,6 +13,7 @@ in
 
     serverProperties = {
       server-port = 25566;
+      max-players = 30;
       online-mode = false; # Velocity が認証を行うため false
       white-list = false;
       gamemode = "adventure";
