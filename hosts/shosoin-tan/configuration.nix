@@ -37,10 +37,9 @@ in
   # Bootloader configuration
   boot.loader.grub = {
     enable = true;
-    efiSupport = true;
-    device = "nodev"; # For UEFI
+    efiSupport = false;
+    device = "/dev/disk/by-id/ata-CT480BX500SSD1_1946E3D7A95A";
   };
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # ZFS requires a unique hostId
   networking.hostId = "8425e349";
