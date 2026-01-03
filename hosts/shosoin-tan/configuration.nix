@@ -14,11 +14,10 @@ in
     ../../common
   ];
 
-  sops.secrets.minecraft_forwarding_secret = {
-    owner = "minecraft";
-    group = "minecraft";
-    mode = "0400";
-  };
+  # GT 210 / GT 710 configuration
+  boot.kernelPackages = pkgs.linuxPackages;
+
+  nixpkgs.config.allowUnfree = true;
 
   # SOPS configuration
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
@@ -38,66 +37,11 @@ in
     neededForUsers = true;
   };
 
-  sops.secrets.restic_password = {};
-  sops.secrets.restic_shosoin_ssh_key = {};
-  sops.secrets.discord_bridge_env = {};
-
-  # Discord Bridge Configuration
-  services.minecraft-discord-bridge = {
-    enable = true;
-    settings = {
-      discord.admin_guild_id = "1324074411111153714"; # 管理サーバーID
-      database.path = "/var/lib/minecraft-discord-bridge/bridge.db";
-      bridge.socket_path = "/run/bridge.sock";
-      servers.nitac23s = {
-        network = "tcp";
-        address = "127.0.0.1:25575";
-      };
-    };
-    environmentFile = config.sops.secrets.discord_bridge_env.path;
+  sops.secrets.minecraft_forwarding_secret = {
+    owner = "minecraft";
+    group = "minecraft";
+    mode = "0400";
   };
-
-  # SSH configuration for restic backup
-  programs.ssh.extraConfig = ''
-    Host 10.0.1.3
-      IdentityFile ${config.sops.secrets.restic_shosoin_ssh_key.path}
-      StrictHostKeyChecking no
-      UserKnownHostsFile /dev/null
-  '';
-
-  my.backup = {
-    enable = true;
-    paths = [ "/srv/minecraft" ];
-    passwordFile = config.sops.secrets.restic_password.path;
-    localRepo = "/mnt/tank-1tb/backups/minecraft";
-    remoteRepo = "sftp:restic-shosoin@10.0.1.3:/mnt/data/backups/shosoin-tan";
-    sshKeyFile = config.sops.secrets.restic_shosoin_ssh_key.path;
-
-    backupPrepareCommand = ''
-      # Disable auto-save and flush to disk for all servers
-      for server in lobby nitac23s; do
-        if [ -S /run/minecraft/$server.sock ]; then
-          ${pkgs.tmux}/bin/tmux -S /run/minecraft/$server.sock send-keys "save-off" ENTER
-          ${pkgs.tmux}/bin/tmux -S /run/minecraft/$server.sock send-keys "save-all flush" ENTER
-        fi
-      done
-      sleep 2
-    '';
-
-    backupCleanupCommand = ''
-      # Re-enable auto-save
-      for server in lobby nitac23s; do
-        if [ -S /run/minecraft/$server.sock ]; then
-          ${pkgs.tmux}/bin/tmux -S /run/minecraft/$server.sock send-keys "save-on" ENTER
-        fi
-      done
-    '';
-  };
-
-  # GT 210 / GT 710 configuration
-  boot.kernelPackages = pkgs.linuxPackages;
-
-  nixpkgs.config.allowUnfree = true;
 
   # Bootloader configuration
   boot.loader.grub = {

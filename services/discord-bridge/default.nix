@@ -7,16 +7,8 @@ let
   format = pkgs.formats.toml { };
   configFile = format.generate "bridge-config.toml" cfg.settings;
   
-  # GitHub から取得したソースをビルド
-  bridgePkg = pkgs.buildGoModule {
-    pname = "minecraft-discord-bridge";
-    version = "0.1.0";
-    src = inputs.minecraft-discord-bridge;
-    vendorHash = "sha256-W1qCmaJkLVEfBlxvIvsGhui84HOUHcKi+boC0lvozOo=";
-    
-    buildInputs = [ pkgs.sqlite ];
-    env.CGO_ENABLED = 1;
-  };
+  # Flake input からパッケージを取得
+  bridgePkg = inputs.minecraft-discord-bridge.packages.${pkgs.system}.default;
 in
 {
   options.services.minecraft-discord-bridge = {
