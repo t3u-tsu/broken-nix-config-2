@@ -75,6 +75,7 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/mnt/data-320gb";
+                mountOptions = [ "defaults" "nofail" ];
               };
             };
           };
@@ -86,6 +87,7 @@
         type = "zpool";
         mode = "mirror";
         mountpoint = "/mnt/tank-1tb";
+        mountOptions = [ "nofail" ];
       };
     };
   };
