@@ -11,8 +11,20 @@ in
 
     jvmOpts = "-Xms2G -Xmx4G"; # メイン鯖なので少し多めに割り当て
 
-    # server.properties is manually managed in preStart to securely inject secrets
-    serverProperties = {};
+    serverProperties = {
+      server-port = 25567;
+      max-players = 30;
+      online-mode = false; # Velocity 経由
+      white-list = true;
+      allow-flight = true;
+      difficulty = "hard";
+      gamemode = "survival";
+      enable-command-block = true;
+      generate-structures = true;
+      view-distance = 12;
+      enable-rcon = true;
+      "rcon.port" = 25575;
+    };
 
     files = {
       "ops.json".value = [
@@ -45,27 +57,19 @@ in
     # Fix udev warning
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
-    preStart = ''
+    preStart = let
+      # serverProperties の内容を key=value 形式の文字列に変換
+      cfg = config.services.minecraft-servers.servers.nitac23s;
+      staticProps = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } "="; } cfg.serverProperties;
+    in ''
       mkdir -p config
       
       # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 
-      # Generate server.properties with the secret password
-      # We combine the static properties with the dynamic password
+      # Generate server.properties
       cat <<EOF > server.properties
-server-port=25567
-max-players=30
-online-mode=false
-white-list=true
-allow-flight=true
-difficulty=hard
-gamemode=survival
-enable-command-block=true
-generate-structures=true
-view-distance=12
-enable-rcon=true
-rcon.port=25575
+${staticProps}
 rcon.password=$RCON_PASS
 EOF
       chown minecraft:minecraft server.properties
