@@ -58,40 +58,20 @@ in
     # Fix udev warning
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
-    preStart = let
-      cfg = config.services.minecraft-servers.servers.nitac23s;
-      staticProps = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } "="; } cfg.serverProperties;
-    in lib.mkAfter ''
+    preStart = lib.mkAfter ''
+      # Wait a tiny bit to ensure the module has finished its setup
+      sleep 1
+      
       # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 
-      # Generate a temporary file first
-      cat <<EOF > server.properties.tmp
-${staticProps}
-rcon.password=$RCON_PASS
-EOF
-      
-      # Overwrite the actual file and ensure it stays there
-      mv server.properties.tmp server.properties
+      # Ensure RCON password is set in server.properties
+      # We append it to the end, which will override any previous value in the file
+      echo "rcon.password=$RCON_PASS" >> server.properties
       chown minecraft:minecraft server.properties
       chmod 600 server.properties
 
       mkdir -p config
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
-      if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
-      
-      # paper-global.yml の生成とシークレット埋め込み
-      cat <<EOF > config/paper-global.yml
-# Fix global config version warning
-config-version: 31
-proxies:
-  velocity:
-    enabled: true
-    online-mode: true
-    secret: $SECRET
-EOF
-      chown minecraft:minecraft config/paper-global.yml
-      chmod 600 config/paper-global.yml
-    '';
-  };
+...
 }
