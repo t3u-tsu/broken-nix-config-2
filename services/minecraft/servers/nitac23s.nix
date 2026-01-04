@@ -42,9 +42,8 @@ in
     files = {
       # LunaChat 設定 (日本語変換有効化)
       "plugins/LunaChat/config.yml".value = {
-        japanize = {
-          enable = true;
-        };
+        japanizeType = "GoogleIME";
+        japanizeDisplayLine = 2;
       };
     };
   };
@@ -53,6 +52,11 @@ in
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = lib.mkAfter ''
+      # 0. Clean up LunaChat config to ensure nix-minecraft can link its own
+      if [ -f plugins/LunaChat/config.yml ] && [ ! -L plugins/LunaChat/config.yml ]; then
+        rm plugins/LunaChat/config.yml
+      fi
+
       # 1. RCON Password 取得
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 

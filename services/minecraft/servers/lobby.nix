@@ -41,9 +41,8 @@ in
     files = {
       # LunaChat 設定 (日本語変換有効化)
       "plugins/LunaChat/config.yml".value = {
-        japanize = {
-          enable = true;
-        };
+        japanizeType = "GoogleIME";
+        japanizeDisplayLine = 2;
       };
       "config/paper-world-defaults.yml".value = {
         entities = {
@@ -69,6 +68,11 @@ in
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = ''
+      # Clean up LunaChat config to ensure nix-minecraft can link its own
+      if [ -f plugins/LunaChat/config.yml ] && [ ! -L plugins/LunaChat/config.yml ]; then
+        rm plugins/LunaChat/config.yml
+      fi
+
       # ワールドおよびプレイヤーデータリセットのチェック
       if [ -f ".reset_world" ]; then
         echo "Resetting world and player data as requested..."
