@@ -51,6 +51,9 @@
 
       # The port that WireGuard listens to.
       listenPort = 51820;
+      
+      # Optimized MTU for stability over potential tunneling/fragmentation issues
+      mtu = 1380;
 
       # Path to the private key file.
       privateKeyFile = config.sops.secrets.torii_chan_wireguard_private_key.path;
