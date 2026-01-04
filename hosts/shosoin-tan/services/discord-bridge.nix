@@ -6,7 +6,7 @@
     settings = {
       discord.admin_guild_id = "1324074411111153714";
       database.path = "/var/lib/minecraft-discord-bridge/bridge.db";
-      bridge.socket_path = "/run/bridge.sock";
+      bridge.socket_path = "/run/minecraft-discord-bridge/bridge.sock";
       servers.nitac23s = {
         network = "tcp";
         address = "127.0.0.1:25575";

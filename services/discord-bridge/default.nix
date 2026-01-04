@@ -38,8 +38,9 @@ in
         Restart = "always";
         EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
         StateDirectory = "minecraft-discord-bridge";
+        RuntimeDirectory = "minecraft-discord-bridge";
         WorkingDirectory = "/var/lib/minecraft-discord-bridge";
-        User = "minecraft"; # マイクラのソケットにアクセスできるよう minecraft ユーザーで実行
+        User = "minecraft";
         Group = "minecraft";
       };
     };
