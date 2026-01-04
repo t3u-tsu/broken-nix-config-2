@@ -13,7 +13,7 @@
     default-japanize-on = "on";
     # 表示形式の設定: 1行にまとめ、 日本語 (ローマ字) の形式にする
     japanizeDisplayLine = 1;
-    japanizeLine1Format = "%japanize (%msg)";
+    "japanize-line-format" = "%japanize (%msg)";
     # 必須項目: これがないと NullPointerException で落ちる
     ngword = [ ];
     ngword-action = "mask";
