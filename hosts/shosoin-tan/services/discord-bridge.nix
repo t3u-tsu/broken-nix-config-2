@@ -4,8 +4,8 @@
   services.minecraft-discord-bridge = {
     enable = true;
     settings = {
-      # ID is overridden by DISCORD_ADMIN_GUILD_ID env var
-      discord.admin_guild_id = "@ADMIN_GUILD_ID@";
+      # Values are overridden by environment variables in sops
+      discord.admin_guild_id = "SET_VIA_ENV";
       database.path = "/var/lib/minecraft-discord-bridge/bridge.db";
       bridge.socket_path = "/run/minecraft-discord-bridge/bridge.sock";
       servers.nitac23s = {
