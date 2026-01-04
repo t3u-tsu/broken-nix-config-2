@@ -15,13 +15,25 @@
 1.  **Local**: 各マシンの信頼性の高いディスク（例：shosoin-tan の ZFS Mirror）。
 2.  **Remote**: `kagutsuchi-sama` (10.0.1.3) の大容量 HDD。
 
-### 世代保持ポリシー
-- 直近 7 日分
-- 過去 4 週間分
-- 過去 6 ヶ月分
-(これより古いものは自動的に削除されます)
+### バックアップ対象 (shosoin-tan)
+- `/srv/minecraft`: マイクラのワールドデータ一式。
+- `/var/lib/minecraft-discord-bridge`: Discord 連携 Bot のデータベース (bridge.db)。
 
-## 運用コマンド
+## 復元手順
+
+1.  復元したいスナップショットの ID を確認します：
+    ```bash
+    sudo restic -r /mnt/tank-1tb/backups/minecraft snapshots
+    ```
+2.  内容を一時的にマウントして確認（推奨）：
+    ```bash
+    mkdir /tmp/restore-view
+    sudo restic -r /mnt/tank-1tb/backups/minecraft mount /tmp/restore-view
+    ```
+3.  特定のファイルを復元：
+    ```bash
+    sudo restic -r <パス> restore <ID> --target / --include "/var/lib/minecraft-discord-bridge/bridge.db"
+    ```
 
 ### 状態確認
 ```bash

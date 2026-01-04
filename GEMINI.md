@@ -6,9 +6,9 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 ## 現在の状況 (2026-01-04)
 
-**torii-chan: Coordinated Update Hubとして稼働中。10.0.1.1:8080 (App) / 10.0.0.1:8080 (Mgmt) でステータスを提供。**
+**shosoin-tan: Minecraft サーバー兼 Coordinated Update Producerとして稼働中。2時間おきの自動バックアップ（Restic）を運用開始。Discord Bridge により、Discord からのホワイトリスト管理が可能。**
 
-**shosoin-tan: Minecraft サーバー兼 Coordinated Update Producerとして稼働中。2時間おきの自動バックアップ（Restic）を運用開始。**
+**torii-chan: Coordinated Update Hubとして稼働中。10.0.1.1:8080 (App) / 10.0.0.1:8080 (Mgmt) でステータスを提供。Webhook によるプッシュ型更新の司令塔。**
 
 **kagutsuchi-sama: 汎用計算サーバー。バックアップレシーバーとしても稼働。**
 
@@ -57,6 +57,8 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 39. バックアップシステムの構築と共通化: `services/backup` を新設し、`restic` による 2重バックアップ（ローカル ZFS & リモート Kagutsuchi）をモジュール化。SSH 設定の共通化により、安全で保守性の高いバックアップ運用を実現。
 40. Minecraft Discord Bridge の導入: Go 製のマルチテナント型管理 Bot を開発・公開。Discord からのホワイトリスト管理機能、Unix ドメインソケットによるローカル管理を実現。
 41. セキュリティ強化と構成の洗練: マイクラの RCON パスワードを `sops-nix` 管理に移行。モジュールによる自動上書きを回避しつつ、起動時に機密情報を安全に注入する独自の `server.properties` 生成ロジックを確立。
+42. 自動更新システムのプッシュ化: Webhook 通知機能を Hub に実装し、Producer の更新直後に全ホストが即座に同期を開始するリアルタイム更新を実現。
+43. ホワイトリスト管理の確実化: マイクラ側の不規則な挙動を回避するため、`bridge.db` だけでなく `whitelist.json` も直接編集・リロードする方式を採用し、BE/Java 共に 100% 確実な削除を実現。合わせて `bridge.db` もバックアップ対象に追加。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 

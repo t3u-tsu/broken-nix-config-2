@@ -15,13 +15,27 @@ This directory manages the global backup configuration using Restic.
 1.  **Local**: High-reliability disks on each machine (e.g., ZFS Mirror on shosoin-tan).
 2.  **Remote**: Large HDD on `kagutsuchi-sama` (10.0.1.3).
 
-### Retention Policy
-- Last 7 days
-- Last 4 weeks
-- Last 6 months
-(Older snapshots are automatically pruned)
+### Backup Targets (shosoin-tan)
+- `/srv/minecraft`: All Minecraft world data.
+- `/var/lib/minecraft-discord-bridge`: Discord Bridge database (bridge.db).
 
-## Operational Commands
+## Restoration Procedure
+
+1.  Identify the Snapshot ID:
+    ```bash
+    sudo restic -r /mnt/tank-1tb/backups/minecraft snapshots
+    ```
+2.  Mount the backup to browse files (recommended):
+    ```bash
+    mkdir /tmp/restore-view
+    sudo restic -r /mnt/tank-1tb/backups/minecraft mount /tmp/restore-view
+    ```
+3.  Restore specific files:
+    ```bash
+    sudo restic -r <repo_path> restore <ID> --target / --include "/var/lib/minecraft-discord-bridge/bridge.db"
+    ```
+
+
 
 ### Check Status
 ```bash
