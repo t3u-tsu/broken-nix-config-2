@@ -6,7 +6,10 @@
 
   my.backup = {
     enable = true;
-    paths = [ "/srv/minecraft" ];
+    paths = [ 
+      "/srv/minecraft"
+      "/var/lib/minecraft-discord-bridge"
+    ];
     passwordFile = config.sops.secrets.restic_password.path;
     localRepo = "/mnt/tank-1tb/backups/minecraft";
     remoteRepo = "sftp:restic-shosoin@10.0.1.3:/mnt/data/backups/shosoin-tan";
