@@ -11,7 +11,6 @@ in
 
     jvmOpts = "-Xms2G -Xmx4G"; # メイン鯖なので少し多めに割り当て
 
-    # server.properties is manually managed in preStart to securely inject secrets
     serverProperties = {
       server-port = 25567;
       max-players = 30;
@@ -59,19 +58,33 @@ in
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = lib.mkAfter ''
-      # Wait a tiny bit to ensure the module has finished its setup
+      # Wait a bit to ensure the module has prepared the file
       sleep 1
       
       # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 
-      # Ensure RCON password is set in server.properties
-      # We append it to the end, which will override any previous value in the file
+      # Append RCON password to server.properties
       echo "rcon.password=$RCON_PASS" >> server.properties
       chown minecraft:minecraft server.properties
       chmod 600 server.properties
 
       mkdir -p config
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
-...
+      if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
+      
+      # paper-global.yml の生成とシークレット埋め込み
+      cat <<EOF > config/paper-global.yml
+# Fix global config version warning
+config-version: 31
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: $SECRET
+EOF
+      chown minecraft:minecraft config/paper-global.yml
+      chmod 600 config/paper-global.yml
+    '';
+  };
 }
