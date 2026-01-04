@@ -40,21 +40,21 @@ in
     };
 
     files = {
-      # LunaChat 設定 (日本語変換有効化)
-      "plugins/LunaChat/config.yml".value = {
-        japanizeType = "GoogleIME";
-        japanizeDisplayLine = 2;
-      };
     };
   };
 
   systemd.services.minecraft-server-nitac23s = {
+    # Fix udev warning
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = lib.mkAfter ''
-      # 0. Clean up LunaChat config to ensure nix-minecraft can link its own
-      if [ -f plugins/LunaChat/config.yml ] && [ ! -L plugins/LunaChat/config.yml ]; then
-        rm plugins/LunaChat/config.yml
+      # 0. Handle LunaChat config
+      # If config.yml exists, enable Japanize feature via sed
+      if [ -f plugins/LunaChat/config.yml ]; then
+        # Enable Japanize (compatible with various LunaChat v3 formats)
+        sed -i 's/japanize: false/japanize: true/' plugins/LunaChat/config.yml
+        sed -i 's/japanizeType: none/japanizeType: GoogleIME/' plugins/LunaChat/config.yml
+        sed -i 's/japanizeDisplayLine: 0/japanizeDisplayLine: 2/' plugins/LunaChat/config.yml
       fi
 
       # 1. RCON Password 取得
