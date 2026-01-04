@@ -32,19 +32,18 @@ Detailed documentation is distributed across the repository. Please refer to the
 | `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / Update Hub / DDNS | SD + HDD |
 | `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | SSD |
 | `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server / Backup Receiver | SSD + 3TB HDD |
-| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Update Producer | SSD + ZFS Mirror |
+| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Discord Bridge / Producer | SSD + ZFS Mirror |
 
 ## 🛠️ Core Technologies
 
 - **Nix Flakes:** For reproducible builds and dependency management.
-- **sops-nix:** For encrypting secrets (passwords, API keys) via `age`.
+- **sops-nix:** For encrypting secrets (passwords, API keys) via `age`. Enables secure dynamic injection of RCON passwords.
 - **nvfetcher:** For managing external binary assets with automatic version tracking.
 - **WireGuard:** For secure management (wg0) and application (wg1) networks.
-- **Coordinated Auto Updates:** Daily automated updates at 4 AM.
-  - **Hub/Producer/Consumer Model**: `torii-chan` (Hub) tracks status, `shosoin-tan` (Producer) pushes updates, and other hosts (Consumers) apply them.
-- **Automated Backup (Restic):** Automated backups every 2 hours.
-  - **Dual Protection**: Simultaneous backups to `shosoin-tan`'s local ZFS Mirror and remote `kagutsuchi-sama` (3TB HDD).
-- **Build Optimization:** aarch64 emulation building via `binfmt_misc`. Avoids cross-compilation to fully utilize NixOS official binary caches on x86_64 build hosts.
+- **Coordinated Auto Updates:** Daily automated updates at 4 AM with Webhook push notification sync.
+- **Minecraft Discord Bridge:** Custom multi-tenant Go-based management bot for whitelists.
+- **Automated Backup (Restic):** Automated backups every 2 hours with Minecraft data consistency hooks.
+- **Build Optimization:** aarch64 emulation building to fully utilize NixOS official binary caches.
 
 ---
 

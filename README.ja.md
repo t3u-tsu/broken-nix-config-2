@@ -32,19 +32,18 @@
 | `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / Update Hub / DDNS | SD + HDD |
 | `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | SSD |
 | `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server / Backup Receiver | SSD + 3TB HDD |
-| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Update Producer | SSD + ZFS Mirror |
+| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Discord Bridge / Producer | SSD + ZFS Mirror |
 
 ## 🛠️ 使用テクノロジー
 
 - **Nix Flakes:** 再現可能なビルドと依存関係管理。
-- **sops-nix:** `age` を使用した機密情報の暗号化管理。
+- **sops-nix:** `age` を使用した機密情報の暗号化管理。RCON パスワードやトークンの安全な動的注入を実現。
 - **nvfetcher:** 外部バイナリ（プラグイン等）の自動更新管理。
 - **WireGuard:** 管理用(wg0)およびアプリ間通信用(wg1)のセキュアなネットワーク。
-- **Coordinated Auto Updates:** 毎日午前4時の自動更新システム。
-  - **Hub/Producer/Consumer モデル**: `torii-chan` (Hub) が状態を管理し、`shosoin-tan` (Producer) が更新をプッシュ、他ホスト (Consumer) が適用する中央集権的な調整型システム。
-- **Automated Backup (Restic):** 2時間おきの自動バックアップ。
-  - **二重保護**: `shosoin-tan` のローカル ZFS Mirror と、ネットワーク越しの `kagutsuchi-sama` (3TB HDD) へ同時に保存。
-- **ビルド最適化:** `binfmt_misc` による aarch64 エミュレーションビルド。クロスコンパイルを回避し、NixOS公式のバイナリキャッシュを最大限に活用します。
+- **Coordinated Auto Updates:** 毎日午前4時の自動更新システム。Webhook によるプッシュ通知同期を実装。
+- **Minecraft Discord Bridge:** 自作の Go 製マルチテナント管理 Bot。Discord からのホワイトリスト管理に対応。
+- **Automated Backup (Restic):** 2時間おきの自動バックアップ。マイクラのデータ整合性フック（save-off/on）を完備。
+- **ビルド最適化:** aarch64 エミュレーションビルドによるバイナリキャッシュの最大活用。
 
 ---
 
