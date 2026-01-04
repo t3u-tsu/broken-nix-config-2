@@ -11,6 +11,7 @@
       servers.nitac23s = {
         network = "tcp";
         address = "127.0.0.1:25575";
+        whitelist_path = "/srv/minecraft/nitac23s/whitelist.json";
       };
     };
     environmentFile = config.sops.secrets.discord_bridge_env.path;
