@@ -3,6 +3,7 @@
 let
   # 自動生成されたプラグイン情報を読み込む
   plugins = pkgs.callPackage ../plugins/generated.nix { };
+  lunachat = import ../plugins/lunachat.nix { };
   
   # server.properties のベース設定 (パスワード抜き)
   serverProperties = {
@@ -40,13 +41,8 @@ in
     };
 
     files = {
-      # LunaChat 設定 (日本語変換有効化 - v3.0.16 形式)
-      "plugins/LunaChat/config.yml".value = {
-        configVersion = 3;
-        japanize-chat = true;
-        japanize-convert-type = "GoogleIME";
-        default-japanize-on = "on";
-      };
+      # 共通設定から LunaChat の設定を引用
+      "plugins/LunaChat/config.yml".value = lunachat.config.lunaChatConfig;
     };
   };
 
