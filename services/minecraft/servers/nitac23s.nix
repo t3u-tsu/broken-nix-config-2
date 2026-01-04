@@ -11,23 +11,8 @@ in
 
     jvmOpts = "-Xms2G -Xmx4G"; # メイン鯖なので少し多めに割り当て
 
-    serverProperties = {
-      server-port = 25567;
-      max-players = 30;
-      online-mode = false; # Velocity 経由
-      white-list = true;
-      allow-flight = true;
-      difficulty = "hard";
-      gamemode = "survival";
-      enable-command-block = true;
-      generate-structures = true;
-      view-distance = 12;
-      
-      # RCON settings
-      "enable-rcon" = true;
-      "rcon.port" = 25575;
-      "rcon.password" = "@RCON_PASSWORD@"; # Injected via preStart
-    };
+    # server.properties is manually managed in preStart to securely inject secrets
+    serverProperties = {};
 
     files = {
       "ops.json".value = [
@@ -63,9 +48,28 @@ in
     preStart = ''
       mkdir -p config
       
-      # Inject RCON password into server.properties
+      # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
-      sed -i "s/@RCON_PASSWORD@/$RCON_PASS/" server.properties
+
+      # Generate server.properties with the secret password
+      # We combine the static properties with the dynamic password
+      cat <<EOF > server.properties
+server-port=25567
+max-players=30
+online-mode=false
+white-list=true
+allow-flight=true
+difficulty=hard
+gamemode=survival
+enable-command-block=true
+generate-structures=true
+view-distance=12
+enable-rcon=true
+rcon.port=25575
+rcon.password=$RCON_PASS
+EOF
+      chown minecraft:minecraft server.properties
+      chmod 600 server.properties
 
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
       if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
