@@ -62,17 +62,17 @@ in
       cfg = config.services.minecraft-servers.servers.nitac23s;
       staticProps = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } "="; } cfg.serverProperties;
     in lib.mkAfter ''
-      # Wait a tiny bit to ensure the module has finished its setup
-      sleep 1
-      
       # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 
-      # Forcefully write our combined server.properties
-      cat <<EOF > server.properties
+      # Generate a temporary file first
+      cat <<EOF > server.properties.tmp
 ${staticProps}
 rcon.password=$RCON_PASS
 EOF
+      
+      # Overwrite the actual file and ensure it stays there
+      mv server.properties.tmp server.properties
       chown minecraft:minecraft server.properties
       chmod 600 server.properties
 
