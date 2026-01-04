@@ -11,6 +11,7 @@ in
 
     jvmOpts = "-Xms2G -Xmx4G"; # メイン鯖なので少し多めに割り当て
 
+    # server.properties is manually managed in preStart to securely inject secrets
     serverProperties = {
       server-port = 25567;
       max-players = 30;
@@ -77,21 +78,6 @@ EOF
 
       mkdir -p config
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
-      if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
-      
-      # paper-global.yml の生成とシークレット埋め込み
-      cat <<EOF > config/paper-global.yml
-# Fix global config version warning
-config-version: 31
-proxies:
-  velocity:
-    enabled: true
-    online-mode: true
-    secret: \$SECRET
-EOF
-      chown minecraft:minecraft config/paper-global.yml
-      chmod 600 config/paper-global.yml
-    '';
       if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
       
       # paper-global.yml の生成とシークレット埋め込み
