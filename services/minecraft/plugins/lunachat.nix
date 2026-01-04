@@ -11,9 +11,9 @@
     japanize-chat = true;
     japanize-convert-type = "GoogleIME";
     default-japanize-on = "on";
-    # 表示形式の設定: 1行にまとめ、 日本語 (ローマ字) の形式にする
+    # 表示形式の設定: 1行にまとめ、 ローマ字 (日本語) の形式にする
     japanizeDisplayLine = 1;
-    "japanize-line-format" = "%japanize (%msg)";
+    "japanize-line-format" = "%msg (%japanize)";
     # 必須項目: これがないと NullPointerException で落ちる
     ngword = [ ];
     ngword-action = "mask";
