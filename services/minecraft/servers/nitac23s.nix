@@ -40,6 +40,13 @@ in
     };
 
     files = {
+      # LunaChat 設定 (日本語変換有効化 - v3.0.16 形式)
+      "plugins/LunaChat/config.yml".value = {
+        configVersion = 3;
+        japanize-chat = true;
+        japanize-convert-type = "GoogleIME";
+        default-japanize-on = "on";
+      };
     };
   };
 
@@ -48,15 +55,6 @@ in
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = lib.mkAfter ''
-      # 0. Handle LunaChat config
-      # If config.yml exists, enable Japanize feature via sed
-      if [ -f plugins/LunaChat/config.yml ]; then
-        # Enable Japanize (compatible with various LunaChat v3 formats)
-        sed -i 's/japanize: false/japanize: true/' plugins/LunaChat/config.yml
-        sed -i 's/japanizeType: none/japanizeType: GoogleIME/' plugins/LunaChat/config.yml
-        sed -i 's/japanizeDisplayLine: 0/japanizeDisplayLine: 2/' plugins/LunaChat/config.yml
-      fi
-
       # 1. RCON Password 取得
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 

@@ -39,37 +39,21 @@ in
     };
 
     files = {
-      "config/paper-world-defaults.yml".value = {
-        entities = {
-          spawning = {
-            spawn-limits = {
-              monsters = 0;
-              animals = 0;
-              water-animals = 0;
-              water-ambient = 0;
-              water-underground-creature = 0;
-              axolotls = 0;
-              ambient = 0;
-            };
-          };
-        };
+      # LunaChat 設定 (日本語変換有効化 - v3.0.16 形式)
+      "plugins/LunaChat/config.yml".value = {
+        configVersion = 3;
+        japanize-chat = true;
+        japanize-convert-type = "GoogleIME";
+        default-japanize-on = "on";
       };
-    };
-  };
-
+      "config/paper-world-defaults.yml".value = {
+...
   # nix-minecraft が生成するサービスを拡張
   systemd.services.minecraft-server-lobby = {
     # Fix udev warning
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = ''
-      # Handle LunaChat config
-      if [ -f plugins/LunaChat/config.yml ]; then
-        sed -i 's/japanize: false/japanize: true/' plugins/LunaChat/config.yml
-        sed -i 's/japanizeType: none/japanizeType: GoogleIME/' plugins/LunaChat/config.yml
-        sed -i 's/japanizeDisplayLine: 0/japanizeDisplayLine: 2/' plugins/LunaChat/config.yml
-      fi
-
       # ワールドおよびプレイヤーデータリセットのチェック
       if [ -f ".reset_world" ]; then
         echo "Resetting world and player data as requested..."
