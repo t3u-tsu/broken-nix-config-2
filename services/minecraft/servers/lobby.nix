@@ -47,7 +47,23 @@ in
         default-japanize-on = "on";
       };
       "config/paper-world-defaults.yml".value = {
-...
+        entities = {
+          spawning = {
+            spawn-limits = {
+              monsters = 0;
+              animals = 0;
+              water-animals = 0;
+              water-ambient = 0;
+              water-underground-creature = 0;
+              axolotls = 0;
+              ambient = 0;
+            };
+          };
+        };
+      };
+    };
+  };
+
   # nix-minecraft が生成するサービスを拡張
   systemd.services.minecraft-server-lobby = {
     # Fix udev warning
