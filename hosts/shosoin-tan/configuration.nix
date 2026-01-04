@@ -43,6 +43,12 @@ in
     mode = "0400";
   };
 
+  sops.secrets.minecraft_rcon_password = {
+    owner = "minecraft";
+    group = "minecraft";
+    mode = "0400";
+  };
+
   # Bootloader configuration
   boot.loader.grub = {
     enable = true;

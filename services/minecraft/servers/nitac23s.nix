@@ -26,7 +26,7 @@ in
       # RCON settings
       "enable-rcon" = true;
       "rcon.port" = 25575;
-      "rcon.password" = "placeholder"; # Overridden by bridge env var
+      "rcon.password" = "@RCON_PASSWORD@"; # Injected via preStart
     };
 
     files = {
@@ -62,6 +62,11 @@ in
 
     preStart = ''
       mkdir -p config
+      
+      # Inject RCON password into server.properties
+      RCON_PASS=$(cat ${config.sops.secrets.minecraft_rcon_password.path})
+      sed -i "s/@RCON_PASSWORD@/$RCON_PASS/" server.properties
+
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
       if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
       
