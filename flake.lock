@@ -100,11 +100,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767527016,
-        "narHash": "sha256-m/tGL6vK2/dV4uWoSYLGfoM2FYr0vlQQos2aiUtxUnA=",
+        "lastModified": 1767527829,
+        "narHash": "sha256-qjCSIrUqE146ZYxU3U3E/aI/6zwxp9MGACzu9IjtwVI=",
         "owner": "t3u-tsu",
         "repo": "minecraft-discord-bridge",
-        "rev": "a7a799ce5df01bd44797918d3fb80318ecddfc5b",
+        "rev": "221a843deabd76751708e6a39b93a5ff74cce84d",
         "type": "github"
       },
       "original": {
