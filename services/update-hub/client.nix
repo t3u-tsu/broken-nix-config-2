@@ -169,5 +169,46 @@ in {
       };
       wantedBy = [ "timers.target" ];
     };
+
+    # 通知レシーバー (Webhook)
+    systemd.services.nixos-update-trigger = {
+      description = "NixOS Update Trigger Receiver";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      
+      path = with pkgs; [ systemd coreutils python3 ];
+
+      script = ''
+        ${pkgs.python3}/bin/python3 -c "
+        from http.server import BaseHTTPRequestHandler, HTTPServer
+        import subprocess
+
+        class TriggerHandler(BaseHTTPRequestHandler):
+            def do_POST(self):
+                if self.path == '/trigger-update':
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(b'Update triggered')
+                    print('Received update trigger. Starting nixos-auto-update.service...')
+                    # 非同期でサービスを起動
+                    subprocess.Popen(['systemctl', 'start', 'nixos-auto-update.service'])
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+
+        server = HTTPServer(('0.0.0.0', 8081), TriggerHandler)
+        print('Listening for update triggers on port 8081...')
+        server.serve_forever()
+        "
+      '';
+
+      serviceConfig = {
+        Restart = "always";
+        User = "root";
+      };
+    };
+
+    # ファイアウォールの開放 (wg1のみ)
+    networking.firewall.interfaces.wg1.allowedTCPPorts = [ 8081 ];
   };
 }

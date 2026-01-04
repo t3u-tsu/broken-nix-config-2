@@ -21,6 +21,30 @@ let
         with open(DATA_FILE, 'w') as f:
             json.dump(status, f, indent=2)
 
+    def notify_hosts(status):
+        import urllib.request
+        for hostname, info in status.get("hosts", {}).items():
+            # アプリ間ネットワーク(wg1)のIPを推測または解決して通知
+            # 今回は簡易的に 10.0.1.x の形式を想定（後でより堅牢に可能）
+            # ホスト名から IP を解決するのが理想的
+            try:
+                # 10.0.1.1(torii), 10.0.1.3(kagutsuchi), 10.0.1.4(shosoin)
+                # ここでは hosts の情報に基づいて通知先を決定するロジックが必要
+                # 一旦、登録されている全ホストの 8081 ポートを叩く
+                ip = None
+                if hostname == "torii-chan": ip = "10.0.1.1"
+                elif hostname == "kagutsuchi-sama": ip = "10.0.1.3"
+                elif hostname == "shosoin-tan": ip = "10.0.1.4"
+                elif hostname == "sando-kun": ip = "10.0.1.2"
+                
+                if ip:
+                    url = f"http://{ip}:8081/trigger-update"
+                    print(f"Notifying {hostname} at {url}...")
+                    req = urllib.request.Request(url, method='POST')
+                    urllib.request.urlopen(req, timeout=2)
+            except Exception as e:
+                print(f"Failed to notify {hostname}: {e}")
+
     class HubHandler(BaseHTTPRequestHandler):
         def do_GET(self):
             status = load_status()
@@ -48,6 +72,9 @@ let
                 save_status(status)
                 self.send_response(200)
                 self.end_headers()
+                # 別スレッドで通知を実行（レスポンスを速く返すため）
+                import threading
+                threading.Thread(target=notify_hosts, args=(status,)).start()
             elif self.path == "/consumer/reported":
                 hostname = data.get("host")
                 if hostname:
