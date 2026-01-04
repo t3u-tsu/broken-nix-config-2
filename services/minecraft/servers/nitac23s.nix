@@ -38,6 +38,15 @@ in
       "plugins/GSit.jar" = plugins.gsit.src;
       "plugins/LunaChat.jar" = plugins.lunachat.src;
     };
+
+    files = {
+      # LunaChat 設定 (日本語変換有効化)
+      "plugins/LunaChat/config.yml".value = {
+        japanize = {
+          enable = true;
+        };
+      };
+    };
   };
 
   systemd.services.minecraft-server-nitac23s = {

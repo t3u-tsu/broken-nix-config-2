@@ -39,6 +39,12 @@ in
     };
 
     files = {
+      # LunaChat 設定 (日本語変換有効化)
+      "plugins/LunaChat/config.yml".value = {
+        japanize = {
+          enable = true;
+        };
+      };
       "config/paper-world-defaults.yml".value = {
         entities = {
           spawning = {
