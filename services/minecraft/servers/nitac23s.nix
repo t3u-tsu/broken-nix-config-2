@@ -58,16 +58,16 @@ in
     environment.LD_LIBRARY_PATH = "${lib.makeLibraryPath [ pkgs.udev ]}";
 
     preStart = let
-      # serverProperties の内容を key=value 形式の文字列に変換
       cfg = config.services.minecraft-servers.servers.nitac23s;
       staticProps = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } "="; } cfg.serverProperties;
-    in ''
-      mkdir -p config
+    in lib.mkAfter ''
+      # Wait a tiny bit to ensure the module has finished its setup
+      sleep 1
       
       # RCON Password
       RCON_PASS=$(cat ${config.sops.secrets.nitac23s_rcon_password.path})
 
-      # Generate server.properties
+      # Forcefully write our combined server.properties
       cat <<EOF > server.properties
 ${staticProps}
 rcon.password=$RCON_PASS
@@ -75,7 +75,23 @@ EOF
       chown minecraft:minecraft server.properties
       chmod 600 server.properties
 
+      mkdir -p config
       SECRET=$(cat ${config.sops.secrets.minecraft_forwarding_secret.path})
+      if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
+      
+      # paper-global.yml の生成とシークレット埋め込み
+      cat <<EOF > config/paper-global.yml
+# Fix global config version warning
+config-version: 31
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: \$SECRET
+EOF
+      chown minecraft:minecraft config/paper-global.yml
+      chmod 600 config/paper-global.yml
+    '';
       if [ -L "config/paper-global.yml" ]; then rm "config/paper-global.yml"; fi
       
       # paper-global.yml の生成とシークレット埋め込み
