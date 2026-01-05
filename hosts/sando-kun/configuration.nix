@@ -52,6 +52,7 @@ in
   # ZFS Support
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
+  boot.zfs.extraPools = [ "tank-80gb" ];
 
   # SSH and basic settings
   services.openssh = {
