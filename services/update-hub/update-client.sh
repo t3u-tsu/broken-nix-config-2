@@ -73,12 +73,11 @@ else
      echo "System is already at the target commit ($HUB_COMMIT)."
   else
      echo "Syncing to commit: $HUB_COMMIT..."
-     git fetch origin "$HUB_COMMIT"
-     git reset --hard "$HUB_COMMIT"
-     nixos-rebuild switch --flake . 
-  fi
-fi
-
+                  git fetch origin "$HUB_COMMIT"
+                  git reset --hard "$HUB_COMMIT"
+                  nixos-rebuild switch --flake .
+               fi
+             fi
 # Report status back to hub
 REPORT_COMMIT=$(git rev-parse HEAD)
 TIMESTAMP=$(date -Iseconds)
