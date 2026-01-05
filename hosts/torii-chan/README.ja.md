@@ -53,3 +53,32 @@
 ```bash
 ssh t3u@10.0.0.1
 ```
+
+## 🛠️ 運用・トラブルシューティング
+
+### SSH 接続が不安定またはタイムアウトする場合
+Orange Pi のリソース制限により、鍵交換でタイムアウトすることがあります。接続時は `KexAlgorithms` を明示的に指定するか、設定で `curve25519-sha256` が強制されていることを確認してください。
+
+```bash
+# 手動接続時の例
+ssh -o KexAlgorithms=curve25519-sha256 t3u@10.0.0.1
+```
+
+### ネットワーク（WireGuard）の安定化
+楽天モバイルなど、親回線の MTU が低い環境 (1340等) では、パケットの断片化により通信が固まることがあります。`wg0` / `wg1` の MTU はマージンを取って `1300` に設定されています。
+
+### メモリ不足（OOM）対策
+ビルド時にメモリが不足し、`nixos-rebuild` が `Result: oom-kill` で失敗することがあります。
+`/var/lib/swapfile` (4GB) を常設しており、`vm.swappiness = 10` で最適化されています。
+
+### 自動更新 (Update Hub) の同期不全
+Hub から通知されたコミットがローカルの `git` で見つからない場合、以下のコマンドでリポジトリを手動同期してください。
+```bash
+cd ~/nix-config
+git fetch --all
+git reset --hard origin/main
+```
+同期後、Webhook ポートを叩くことで即時更新を再試行できます。
+```bash
+curl -X POST http://127.0.0.1:8081/trigger-update
+```

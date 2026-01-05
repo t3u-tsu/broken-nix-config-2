@@ -4,15 +4,13 @@
 
 Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用からHDD運用への移行準備を完了する。
 
-## 現在の状況 (2026-01-04)
+## 現在の状況 (2026-01-05)
 
-**shosoin-tan: Minecraft サーバー兼 Coordinated Update Producerとして稼働中。2時間おきの自動バックアップ（Restic）を運用開始。Discord Bridge により、Discord からのホワイトリスト管理が可能。**
+**shosoin-tan: Minecraft サーバー兼 Coordinated Update Producerとして稼働中。**
 
-**torii-chan: Coordinated Update Hubとして稼働中。10.0.1.1:8080 (App) / 10.0.0.1:8080 (Mgmt) でステータスを提供。Webhook によるプッシュ型更新の司令塔。**
+**torii-chan: SSH 接続安定化（Curve25519強制）、WireGuard MTU 調整 (1300)、および 4GB スワップの常設により運用安定性が大幅に向上。**
 
-**kagutsuchi-sama: 汎用計算サーバー。バックアップレシーバーとしても稼働。**
-
-**ビルド環境: Arch Linuxホストでaarch64エミュレーションビルドを確立。公式キャッシュの利用によりビルド時間が劇的に短縮。**
+**ネットワーク: 楽天モバイル環境（MTU 1340）への対応として、全ホストの WireGuard MTU を 1300 に統一。**
 
 ### 達成したマイルストーン
 
@@ -59,6 +57,9 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 41. セキュリティ強化と構成の洗練: マイクラの RCON パスワードを `sops-nix` 管理に移行。モジュールによる自動上書きを回避しつつ、起動時に機密情報を安全に注入する独自の `server.properties` 生成ロジックを確立。
 42. 自動更新システムのプッシュ化: Webhook 通知機能を Hub に実装し、Producer の更新直後に全ホストが即座に同期を開始するリアルタイム更新を実現。
 43. ホワイトリスト管理の確実化: マイクラ側の不規則な挙動を回避するため、`bridge.db` だけでなく `whitelist.json` も直接編集・リロードする方式を採用し、BE/Java 共に 100% 確実な削除を実現。合わせて `bridge.db` もバックアップ対象に追加。
+44. torii-chan SSH/MTU 安定化: 低リソース環境での接続タイムアウト回避のため `KexAlgorithms` を Curve25519 に固定。また楽天モバイル環境（MTU 1340）への対応として WireGuard MTU を 1300 に調整。
+45. torii-chan スワップ常設化: メモリ不足によるビルド失敗 (OOM) を防ぐため、4GB のスワップファイルを常設。`vm.swappiness = 10` によるストレージ寿命への配慮も実施。
+46. 自動更新システムの堅牢化: Hub から取得するコミットハッシュのクリーンアップ処理を追加し、不可視文字による `git reset` 失敗を解消。あわせて `git fetch` の確実に実行するよう修正。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 

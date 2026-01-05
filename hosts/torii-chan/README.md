@@ -46,3 +46,32 @@ This directory contains the NixOS configuration for `torii-chan`, an Orange Pi Z
 - **WireGuard:** VPN Server (10.0.0.1).
 - **DDNS:** Cloudflare DDNS (favonia). Requires API Token. Manages `torii-chan.t3u.uk` and Minecraft domains `mc.t3u.uk`, `*.mc.t3u.uk`.
 - **Secrets:** Managed via `sops-nix`. Edit with `sops secrets/secrets.yaml`.
+
+## 🛠️ Operation & Troubleshooting
+
+### Unstable SSH Connection or Timeout
+Due to the resource constraints of the Orange Pi, key exchange may timeout. Use the `curve25519-sha256` algorithm explicitly or ensure it's enforced in the configuration.
+
+```bash
+# Example for manual connection
+ssh -o KexAlgorithms=curve25519-sha256 t3u@10.0.0.1
+```
+
+### Network (WireGuard) Stability
+When using unstable parent connections like Rakuten Mobile (MTU 1340), packet fragmentation can cause hangs. The MTU for `wg0` and `wg1` is set to `1300` for better stability.
+
+### Out-of-Memory (OOM) Issues
+Builds may fail with `Result: oom-kill` due to low RAM.
+A permanent 4GB swap file at `/var/lib/swapfile` is configured, with `vm.swappiness = 10` for optimization.
+
+### Auto-Update (Update Hub) Sync Failure
+If the commit notified by the Hub is not found locally, sync the repository manually:
+```bash
+cd ~/nix-config
+git fetch --all
+git reset --hard origin/main
+```
+After syncing, trigger the update manually via the webhook port:
+```bash
+curl -X POST http://127.0.0.1:8081/trigger-update
+```
