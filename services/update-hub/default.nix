@@ -2,7 +2,10 @@
 
 let
   port = 8080;
-  hubScript = pkgs.writers.writePython3Bin "update-hub" { } (builtins.readFile ./hub.py);
+  hubScript = pkgs.writeScriptBin "update-hub" ''
+    #!${pkgs.python3}/bin/python3
+    ${builtins.readFile ./hub.py}
+  '';
 in
 {
   networking.firewall.allowedTCPPorts = [ port ];

@@ -5,7 +5,7 @@ let
   hostKey = builtins.replaceStrings [ "-" ] [ "_" ] config.networking.hostName;
 in
 {
-  sops.defaultSopsFile = ../../../secrets/secrets.yaml;
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.sshKeyPaths = [ ];

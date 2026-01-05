@@ -13,7 +13,10 @@ let
 
   # スクリプトの生成
   updateClientScript = pkgs.writeShellScriptBin "nixos-auto-update" (builtins.readFile ./update-client.sh);
-  receiverScript = pkgs.writers.writePython3Bin "nixos-update-receiver" { } (builtins.readFile ./receiver.py);
+  receiverScript = pkgs.writeScriptBin "nixos-update-receiver" ''
+    #!${pkgs.python3}/bin/python3
+    ${builtins.readFile ./receiver.py}
+  '';
 in {
   options.my.autoUpdate = {
     enable = mkEnableOption "Automatic system and plugin updates";

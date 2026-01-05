@@ -63,13 +63,15 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 45. torii-chan スワップ常設化: メモリ不足によるビルド失敗 (OOM) を防ぐため、4GB のスワップファイルを常設。`vm.swappiness = 10` によるストレージ寿命への配慮も実施。
 46. 自動更新システムの堅牢化: Hub から取得するコミットハッシュのクリーンアップ処理を追加し、不可視文字による `git reset` 失敗を解消。あわせて `git fetch` の確実に実行するよう修正。
 47. sando-kun 実機インストール: shosoin-tan で確立したリモートビルド手順を用いて、sando-kun の構築を完了。Legacy BIOS 環境での安定稼働を確認。
+48. WireGuard ピア自動リトライの導入: 起動時の名前解決失敗に対処するため、Systemd の `Restart=on-failure` を全ホストの WireGuard ピア設定に自動適用する共通モジュールを実装。
+49. タワー型サーバー設定の共通化: `shosoin-tan`, `kagutsuchi-sama`, `sando-kun` で重複していた設定を `common/tower-server/` に集約し、保守性と可読性を大幅に向上。
+50. 自動更新システムのリファクタリング: Nix ファイル内に埋め込まれていた長い Python/Bash スクリプトを外部ファイル化し、シンタックスハイライトと PEP8 準拠の管理を可能にした。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 
-- **バックアップの確認**:
-  - `sudo systemctl status restic-backups-local-backup.service`
-  - `sudo systemctl status restic-backups-remote-backup.service`
-  - ログ確認: `sudo journalctl -u restic-backups-remote-backup.service -f`
+- **WireGuard のリトライ**: 名前解決に失敗しても 5 秒おきに自動リトライされるため、起動直後の VPN 不通は自動的に解消されます。
+- **設定の共通化**: 新しいタワー型サーバーを追加する際は、`../../common/tower-server` を import するだけで標準的なセキュリティとユーザー環境が整います。
+- **自動更新の監視**: `torii-chan` (10.0.0.1:8080/status) で全ホストの同期状況をリアルタイムに確認可能です。
 - **Minecraft コンソールへの接続**: 各サービスは `tmux` セッションで動作。
   - 接続: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
   - 離脱: `Ctrl+B` -> `D`

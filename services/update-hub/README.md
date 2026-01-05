@@ -24,7 +24,16 @@ The system follows a **Producer-Hub-Consumer** model:
 - **`default.nix`**: The Hub server implementation (Python-based). Runs on `torii-chan`.
 - **`client.nix`**: The auto-update logic for each host. Applied globally via `common/default.nix`.
 
+## Internal Structure and Scripts
+
+For better maintainability, the core logic is extracted into standalone script files:
+
+- **`hub.py`**: The central management server running on torii-chan.
+- **`update-client.sh`**: The Bash script responsible for Git synchronization and `nixos-rebuild` on all hosts.
+- **`receiver.py`**: The Webhook receiver running on each host to listen for update triggers.
+
 ## Operational Commands
+
 
 ### Check Status (CLI)
 ```bash

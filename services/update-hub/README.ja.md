@@ -23,7 +23,16 @@
 - **`default.nix`**: Hub サーバー（Pythonベース）の実装。`torii-chan` で動作します。
 - **`client.nix`**: 各ホストで動作する自動更新ロジック。`common/default.nix` 経由で全ホストに適用されます。
 
+## 内部構造とスクリプト
+
+保守性向上のため、ロジックは Nix ファイルから外部ファイルへ分離されています。
+
+- **`hub.py`**: torii-chan で動作する中心的な管理サーバー。
+- **`update-client.sh`**: 全ホストで動作する、実際の Git 同期と `nixos-rebuild` を担う Bash スクリプト。
+- **`receiver.py`**: 各ホストで動作し、Hub からの更新リクエストを待ち受ける Webhook レシーバー。
+
 ## 運用コマンド
+
 
 ### ステータスの確認 (CLI)
 ```bash
