@@ -45,6 +45,7 @@ in
   # Networking
   networking.hostId = "5a4d0001";
   networking.hostName = "sando-kun";
+  networking.useDHCP = true;
 
   # Enable local network optimizations (Disabled as default since machines moved LANs)
   # my.localNetwork.enable = true;
@@ -67,7 +68,7 @@ in
 
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "video" "render" ];
     hashedPasswordFile = config.sops.secrets.sando_kun_t3u_password_hash.path;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
