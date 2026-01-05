@@ -31,9 +31,19 @@ curl -s http://10.0.1.1:8080/status | jq
 ```
 
 ### 手動での更新実行
-```bash
-sudo systemctl start nixos-auto-update.service
-```
+- **サービスを直接起動:**
+  ```bash
+  sudo systemctl start nixos-auto-update.service
+  ```
+- **Webhook経由でトリガー (特定のホストを更新):**
+  ```bash
+  # 10.0.1.1 (torii-chan), 10.0.1.3 (kagutsuchi), etc.
+  curl -X POST http://<ホストIP>:8081/trigger-update
+  ```
+- **Hubに最新コミットを通知 (全ホストの更新を誘発):**
+  ```bash
+  curl -X POST -d '{"commit": "<コミットハッシュ>"}' http://10.0.0.1:8080/producer/done
+  ```
 
 ### ログの確認
 ```bash
