@@ -141,7 +141,7 @@ in {
         else
           # --- Consumer Mode ---
           echo "Consumer mode: Checking hub for updates..."
-          HUB_COMMIT=$(curl -s "$HUB/latest-commit")
+          HUB_COMMIT=$(curl -s "$HUB/latest-commit" | tr -d '\r\n[:space:]')
           
           if [ -z "$HUB_COMMIT" ]; then
              echo "Hub has no commit info. Skipping update."
@@ -149,6 +149,7 @@ in {
              echo "System is already at the target commit ($HUB_COMMIT)."
           else
              echo "Syncing to commit: $HUB_COMMIT..."
+             git fetch origin "$HUB_COMMIT"
              git reset --hard "$HUB_COMMIT"
              nixos-rebuild switch --flake .
           fi
