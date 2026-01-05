@@ -6,6 +6,7 @@
     ../services/update-hub/client.nix
     ./local-network.nix
     ./time.nix
+    ./wireguard.nix
   ];
 
   environment.systemPackages = with pkgs; [
