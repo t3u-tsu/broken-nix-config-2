@@ -9,6 +9,8 @@
   
   # Close all ports on global interfaces except for explicitly allowed ones
   # We use mkForce to ensure only these ports are open on end0 (WAN)
+
+  # interface of minecraft proxy (velocity)
   networking.firewall.allowedTCPPorts = lib.mkForce [ 25565 ];
 
   # Open port 22 (SSH) and 8080 (update-hub) ONLY on WireGuard management interface

@@ -7,7 +7,6 @@ let
   format = pkgs.formats.toml { };
   configFile = format.generate "bridge-config.toml" cfg.settings;
   
-  # Flake input からパッケージを取得
   bridgePkg = inputs.minecraft-discord-bridge.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
