@@ -2,8 +2,8 @@
 
 let
   # NixOS の wireguard モジュールがユニット名に使用するエスケープ処理
-  # "+" -> "\\x2b", "/" -> "\\x2f", "=" -> "\\x3d"
-  escape = s: lib.replaceStrings [ "+" "/" "=" ] [ "\\x2b" "\\x2f" "\\x3d" ] s;
+  # 公開鍵内の "/" は "-" に置換され、"+" と "=" は "\" でエスケープされる
+  escape = s: lib.replaceStrings [ "+" "/" "=" ] [ "\\x2b" "-" "\\x3d" ] s;
 
   # networking.wireguard.interfaces からすべてのピアサービスを抽出して設定を生成
   peerServices = lib.foldl' (acc: ifaceName:
