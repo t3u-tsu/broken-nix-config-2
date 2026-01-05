@@ -80,7 +80,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
   - 招待トークン発行: `echo 'invite-create nitac23s' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock`
 - **マイクラ設定の注意**: `server.properties` は Nix モジュールと競合するため、`nitac23s.nix` 内の `preStart` で動的に生成・上書きしています。パスワード等を変更する場合は、Nix 側の設定を更新してください。
 - **非NixOS環境からのデプロイ**: `nixos-rebuild` がない場合、`nix run` 経由で実行。
-  - 例: `nix run nixpkgs#nixos-rebuild -- switch --flake .#<ホスト> --target-host <ユーザー>@<IP> --use-remote-sudo --ask-sudo-password`
+  - 例: `nix run nixpkgs#nixos-rebuild -- switch --flake .#<ホスト> --target-host <ユーザー>@<IP> --sudo --ask-sudo-password`
 - **Flake への反映**: Nix Flake は Git 管理下のファイルのみを認識するため、新規作成・変更したファイルは必ず `git add` すること。
 - **リソース制限ホストのデプロイ**: `torii-chan` 等の低リソース機へのデプロイ時は、ネットワーク瞬断や SSH タイムアウトに注意。安定しない場合はリモート側で `nixos-rebuild` を実行する。
 
@@ -92,6 +92,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 ### 運用ルール (開発ワークフロー)
 
+- **言語設定**: ユーザーとの対話、説明、進捗報告などのメッセージは**すべて日本語**で行うこと。
 - **文書管理**: トップレベルの `README` を整理する際は、ホスト一覧や全体構造などの「プロジェクト俯瞰に必要な共通概要事項」を削除しないこと。詳細はサブディレクトリの `README` に任せつつ、全体像はトップレベルで維持し、各所への誘導を行う。
 - 変更後は必ず `nix flake check` を実行し、構文エラーがないか確認する。
 - ホスト追加や重要な変更の際は、`GEMINI.md` および `README.md` (日/英) を更新する。
@@ -99,8 +100,9 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 ### 主要コマンド
 
-- torii-chan デプロイ: `nixos-rebuild switch --flake .#torii-chan --target-host t3u@10.0.0.1 --use-remote-sudo`
-- kagutsuchi-sama デプロイ: `nixos-rebuild switch --flake .#kagutsuchi-sama --target-host t3u@10.0.0.3 --use-remote-sudo`
-- shosoin-tan デプロイ: `nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --use-remote-sudo`
-- sando-kun デプロイ: `nixos-rebuild switch --flake .#sando-kun --target-host t3u@10.0.0.2 --use-remote-sudo`
+- torii-chan デプロイ: `nixos-rebuild switch --flake .#torii-chan --target-host t3u@10.0.0.1 --sudo`
+- kagutsuchi-sama デプロイ: `nixos-rebuild switch --flake .#kagutsuchi-sama --target-host t3u@10.0.0.3 --sudo`
+- shosoin-tan デプロイ: `nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --sudo`
+- sando-kun デプロイ: `nixos-rebuild switch --flake .#sando-kun --target-host t3u@10.0.0.2 --sudo`
 - 秘密情報の編集: `nix shell nixpkgs#sops -c sops secrets/secrets.yaml`
+- 外部からのデプロイ (nix run 経由): `nix run nixpkgs#nixos-rebuild -- switch --flake .#<host> --target-host t3u@<IP> --sudo --ask-sudo-password`

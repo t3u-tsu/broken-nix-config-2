@@ -37,9 +37,8 @@
 2. **データコピー:** `/` をHDDパーティションにrsyncします。
 3. **構成切り替え:**
    ```bash
-   nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan --target-host t3u@10.0.0.1 --use-remote-sudo
-   ```
-   *現在はHDDをルートとして、SDカードを/bootとして運用されています。*
+   nix run nixpkgs#nixos-rebuild -- switch --flake .#torii-chan --target-host t3u@10.0.0.1 --sudo
+   ```   *現在はHDDをルートとして、SDカードを/bootとして運用されています。*
 
 ## 🔐 サービスと秘密情報
 - **Update Hub:** ネットワーク全体の更新状態を管理する Coordinated Update Hub。10.0.1.1:8080 でステータスを提供します。
