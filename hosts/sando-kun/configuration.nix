@@ -11,7 +11,7 @@ in
     ../../common
   ];
 
-  # Bootloader configuration
+  # GT 210 / GT 710 configuration
   boot.kernelPackages = pkgs.linuxPackages;
 
   nixpkgs.config.allowUnfree = true;
@@ -46,6 +46,9 @@ in
   networking.hostId = "5a4d0001";
   networking.hostName = "sando-kun";
 
+  # Enable local network optimizations (Disabled as default since machines moved LANs)
+  # my.localNetwork.enable = true;
+
   # ZFS Support
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
@@ -75,6 +78,12 @@ in
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
     ];
+  };
+
+  my.autoUpdate = {
+    enable = true;
+    user = username;
+    pushChanges = false;
   };
 
   system.stateVersion = "25.05";
