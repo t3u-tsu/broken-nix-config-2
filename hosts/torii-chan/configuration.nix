@@ -82,10 +82,6 @@ in
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
-      KexAlgorithms = [
-        "curve25519-sha256"
-        "curve25519-sha256@libssh.org"
-      ];
     };
   };
 
