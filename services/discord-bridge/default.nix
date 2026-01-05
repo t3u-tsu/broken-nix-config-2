@@ -29,7 +29,8 @@ in
   config = mkIf cfg.enable {
     systemd.services.minecraft-discord-bridge = {
       description = "Minecraft Discord Bridge";
-      after = [ "network.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
 
       preStart = ''
@@ -42,6 +43,7 @@ in
       serviceConfig = {
         ExecStart = "${bridgePkg}/bin/minecraft-discord-bridge -c ${configFile}";
         Restart = "always";
+        RestartSec = 10;
         EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
         StateDirectory = "minecraft-discord-bridge";
         RuntimeDirectory = "minecraft-discord-bridge";
