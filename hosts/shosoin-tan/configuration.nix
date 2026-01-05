@@ -67,7 +67,7 @@ in
   networking.useDHCP = true;
 
   # Enable local network optimizations (NAT loopback bypass for torii-chan)
-  my.localNetwork.enable = true;
+  # my.localNetwork.enable = true;
 
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
