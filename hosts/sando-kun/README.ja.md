@@ -1,44 +1,47 @@
-# ホスト名: sando-kun (Core i7 860 サーバー)
+# ホスト名: sando-kun (i7-860 タワーサーバー)
 
-このホストは、Core i7 860 を搭載したタワー型サーバーです。
+このホストは、Core i7-860 と 80GB HDD x2 の ZFS Mirror 構成を備えた、汎用タワー型サーバーです。`shosoin-tan` や `kagutsuchi-sama` と同様の標準構成を採用しています。
 
 ## ハードウェア仕様
-- **CPU:** Core i7 860
+- **CPU:** Intel Core i7-860 (第一世代)
+- **GPU:** GeForce 8400 GS (Tesla)
 - **RAM:** 8GB
 - **ストレージ:**
-  - 250GB HDD (ルート/ブート)
+  - 250GB HDD (OS / Boot)
   - 80GB HDD x2 (ZFS Mirror: `tank-80gb`)
 
 ## 🚀 インストールガイド
 
-NixOS インストーラー環境から、外部マシン経由で以下のコマンドを実行します：
+このホストは古いハードウェアのため、負荷軽減と互換性のために以下の手順（shosoin-tan と同様）でインストールを行います。
 
-1. **ディスクの初期化とマウント:**
+### Phase 1: ディスクの準備
+1. **Disko の実行:** 別のマシンから以下の手順で実行。
    ```bash
-   ssh -t root@<ターゲットIP> "nix --extra-experimental-features 'nix-command flakes' run github:t3u-tsu/nix-config#sando-kun -- \
-     --mode destroy,format,mount \
-     --flake github:t3u-tsu/nix-config#sando-kun"
-   ```
-   *注意: デバイス名は実機に合わせて調整が必要な場合があります（デフォルトは /dev/sda, sdb, sdc）。*
-
-2. **SOPS 秘密鍵の配置:**
-   ```bash
-   ssh root@<ターゲットIP> "mkdir -p /mnt/var/lib/sops-nix"
-   cat ~/.config/sops/age/keys.txt | ssh root@<ターゲットIP> "cat > /mnt/var/lib/sops-nix/key.txt"
+   nix build .#nixosConfigurations.sando-kun.config.system.build.diskoScript
+   nix copy --to ssh://nixos@<IP> ./result
+   ssh -t nixos@<IP> "sudo ./result --mode destroy,format,mount"
    ```
 
-3. **NixOS のインストール:**
-   ```bash
-   ssh root@<ターゲットIP> "nixos-install --flake github:t3u-tsu/nix-config#sando-kun"
-   ```
+### Phase 2: 秘密鍵の転送
+```bash
+ssh nixos@<IP> "sudo mkdir -p /mnt/var/lib/sops-nix"
+cat ~/.config/sops/age/keys.txt | ssh nixos@<IP> "sudo tee /mnt/var/lib/sops-nix/key.txt > /dev/null"
+```
 
-4. **再起動:**
-   ```bash
-   ssh root@<ターゲットIP> "reboot"
-   ```
+### Phase 3: システムのビルドと転送（推奨）
+本体の CPU 負荷を抑えるため、ビルドホストで作成したイメージを転送します。
+1. **ビルド:** `nix build .#nixosConfigurations.sando-kun.config.system.build.toplevel`
+2. **転送:** `nix copy --to ssh://nixos@<IP> ./result`
+3. **インストール:** `ssh nixos@<IP> "sudo nixos-install --system $(readlink -f ./result)"`
 
-## 🔐 アクセス
+## 🔐 ネットワークとセキュリティ
+- **ブート方式:** Legacy BIOS (MBR)
+- **Update Consumer:** `shosoin-tan` からの通知を受けて自動更新を適用します。
+- **ZFS:** `/mnt/tank-80gb` が自動的にマウントされます。
 - **管理用IP:** `10.0.0.2` (WireGuard)
-- **アプリ用IP:** `10.0.1.2` (WireGuard)
-- **SSH アクセス制限:** SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限されています。
-- **ユーザー:** `t3u` (wheel/sudo 権限あり)
+- **アプリ用IP:** `10.0.1.2`
+- **SSH アクセス制限:** セキュリティ強化のため、SSHアクセスは WireGuard (`wg0`) インターフェース経由のみに制限。
+
+## ⚠️ 注意事項
+- **GPU:** GeForce 8400 GS は非常に古いため、現代の NVIDIA ドライバは動作しません。オープンソースの `nouveau` ドライバまたは標準のカーネルドライバで動作します。
+- **ZFS インポート:** 初回起動時にプールが見つからない場合は、`sudo zpool import -f tank-80gb` で強制インポートを試みてください。
