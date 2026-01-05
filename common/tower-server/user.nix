@@ -1,0 +1,25 @@
+{ config, ... }:
+
+let
+  username = "t3u";
+  hostKey = builtins.replaceStrings [ "-" ] [ "_" ] config.networking.hostName;
+in
+{
+  users.mutableUsers = false;
+
+  users.users.${username} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "video" "render" ];
+    hashedPasswordFile = config.sops.secrets."${hostKey}_t3u_password_hash".path;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
+    ];
+  };
+
+  users.users.root = {
+    hashedPasswordFile = config.sops.secrets."${hostKey}_root_password_hash".path;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB3QNRSxPauISsWs7nob0tXfxjTsMpBEIYIjasRD9bpT t3u@BrokenPC"
+    ];
+  };
+}
