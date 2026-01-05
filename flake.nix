@@ -93,13 +93,13 @@
           system = "x86_64-linux";
         };
 
-        # 5. Compute Server (kagutsuchi-sama)
+        # 5. Tower Server (kagutsuchi-sama)
         "kagutsuchi-sama" = lib.mkSystem {
           name = "kagutsuchi-sama";
           system = "x86_64-linux";
         };
 
-        # 6. Sando Server (sando-kun)
+        # 6. Tower Server (sando-kun)
         "sando-kun" = lib.mkSystem {
           name = "sando-kun";
           system = "x86_64-linux";
