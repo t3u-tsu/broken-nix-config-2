@@ -11,7 +11,8 @@ in
     ../../common
   ];
 
-  # GT 210 / GT 710 configuration
+  # GeForce 8400 GS (Tesla) is too old for modern NVIDIA drivers.
+  # We stick with nouveau or basic kernel drivers for stability.
   boot.kernelPackages = pkgs.linuxPackages;
 
   nixpkgs.config.allowUnfree = true;
@@ -37,10 +38,9 @@ in
   # Bootloader configuration
   boot.loader.grub = {
     enable = true;
-    efiSupport = true;
-    device = "nodev";
+    efiSupport = false; # i7-860 is Legacy BIOS
+    # device will be set by disko
   };
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Networking
   networking.hostId = "5a4d0001";

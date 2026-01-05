@@ -1,12 +1,16 @@
-{ disks ? [ "/dev/sda" "/dev/sdb" "/dev/sdc" ], ... }: {
+{ ... }: {
   disko.devices = {
     disk = {
       main = {
         type = "disk";
-        device = builtins.elemAt disks 0; # 250GB HDD
+        device = "/dev/disk/by-id/ata-ST9250320AS_5SW1VK4F";
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02"; # for grub MBR
+            };
             ESP = {
               size = "512M";
               type = "EF00";
@@ -29,7 +33,7 @@
       };
       data1 = {
         type = "disk";
-        device = builtins.elemAt disks 1; # 80GB HDD
+        device = "/dev/disk/by-id/ata-WDC_WD800BEVS-22RST0_WD-WXC907053724";
         content = {
           type = "gpt";
           partitions = {
@@ -45,7 +49,7 @@
       };
       data2 = {
         type = "disk";
-        device = builtins.elemAt disks 2; # 80GB HDD
+        device = "/dev/disk/by-id/ata-WDC_WD800JD-19MSA1_WD-WMAM9R024946";
         content = {
           type = "gpt";
           partitions = {
@@ -65,6 +69,7 @@
         type = "zpool";
         mode = "mirror";
         mountpoint = "/mnt/tank-80gb";
+        mountOptions = [ "nofail" ];
       };
     };
   };
