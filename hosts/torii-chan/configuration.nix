@@ -91,6 +91,16 @@ in
 
   system.stateVersion = "25.05";
 
+  # Swap configuration for stable builds on low-RAM device
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 4096; # 4GB
+  } ];
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10; # Use swap only when necessary to protect storage
+  };
+
   my.autoUpdate = {
     enable = true;
     user = username;
