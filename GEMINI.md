@@ -8,9 +8,11 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 
 **shosoin-tan: Minecraft サーバー兼 Coordinated Update Producerとして稼働中。**
 
+**sando-kun: i7-860 タワーサーバー。ZFS Mirror (80GB x2) 構成で稼働開始。**
+
 **torii-chan: SSH 接続安定化（Curve25519強制）、WireGuard MTU 調整 (1300)、および 4GB スワップの常設により運用安定性が大幅に向上。**
 
-**ネットワーク: 楽天モバイル環境（MTU 1340）への対応として、全ホストの WireGuard MTU を 1300 に統一。**
+**ネットワーク: 全ホストの WireGuard MTU を 1300 に統一。shosoin-tan と kagutsuchi-sama の LAN 切り離しに伴い localNetwork を無効化。**
 
 ### 達成したマイルストーン
 
@@ -49,7 +51,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 33. リモートビルド・インストール確立: ターゲット機（shosoin-tan）の負荷軽減のため、ビルドホストで `nixos-system` を構築し `nix copy` で転送してから `nixos-install --system` を実行する高安定性インストール手順を確立。
 34. shosoin-tan セットアップ完了: CPU オーバークロック解除による安定化を経て、NixOS のインストールと WireGuard 接続に成功。
 35. shosoin-tan ネットワーク安定化: USB-LAN アダプタ環境での不安定さを解消するため、WireGuard MTU を 1380 に設定し、`localNetwork` モジュールによるエンドポイントのローカル解決を導入して起動時の接続を確実に安定させた。
-36. タイムゾーンのJST統一: 全ホスト共通設定として `common/time.nix` を導入し、タイムゾーンを `Asia/Tokyo` (JST) に統一。あわせて `chrony` を有効化し、時刻同期の精度と安定性を向上させた。
+36. タイムゾーンのJST統一: 全ホスト共通設定として `common/time.nix` を導入し、タイムゾーンを `Asia/Tokyo` (JST) に統一。あわせて `chrony` を有効化し、時刻同期の精度 and 安定性を向上させた。
 37. Minecraft サーバー移行: マイクラ関連サービス一式 (Velocity, Lobby, nitac23s) を `kagutsuchi-sama` から `shosoin-tan` へ移行。データの `rsync` 同期、`torii-chan` のポート転送先変更 (10.0.1.4)、および自動更新 Producer 権限の移譲を完了。
 38. Velocity 警告の解消: `config-version` を `2.7` に更新し、非推奨の `forwarding-secret-file` パラメータを削除することで、セキュリティ警告および設定バージョン警告を修正。
 39. バックアップシステムの構築と共通化: `services/backup` を新設し、`restic` による 2重バックアップ（ローカル ZFS & リモート Kagutsuchi）をモジュール化。SSH 設定の共通化により、安全で保守性の高いバックアップ運用を実現。
@@ -60,6 +62,7 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 44. torii-chan SSH/MTU 安定化: 低リソース環境での接続タイムアウト回避のため `KexAlgorithms` を Curve25519 に固定。また楽天モバイル環境（MTU 1340）への対応として WireGuard MTU を 1300 に調整。
 45. torii-chan スワップ常設化: メモリ不足によるビルド失敗 (OOM) を防ぐため、4GB のスワップファイルを常設。`vm.swappiness = 10` によるストレージ寿命への配慮も実施。
 46. 自動更新システムの堅牢化: Hub から取得するコミットハッシュのクリーンアップ処理を追加し、不可視文字による `git reset` 失敗を解消。あわせて `git fetch` の確実に実行するよう修正。
+47. sando-kun 実機インストール: shosoin-tan で確立したリモートビルド手順を用いて、sando-kun の構築を完了。Legacy BIOS 環境での安定稼働を確認。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 
@@ -84,7 +87,6 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 1.  **バックアップの整合性確認**: 初回バックアップ完了後、`restic check` を実行し、データの整合性と Kagutsuchi-sama 側のディスク使用量を確認する。
 2.  **共通設定の拡充**: シェルの設定 (zsh/fish) や alias など、全ホストで共通化したい設定を `common/` に追加していく。
 3.  **自動更新ログの通知**: 更新失敗時に Discord 等へ通知する仕組みの検討。
-4.  **sando-kun 実機インストール**: shosoin-tan で確立したリモートビルド手順を用いて、sando-kun の構築を行う。
 
 ### 運用ルール (開発ワークフロー)
 
@@ -98,4 +100,5 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 - torii-chan デプロイ: `nixos-rebuild switch --flake .#torii-chan --target-host t3u@10.0.0.1 --use-remote-sudo`
 - kagutsuchi-sama デプロイ: `nixos-rebuild switch --flake .#kagutsuchi-sama --target-host t3u@10.0.0.3 --use-remote-sudo`
 - shosoin-tan デプロイ: `nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --use-remote-sudo`
+- sando-kun デプロイ: `nixos-rebuild switch --flake .#sando-kun --target-host t3u@10.0.0.2 --use-remote-sudo`
 - 秘密情報の編集: `nix shell nixpkgs#sops -c sops secrets/secrets.yaml`
