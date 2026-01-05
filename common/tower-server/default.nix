@@ -7,5 +7,6 @@
     ./ssh.nix
     ./user.nix
     ./auto-update.nix
+    ./security.nix
   ];
 }

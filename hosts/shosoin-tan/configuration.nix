@@ -4,7 +4,6 @@
   imports = [
     ./disko-config.nix
     ./services
-    ./production-security.nix
     ../../services/minecraft
     ../../services/backup
     ../../services/discord-bridge

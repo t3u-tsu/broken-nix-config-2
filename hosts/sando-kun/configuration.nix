@@ -4,7 +4,6 @@
   imports = [
     ./disko-config.nix
     ./services
-    ./production-security.nix
     ../../common
     ../../common/tower-server
   ];
