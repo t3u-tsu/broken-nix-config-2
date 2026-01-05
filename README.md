@@ -30,7 +30,7 @@ Detailed documentation is distributed across the repository. Please refer to the
 | Host | Mgmt IP (WG0) | App IP (WG1) | Role | Storage |
 | :--- | :--- | :--- | :--- | :--- |
 | `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / Update Hub / DDNS | SD + HDD |
-| `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | SSD |
+| `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | HDD + ZFS Mirror |
 | `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server / Backup Receiver | SSD + 3TB HDD |
 | `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Discord Bridge / Producer | SSD + ZFS Mirror |
 
