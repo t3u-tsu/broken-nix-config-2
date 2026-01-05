@@ -52,8 +52,8 @@
       # The port that WireGuard listens to.
       listenPort = 51820;
       
-      # Optimized MTU for stability over potential tunneling/fragmentation issues
-      mtu = 1380;
+      # Optimized MTU for stability over Rakuten Mobile (MTU 1340) with margin
+      mtu = 1300;
 
       # Path to the private key file.
       privateKeyFile = config.sops.secrets.torii_chan_wireguard_private_key.path;
@@ -87,6 +87,7 @@
       # Application communication network
       ips = [ "10.0.1.1/24" ];
       listenPort = 51821;
+      mtu = 1300;
       privateKeyFile = config.sops.secrets.torii_chan_wireguard_app_private_key.path;
 
       peers = [
