@@ -122,9 +122,21 @@ in {
     # 通知レシーバー (Webhook)
     systemd.services.nixos-update-trigger = {
       description = "NixOS Update Trigger Receiver";
-      after = [ "network.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       
+      # 起動時に Hub へ現在の状態を報告する (ブート時やデプロイ時に自動登録するため)
+      postStart = ''
+        if [ -d "${flakePath}/.git" ]; then
+          COMMIT=$(${pkgs.git}/bin/git -C ${flakePath} rev-parse HEAD)
+          ${pkgs.curl}/bin/curl -sf -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"host\": \"${config.networking.hostName}\", \"commit\": \"$COMMIT\", \"timestamp\": \"$(${pkgs.coreutils}/bin/date -Iseconds)\"}" \
+            ${cfg.hubUrl}/consumer/reported || true
+        fi
+      '';
+
       serviceConfig = {
         ExecStart = "${receiverScript}/bin/nixos-update-receiver 8081";
         Restart = "always";
