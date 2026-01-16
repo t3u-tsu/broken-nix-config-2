@@ -19,10 +19,10 @@ in
       description = "Configuration for the bridge (TOML format)";
     };
 
-    environmentFile = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      description = "File containing environment variables (secrets)";
+    environmentFiles = mkOption {
+      type = types.listOf types.path;
+      default = [ ];
+      description = "Files containing environment variables (secrets)";
     };
   };
 
@@ -44,7 +44,7 @@ in
         ExecStart = "${bridgePkg}/bin/minecraft-discord-bridge -c ${configFile}";
         Restart = "always";
         RestartSec = 10;
-        EnvironmentFile = mkIf (cfg.environmentFile != null) cfg.environmentFile;
+        EnvironmentFile = cfg.environmentFiles;
         StateDirectory = "minecraft-discord-bridge";
         RuntimeDirectory = "minecraft-discord-bridge";
         User = "minecraft";
