@@ -19,6 +19,7 @@
     usbutils
     wget
     curl
-    dnsutils # dig 等
+    dnsutils
+    jq
   ];
 }
