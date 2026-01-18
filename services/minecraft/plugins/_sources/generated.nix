@@ -19,18 +19,18 @@
   };
   viabackwards = {
     pname = "viabackwards";
-    version = "5.7.0";
+    version = "5.7.1";
     src = fetchurl {
-      url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.7.0/ViaBackwards-5.7.0.jar";
-      sha256 = "sha256-dxN2z1y1Lp6PgU9iYoTWS2VI5JmYbnVRUrmV1PdWqjU=";
+      url = "https://github.com/ViaVersion/ViaBackwards/releases/download/5.7.1/ViaBackwards-5.7.1.jar";
+      sha256 = "sha256-elB1xx7Chj7eEtpVN8AWH/i1x6eKPBCGpJYziZEaARs=";
     };
   };
   viaversion = {
     pname = "viaversion";
-    version = "5.7.0";
+    version = "5.7.1";
     src = fetchurl {
-      url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.7.0/ViaVersion-5.7.0.jar";
-      sha256 = "sha256-9qwEGBYqOrUUVTVAOSi4uGBi9VHGGUAg97G31Pe2K6U=";
+      url = "https://github.com/ViaVersion/ViaVersion/releases/download/5.7.1/ViaVersion-5.7.1.jar";
+      sha256 = "sha256-e5s9WjhExO5bGJZjJ2ku5+aY5311a4sPt4XlOg+apKU=";
     };
   };
 }
