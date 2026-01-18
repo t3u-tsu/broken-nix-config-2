@@ -28,7 +28,7 @@ in
     enable = true;
     package = pkgs.paperServers.paper;
 
-    jvmOpts = "-Xms2G -Xmx4G";
+    jvmOpts = "-Xms4G -Xmx8G";
 
     # We manage server.properties manually in preStart
     serverProperties = {};
