@@ -57,7 +57,7 @@ if [ "$PUSH_CHANGES" = "true" ]; then
   fi
   
   NEW_COMMIT=$(git rev-parse HEAD)
-  curl -X POST -d "{\"commit\": \"$NEW_COMMIT\"}" "$HUB_URL/producer/done"
+  curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$NEW_COMMIT\", \"host\": \"$HOSTNAME\"}" "$HUB_URL/producer/done"
   
   if [ "$CURRENT_HEAD" != "$NEW_COMMIT" ]; then
     nixos-rebuild switch --flake .
@@ -73,12 +73,22 @@ else
      echo "System is already at the target commit ($HUB_COMMIT)."
   else
      echo "Syncing to commit: $HUB_COMMIT..."
-                  git fetch origin "$HUB_COMMIT"
-                  git reset --hard "$HUB_COMMIT"
-                  nixos-rebuild switch --flake .
-               fi
-             fi
+     # Fetch everything from main to ensure we have the commit object
+     git fetch origin main
+     git reset --hard "$HUB_COMMIT"
+     
+     # Use NIXOS_NO_CHECK=1 for auto-updates to prevent stopping on dbus/systemd inhibitors
+     # Also use --no-reexec to avoid D-Bus connection loss issues during switch
+     if NIXOS_NO_CHECK=1 nixos-rebuild switch --flake . --no-reexec; then
+         echo "Update successful."
+     else
+         echo "Update failed! Notifying hub of failure (TODO)."
+         exit 1
+     fi
+  fi
+fi
+
 # Report status back to hub
 REPORT_COMMIT=$(git rev-parse HEAD)
 TIMESTAMP=$(date -Iseconds)
-curl -X POST -d "{\"host\": \"$HOSTNAME\", \"commit\": \"$REPORT_COMMIT\", \"timestamp\": \"$TIMESTAMP\"}" "$HUB_URL/consumer/reported"
+curl -X POST -H "Content-Type: application/json" -d "{\"host\": \"$HOSTNAME\", \"commit\": \"$REPORT_COMMIT\", \"timestamp\": \"$TIMESTAMP\"}" "$HUB_URL/consumer/reported"

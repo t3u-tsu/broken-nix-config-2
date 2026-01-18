@@ -38,10 +38,14 @@ def save_status(status):
     except Exception as e:
         logger.error(f"Failed to save status file: {e}")
 
-def notify_hosts(status):
+def notify_hosts(status, producer_hostname=None):
     ip_map = CONFIG.get("ip_map", {})
     
     for hostname in status.get("hosts", {}).keys():
+        if producer_hostname and hostname == producer_hostname:
+            logger.info(f"Skipping notification for producer: {hostname}")
+            continue
+
         ip = ip_map.get(hostname)
         if not ip:
             logger.warning(f"No IP mapping found for host: {hostname}")
@@ -94,12 +98,14 @@ class HubHandler(BaseHTTPRequestHandler):
 
             if self.path == "/producer/done":
                 commit = data.get("commit")
-                logger.info(f"Received producer update: {commit}")
+                producer = data.get("host") # Get producer hostname if provided
+                logger.info(f"Received producer update: {commit} from {producer}")
                 status["latest_commit"] = commit
                 save_status(status)
                 self.send_response(200)
                 self.end_headers()
-                threading.Thread(target=notify_hosts, args=(status,)).start()
+                threading.Thread(target=notify_hosts, args=(status, producer)).start()
+
             elif self.path == "/consumer/reported":
                 hostname = data.get("host")
                 commit = data.get("commit")
