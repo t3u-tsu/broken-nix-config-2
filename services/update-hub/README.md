@@ -61,6 +61,7 @@ sudo journalctl -u nixos-auto-update.service -f
 ```
 
 ## Benefits
-- **Consistency**: Ensures all hosts are running on the exact same commit.
-- **Efficiency**: Only the Producer builds/pushes, allowing Consumers to leverage caches effectively.
-- **Visibility**: Provides a centralized view of update status across the entire fleet.
+- **Dynamic Discovery**: No static IP mapping required. Hosts register their IPs automatically when reporting status.
+- **Coordinated Updates**: Producers (e.g., `shosoin-tan`) notify the Hub, which then triggers updates on all registered Consumers.
+- **Reliable Local Triggers**: The Hub triggers its own update directly via `systemctl` to avoid loopback network issues.
+- **Robust Sync**: Consumers use `git fetch origin main` and `--no-reexec` to ensure stable updates even during D-Bus/Systemd upgrades.

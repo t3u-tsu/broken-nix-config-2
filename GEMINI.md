@@ -66,17 +66,21 @@ Orange Pi Zero3 (`torii-chan`) 向けのNixOS設定を構築し、SD運用から
 48. WireGuard ピア自動リトライの導入: 起動時の名前解決失敗に対処するため、Systemd の `Restart=on-failure` を全ホストの WireGuard ピア設定に自動適用する共通モジュールを実装。
 49. タワー型サーバー設定の共通化: `shosoin-tan`, `kagutsuchi-sama`, `sando-kun` で重複していた設定を `common/tower-server/` に集約し、保守性と可読性を大幅に向上。
 50. 自動更新システムのリファクタリング: Nix ファイル内に埋め込まれていた長い Python/Bash スクリプトを外部ファイル化し、シンタックスハイライトと PEP8 準拠の管理を可能にした。
+51. Discord Bridge RCON の堅牢化: RCON プロトコル処理の修正とログ拡充を行い、バイナリログの発生を抑制。また、`sops.templates` を用いて環境変数を安全に注入する仕組みを構築。
+52. 自動更新システムの再設計 (Dynamic Discovery): Hub 側の静的 IP マップを廃止し、報告に基づいた動的な IP 登録（Dynamic Discovery）を実装。合わせて Hub 自身への通知をローカルコマンド実行に置き換え、ネットワーク起因のタイムアウトを解消。
+53. 自動更新クライアントの強化: `git fetch origin main` による確実なオブジェクト取得と、`--no-reexec` フラグによる D-Bus 切断対策を導入し、大規模更新時の安定性を向上。
 
 ### 運用・デプロイ上の知見 (Operational Notes)
 
 - **WireGuard のリトライ**: 名前解決に失敗しても 5 秒おきに自動リトライされるため、起動直後の VPN 不通は自動的に解消されます。
 - **設定の共通化**: 新しいタワー型サーバーを追加する際は、`../../common/tower-server` を import するだけで標準的なセキュリティとユーザー環境が整います。
 - **自動更新の監視**: `torii-chan` (10.0.0.1:8080/status) で全ホストの同期状況をリアルタイムに確認可能です。
+- **自動更新のデバッグ**: 各ホストの `/var/lib/update-hub/hub.log` (Hub) や `journalctl -u nixos-auto-update` (Client) で詳細な同期プロセスを確認できます。
 - **Minecraft コンソールへの接続**: 各サービスは `tmux` セッションで動作。
   - 接続: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
   - 離脱: `Ctrl+B` -> `D`
 - **Discord Bridge の操作**:
-  - ローカル操作: `echo 'status' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock`
+  - ローカル操作: `echo 'status' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock` (※tmux ではなく nc を使用)
   - 招待トークン発行: `echo 'invite-create nitac23s' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock`
 - **マイクラ設定の注意**: `server.properties` は Nix モジュールと競合するため、`nitac23s.nix` 内の `preStart` で動的に生成・上書きしています。パスワード等を変更する場合は、Nix 側の設定を更新してください。
 - **非NixOS環境からのデプロイ**: `nixos-rebuild` がない場合、`nix run` 経由で実行。

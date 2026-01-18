@@ -32,11 +32,11 @@ services.minecraft-discord-bridge = {
 
 ## Operational Commands (Local)
 
-To control the bridge from the command line:
+To control the bridge from the command line (note: it uses a Unix socket, not tmux):
 ```bash
 echo 'status' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock
 ```
 
 ## Security
-- **Secret Injection**: RCON passwords and Bot tokens are securely passed through an `environmentFile`.
+- **Secret Injection**: RCON passwords and Bot tokens are securely passed through an `environmentFile`. RCON passwords for specific servers are dynamically injected using `sops.templates`.
 - **Permissions**: The service runs as the `minecraft` user with minimal privileges.

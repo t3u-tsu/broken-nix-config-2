@@ -60,6 +60,7 @@ sudo journalctl -u nixos-auto-update.service -f
 ```
 
 ## メリット
-- **一貫性**: 全ホストが同じコミットを適用することを保証します。
-- **効率**: Producer が一度だけビルド・プッシュすることで、Consumer は公式/私設キャッシュを最大限活用できます。
-- **可視化**: どのホストが更新に成功/失敗しているかが一目でわかります。
+- **動的な自動登録 (Dynamic Discovery)**: 固定 IP マップは不要です。各ホストがステータスを報告した際に、Hub が自動的に送信元 IP を記録します。
+- **協調アップデート**: Producer (`shosoin-tan` 等) が更新を完了すると Hub へ通知し、Hub が全登録済み Consumer へ更新をトリガーします。
+- **信頼性の高いローカル実行**: Hub 自身 (`torii-chan`) への通知は直接 `systemctl` で行い、ループバック接続のタイムアウトを回避します。
+- **堅牢な同期ロジック**: `git fetch origin main` と `--no-reexec` フラグの導入により、D-Bus/Systemd の更新を含む大規模な変更時も安定して動作します。

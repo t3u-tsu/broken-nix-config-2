@@ -32,11 +32,11 @@ services.minecraft-discord-bridge = {
 
 ## 運用コマンド (ローカル)
 
-サーバー上で直接操作する場合：
+サーバー上で直接操作する場合（※tmux ではなく nc を使用します）：
 ```bash
 echo 'status' | sudo nc -U -N /run/minecraft-discord-bridge/bridge.sock
 ```
 
 ## セキュリティ
-- **機密情報の注入**: RCON パスワードや Bot トークンは `environmentFile` を通じて安全に渡されます。
+- **機密情報の注入**: RCON パスワードや Bot トークンは `environmentFile` を通じて安全に渡されます。各サーバーの RCON パスワードは `sops.templates` を用いて動的に環境変数へ変換・注入されます。
 - **権限**: サービスは `minecraft` ユーザーで実行され、不要な特権を持ちません。
