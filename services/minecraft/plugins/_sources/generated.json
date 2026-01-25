@@ -1,6 +1,6 @@
 {
     "gsit": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "gsit",
@@ -15,7 +15,7 @@
         "version": "3.2.0"
     },
     "lunachat": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "lunachat",
@@ -30,7 +30,7 @@
         "version": "v3.0.16"
     },
     "viabackwards": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "viabackwards",
@@ -45,7 +45,7 @@
         "version": "5.7.1"
     },
     "viaversion": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "viaversion",
