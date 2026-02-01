@@ -39,7 +39,7 @@
   # SSH configuration for restic backup
   programs.ssh.extraConfig = ''
     Host 10.0.1.3
-      IdentityFile \${config.sops.secrets.restic_shosoin_ssh_key.path}
+      IdentityFile ${config.sops.secrets.restic_shosoin_ssh_key.path}
       StrictHostKeyChecking no
       UserKnownHostsFile /dev/null
   '';
