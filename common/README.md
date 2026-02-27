@@ -29,3 +29,11 @@ Provides local network optimization flag (`my.localNetwork.enable`).
 ### 6. `tower-server/` (Directory)
 Standard configuration set for tower-style (x86_64) servers.
 - Unifies user environments, SSH security, SOPS, and auto-update settings for `shosoin-tan`, `kagutsuchi-sama`, and `sando-kun`.
+
+## Operational Notes
+
+### Kernel Pinning (6.18)
+Due to a major regression in kernel 6.19.4 in `nixos-unstable` (causing unbootable systems), all hosts have their `boot.kernelPackages` pinned to the **6.18** branch via `lib.mkForce`. It is recommended to keep this pin until the issue is confirmed resolved in newer releases.
+
+### IPv4 Prioritization (`gai.conf`)
+To improve network stability and speed in environments with dual-stack connectivity, `/etc/gai.conf` is configured with `precedence ::ffff:0:0/96 100` to prioritize IPv4 traffic.

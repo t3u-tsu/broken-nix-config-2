@@ -63,6 +63,12 @@ When using unstable parent connections like Rakuten Mobile (MTU 1340), packet fr
 Builds may fail with `Result: oom-kill` due to low RAM.
 A permanent 4GB swap file at `/var/lib/swapfile` is configured, with `vm.swappiness = 10` for optimization.
 
+### USB HDD Stability (UAS Compatibility Fix)
+To avoid UAS (USB Attached SCSI) compatibility issues with the JMicron JMS583 bridge (`152d:0583`), the system is configured with kernel param `usb-storage.quirks=152d:0583:u` to disable UAS and force the stable `usb-storage` driver.
+
+### Firewall Log Suppression
+Since this node is exposed to the internet, `logRefusedConnections = false` is set to suppress noisy kernel logs from blocked scan attempts.
+
 ### Auto-Update (Update Hub) Sync Failure
 If the commit notified by the Hub is not found locally, sync the repository manually:
 ```bash
