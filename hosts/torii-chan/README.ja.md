@@ -70,8 +70,11 @@ ssh -o KexAlgorithms=curve25519-sha256 t3u@10.0.0.1
 ビルド時にメモリが不足し、`nixos-rebuild` が `Result: oom-kill` で失敗することがあります。
 `/var/lib/swapfile` (4GB) を常設しており、`vm.swappiness = 10` で最適化されています。
 
-### 自動更新 (Update Hub) の同期不全
-Hub から通知されたコミットがローカルの `git` で見つからない場合、以下のコマンドでリポジトリを手動同期してください。
+### USB HDD の安定化 (UAS 相性問題の回避)
+JMicron JMS583 ブリッジ (`152d:0583`) における UAS (USB Attached SCSI) の相性問題を回避するため、カーネル引数 `usb-storage.quirks=152d:0583:u` を適用し、UAS を無効化して安定した `usb-storage` ドライバを使用するように構成しています。
+
+### ファイアウォールログの抑制
+インターネットに露出しているため、外部からのスキャン等のパケット拒否ログが `dmesg` を埋め尽くすのを防ぐため、`logRefusedConnections = false` を設定しています。
 ```bash
 cd ~/nix-config
 git fetch --all
