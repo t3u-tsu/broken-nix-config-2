@@ -18,7 +18,6 @@
   # --- USB HDD Boot Support ---
   boot.initrd.availableKernelModules = [ 
     "usb_storage" 
-    "uas" 
     "sd_mod" 
     "xhci_pci" 
     "ehci_pci" 
@@ -28,7 +27,11 @@
   ];
 
   # Give USB devices more time to spin up and be detected (Kernel level)
-  boot.kernelParams = [ "rootdelay=10" ];
+  # Also disable UAS for the JMicron JMS583 bridge (152d:0583) to avoid stability issues
+  boot.kernelParams = [ 
+    "rootdelay=10" 
+    "usb-storage.quirks=152d:0583:u"
+  ];
 
   # Use systemd in initrd for more robust device discovery and mounting
   boot.initrd.systemd.enable = true;
