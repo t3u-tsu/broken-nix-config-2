@@ -54,6 +54,8 @@ in
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 ];
+    logRefusedConnections = false;
+    logReversePathDrops = false;
   };
 
   users.users.${username} = {
