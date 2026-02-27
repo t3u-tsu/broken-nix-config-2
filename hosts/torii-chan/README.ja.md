@@ -75,6 +75,9 @@ JMicron JMS583 ブリッジ (`152d:0583`) における UAS (USB Attached SCSI) �
 
 ### ファイアウォールログの抑制
 インターネットに露出しているため、外部からのスキャン等のパケット拒否ログが `dmesg` を埋め尽くすのを防ぐため、`logRefusedConnections = false` を設定しています。
+
+### 自動更新 (Update Hub) の同期不全
+Hub から通知されたコミットがローカルの `git` で見つからない場合、以下のコマンドでリポジトリを手動同期してください。
 ```bash
 cd ~/nix-config
 git fetch --all
