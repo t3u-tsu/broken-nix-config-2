@@ -15,10 +15,10 @@
     auto-optimise-store = true;
   };
 
-  # x86_64 ホストでのみ aarch64 エミュレーションを有効にする
+  # Enable aarch64 emulation on x86_64 hosts
   boot.binfmt.emulatedSystems = lib.optional (pkgs.stdenv.hostPlatform.isx86_64) "aarch64-linux";
 
-  # 1週間に一度のガベージコレクション
+  # GC every week
   nix.gc = {
     automatic = true;
     dates = "weekly";

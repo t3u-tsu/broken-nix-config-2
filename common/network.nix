@@ -21,5 +21,10 @@ in {
     networking.hosts = {
       "${cfg.toriiChanIp}" = [ "torii-chan.t3u.uk" ];
     };
+
+    # Prioritize IPv4 over IPv6 in glibc (RFC 3484/6724)
+    environment.etc."gai.conf".text = ''
+      precedence  ::ffff:0:0/96  100
+    '';
   };
 }
