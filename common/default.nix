@@ -23,6 +23,7 @@
     git
     tmux
     htop
+    btop
     rsync
     pciutils
     usbutils
@@ -30,5 +31,13 @@
     curl
     dnsutils
     jq
+    smartmontools
+    nvme-cli
+    lm_sensors
+    fastfetch
+    nix-index
+    nix-tree
+    nix-du
+    nixfmt-rfc-style
   ];
 }
