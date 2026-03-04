@@ -25,6 +25,21 @@
 - 秘密情報の編集: `nix shell nixpkgs#sops -c sops secrets/secrets.yaml`
 - 外部からのデプロイ (nix run 経由): `nix run nixpkgs#nixos-rebuild -- switch --flake .#<host> --target-host t3u@<IP> --sudo --ask-sudo-password`
 
+### 全ホストへの反映手順 (Update Hub 経由)
+
+変更を全ホストに即座に反映させるには、GitHub へ Push した後に Hub (`torii-chan`) へ通知します。
+
+1. **GitHub へ Push**: `git add . && git commit -m "..." && git push`
+2. **Hub へ通知 (全ホスト一斉更新)**:
+   ```bash
+   # どのホストからでも実行可能 (要curl)
+   curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-parse HEAD)\", \"host\": \"$(hostname)\"}" http://10.0.0.1:8080/producer/done
+   ```
+3. **個別ホストの手動更新**:
+   ```bash
+   sudo systemctl start nixos-auto-update.service
+   ```
+
 ### 運用・デプロイ上の知見 (Operational Notes)
 
 - **WireGuard のリトライ**: 名前解決に失敗しても 5 秒おきに自動リトライされるため、起動直後の VPN 不通は自動的に解消されます。

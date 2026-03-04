@@ -47,6 +47,26 @@
 
 ---
 
+## 🚀 デプロイと反映
+
+通常、変更は GitHub へ Push することで **Update Hub** を介して全ホストに自動反映されます。
+
+### 全ホストへの即時反映
+GitHub へ Push した後、以下のコマンドで Hub へ通知することで、全ホストの更新をトリガーできます。
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-parse HEAD)\", \"host\": \"$(hostname)\"}" http://10.0.0.1:8080/producer/done
+```
+
+### 手動デプロイ (緊急時または新規構築時)
+```bash
+# shosoin-tan 等、特定のホストを指定してデプロイ
+nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --sudo
+```
+
+詳細は [services/update-hub](services/update-hub/README.ja.md) を参照してください。
+
+---
+
 ## はじめかた
 
 特定のホストやサービスについて詳しく知るには、それぞれのディレクトリにあるドキュメントを参照してください。

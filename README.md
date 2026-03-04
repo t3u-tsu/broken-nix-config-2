@@ -47,6 +47,26 @@ Detailed documentation is distributed across the repository. Please refer to the
 
 ---
 
+## 🚀 Deployment and Updates
+
+Normally, changes are automatically reflected across all hosts via **Update Hub** after pushing to GitHub.
+
+### Immediate Reflect (Global)
+After pushing to GitHub, you can trigger updates on all hosts by notifying the Hub:
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-parse HEAD)\", \"host\": \"$(hostname)\"}" http://10.0.0.1:8080/producer/done
+```
+
+### Manual Deployment (Emergency or New Setup)
+```bash
+# Example: Deploy to shosoin-tan
+nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --sudo
+```
+
+For more details, see [services/update-hub](services/update-hub/README.md).
+
+---
+
 ## Getting Started
 
 To learn about a specific host or service, navigate to its directory:
