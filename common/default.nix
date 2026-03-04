@@ -3,8 +3,8 @@
 {
   imports = [
     ./nix.nix
-    ./network.nix
-    ./packages.nix
+    ./networking.nix
+    ./packages
     ./time.nix
     ./wireguard.nix
     ../services/update-hub/client.nix
