@@ -22,9 +22,15 @@ Nix パッケージマネージャーの設定です。
 WireGuard の堅牢化設定です。
 - 起動時の DNS 解決失敗に備え、すべてのピア設定サービスに自動リトライ (`Restart=on-failure`) を追加します。
 
-### 5. `local-network.nix`
-LAN 内での最適化フラグ (`my.localNetwork.enable`) を提供します。
-- NAT ループバック問題への対策（ドメイン名のローカル解決）を管理します。
+### 5. `packages/` (ディレクトリ)
+機能別に分割されたシステムパッケージリストです。
+- `core.nix`: 基本的な CLI ユーティリティ。
+- `monitoring.nix`: システム監視およびハードウェアツール。
+- `network-tools.nix`: ネットワーク関連ユーティリティ。
+- `data.nix`: データ処理およびアーカイブツール。
+- `nix-tools.nix`: Nix エコシステムツール。
+- `security.nix`: セキュリティおよび暗号化ツール。
+- `default.nix`: 上記すべてを統合します。
 
 ### 6. `tower-server/` (ディレクトリ)
 タワー型サーバー（x86_64）向けの標準的な構成セットです。

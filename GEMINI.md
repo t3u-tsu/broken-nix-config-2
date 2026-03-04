@@ -41,3 +41,10 @@
 - **非NixOS環境からのデプロイ**: `nixos-rebuild` がない場合、`nix run` 経由で実行。
   - 例: `nix run nixpkgs#nixos-rebuild -- switch --flake .#<ホスト> --target-host <ユーザー>@<IP> --sudo --ask-sudo-password`
 - **リソース制限ホストのデプロイ**: `torii-chan` 等の低リソース機へのデプロイ時は、ネットワーク瞬断や SSH タイムアウトに注意。安定しない場合はリモート側で `nixos-rebuild` を実行する。
+
+### 作業記録 (Activity Log)
+
+- **2026-03-05**: `common/packages.nix` を `common/packages/` ディレクトリにモジュール化。
+    - パッケージを `core`, `monitoring`, `network-tools`, `data`, `nix-tools`, `security` のカテゴリに分割。
+    - `common/default.nix` のインポートパスを更新。
+    - 既存の `common/nix.nix` および `common/networking.nix`（システム設定用）との混同を避ける命名規則を採用。

@@ -22,9 +22,15 @@ Timezone and regional settings.
 WireGuard resilience settings.
 - Automatically adds retry policies (`Restart=on-failure`) to all WireGuard peer services to handle transient DNS failures on boot.
 
-### 5. `local-network.nix`
-Provides local network optimization flag (`my.localNetwork.enable`).
-- Handles local DNS resolution to bypass NAT loopback issues.
+### 5. `packages/` (Directory)
+Modularized system package lists.
+- `core.nix`: Essential CLI utilities.
+- `monitoring.nix`: System monitor and hardware tools.
+- `network-tools.nix`: Networking utilities.
+- `data.nix`: Data processing and archives.
+- `nix-tools.nix`: Nix ecosystem tools.
+- `security.nix`: Security and encryption tools.
+- `default.nix`: Integrates all of the above.
 
 ### 6. `tower-server/` (Directory)
 Standard configuration set for tower-style (x86_64) servers.
