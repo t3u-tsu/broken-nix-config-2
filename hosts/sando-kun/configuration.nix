@@ -2,12 +2,13 @@
 
 {
   imports = [
-  my.hardware.pc-tools.enable = true;
     ./disko-config.nix
     ./services
     ../../modules
-    ../../modules/tower-server
+    ../../modules/profiles/tower-server
   ];
+
+  my.hardware.pc-tools.enable = true;
 
   # GeForce 8400 GS (Tesla) is too old for modern NVIDIA drivers.
   # We stick with nouveau or basic kernel drivers for stability.

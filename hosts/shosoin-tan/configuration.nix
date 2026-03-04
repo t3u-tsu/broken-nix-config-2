@@ -7,6 +7,7 @@
     ../../modules/services/minecraft
     ../../modules/services/backup
     ../../modules/services/discord-bridge
+    ../../modules/profiles/tower-server
     ../../modules
   ];
 

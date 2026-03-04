@@ -6,7 +6,15 @@ let
 in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      bandwhich curl dnsutils lsof mtr nmap rsync tcpdump wget
+      bandwhich
+      curl
+      dnsutils
+      lsof
+      mtr
+      nmap
+      rsync
+      tcpdump
+      wget
     ];
   };
 }

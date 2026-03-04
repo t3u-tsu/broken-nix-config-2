@@ -2,12 +2,13 @@
 
 {
   imports = [
-  my.hardware.pc-tools.enable = true;
     ./disko-config.nix
     ./services
     ../../modules
-    ../../modules/tower-server
+    ../../modules/profiles/tower-server
   ];
+
+  my.hardware.pc-tools.enable = true;
 
   # Bootloader configuration (Using GRUB to match shosoin-tan)
   boot.loader.grub = {

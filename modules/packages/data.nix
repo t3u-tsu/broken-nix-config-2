@@ -6,7 +6,13 @@ let
 in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      jq p7zip unzip xz yq-go zip zstd
+      jq
+      p7zip
+      unzip
+      xz
+      yq-go
+      zip
+      zstd
     ];
   };
 }

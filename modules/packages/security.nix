@@ -6,7 +6,9 @@ let
 in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      age gnupg sops
+      age
+      gnupg
+      sops
     ];
   };
 }
