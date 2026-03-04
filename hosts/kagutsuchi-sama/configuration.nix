@@ -9,6 +9,7 @@
   ];
 
   my.hardware.pc-tools.enable = true;
+  my.updateHub.client.enable = true;
 
   # Bootloader configuration (Using GRUB to match shosoin-tan)
   boot.loader.grub = {

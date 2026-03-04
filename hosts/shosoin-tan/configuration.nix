@@ -65,7 +65,10 @@
   };
 
   # Shosoin-tan is the Update Producer
-  my.autoUpdate.pushChanges = true;
+  my.updateHub.client = {
+    enable = true;
+    pushChanges = true;
+  };
 
   system.stateVersion = "25.05";
 }

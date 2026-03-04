@@ -99,9 +99,12 @@ in
     "vm.swappiness" = 10; # Use swap only when necessary to protect storage
   };
 
-  my.autoUpdate = {
-    enable = true;
-    user = username;
-    onCalendar = "*-*-* 05:00:00";
+  my.updateHub = {
+    server.enable = true;
+    client = {
+      enable = true;
+      user = username;
+      onCalendar = "*-*-* 05:00:00";
+    };
   };
 }

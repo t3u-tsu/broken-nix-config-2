@@ -1,25 +1,79 @@
-{ pkgs, lib, config, ... }:
+{ config, lib, ... }:
+
+with lib;
 
 let
-  port = 8080;
-  
-  hubScript = pkgs.writeScriptBin "update-hub" ''
-    #!${pkgs.python3}/bin/python3
-    ${builtins.readFile ./hub.py}
-  '';
-in
-{
-  networking.firewall.allowedTCPPorts = [ port ];
+  cfg = config.my.updateHub;
+in {
+  imports = [
+    ./hub.nix
+    ./client.nix
+  ];
 
-  systemd.services.update-hub = {
-    description = "NixOS Update Status Hub";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${hubScript}/bin/update-hub --port ${toString port} --hostname ${config.networking.hostName} --log-file /var/lib/update-hub/hub.log";
-      Restart = "always";
-      StateDirectory = "update-hub";
-      User = "root";
+  options.my.updateHub = {
+    server.enable = mkEnableOption "NixOS Update Status Hub (Server)";
+    
+    client = {
+      enable = mkEnableOption "Automatic system and plugin updates (Client)";
+      user = mkOption {
+        type = types.str;
+        default = "t3u";
+        description = "The user who owns the nix-config repository";
+      };
+      subdir = mkOption {
+        type = types.str;
+        default = "nix-config";
+        description = "Subdirectory under home for the repository";
+      };
+      remoteUrl = mkOption {
+        type = types.str;
+        default = "github.com/t3u-tsu/nix-config.git";
+      };
+      gitUserName = mkOption {
+        type = types.str;
+        default = "t3u-daemon";
+      };
+      gitUserEmail = mkOption {
+        type = types.str;
+        default = "t3u+daemon@t3u.uk";
+      };
+      pushChanges = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether this host should update flake.lock and push changes to Git";
+      };
+      onCalendar = mkOption {
+        type = types.str;
+        default = "*-*-* 04:00:00";
+        description = "Systemd OnCalendar expression for the update timer";
+      };
+      hubUrl = mkOption {
+        type = types.str;
+        default = "http://10.0.1.1:8080";
+        description = "URL of the update-hub on torii-chan";
+      };
+      nvfetcher = mkOption {
+        type = types.listOf (types.submodule {
+          options = {
+            enable = mkEnableOption "Enable nvfetcher for this target";
+            dir = mkOption {
+              type = types.str;
+              description = "Directory containing nvfetcher.toml (relative to flake root)";
+            };
+            configFile = mkOption {
+              type = types.str;
+              default = "nvfetcher.toml";
+              description = "Name of the nvfetcher config file";
+            };
+          };
+        });
+        default = [];
+        description = "List of nvfetcher targets to update";
+      };
     };
+  };
+
+  config = mkIf cfg.server.enable {
+    # Server side specific base config if any
   };
 }

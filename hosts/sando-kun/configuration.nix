@@ -9,6 +9,7 @@
   ];
 
   my.hardware.pc-tools.enable = true;
+  my.updateHub.client.enable = true;
 
   # GeForce 8400 GS (Tesla) is too old for modern NVIDIA drivers.
   # We stick with nouveau or basic kernel drivers for stability.

@@ -3,80 +3,21 @@
 with lib;
 
 let
-  cfg = config.my.autoUpdate;
-  targetUser = config.users.users.${cfg.user};
+  cfg = config.my.updateHub.client;
+  targetUser = config.users.users.${cfg.user} or { home = "/home/${cfg.user}"; group = cfg.user; };
   flakePath = "${targetUser.home}/${cfg.subdir}";
 
-  # nvfetcher ターゲットのディレクトリとファイル名をスペース区切りで抽出
+  # nvfetcher ターゲットの抽出
   nvDirs = concatStringsSep " " (map (t: t.dir) (filter (t: t.enable) cfg.nvfetcher));
   nvConfigs = concatStringsSep " " (map (t: t.configFile) (filter (t: t.enable) cfg.nvfetcher));
 
-  # スクリプトの生成
-  updateClientScript = pkgs.writeShellScriptBin "nixos-auto-update" (builtins.readFile ./update-client.sh);
+  # スクリプトの生成 (パスを scripts/ 配下に修正)
+  updateClientScript = pkgs.writeShellScriptBin "nixos-auto-update" (builtins.readFile ./scripts/update-client.sh);
   receiverScript = pkgs.writeScriptBin "nixos-update-receiver" ''
     #!${pkgs.python3}/bin/python3
-    ${builtins.readFile ./receiver.py}
+    ${builtins.readFile ./scripts/receiver.py}
   '';
 in {
-  options.my.autoUpdate = {
-    enable = mkEnableOption "Automatic system and plugin updates";
-    user = mkOption {
-      type = types.str;
-      default = "t3u";
-      description = "The user who owns the nix-config repository";
-    };
-    subdir = mkOption {
-      type = types.str;
-      default = "nix-config";
-      description = "Subdirectory under home for the repository";
-    };
-    remoteUrl = mkOption {
-      type = types.str;
-      default = "github.com/t3u-tsu/nix-config.git";
-    };
-    gitUserName = mkOption {
-      type = types.str;
-      default = "t3u-daemon";
-    };
-    gitUserEmail = mkOption {
-      type = types.str;
-      default = "t3u+daemon@t3u.uk";
-    };
-    pushChanges = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether this host should update flake.lock and push changes to Git";
-    };
-    onCalendar = mkOption {
-      type = types.str;
-      default = "*-*-* 04:00:00";
-      description = "Systemd OnCalendar expression for the update timer";
-    };
-    hubUrl = mkOption {
-      type = types.str;
-      default = "http://10.0.1.1:8080";
-      description = "URL of the update-hub on torii-chan";
-    };
-    nvfetcher = mkOption {
-      type = types.listOf (types.submodule {
-        options = {
-          enable = mkEnableOption "Enable nvfetcher for this target";
-          dir = mkOption {
-            type = types.str;
-            description = "Directory containing nvfetcher.toml (relative to flake root)";
-          };
-          configFile = mkOption {
-            type = types.str;
-            default = "nvfetcher.toml";
-            description = "Name of the nvfetcher config file";
-          };
-        };
-      });
-      default = [];
-      description = "List of nvfetcher targets to update";
-    };
-  };
-
   config = mkIf cfg.enable {
     sops.secrets.github_token.owner = "root";
 
@@ -126,7 +67,6 @@ in {
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
       
-      # 起動時に Hub へ現在の状態を報告する (ブート時やデプロイ時に自動登録するため)
       postStart = ''
         if [ -d "${flakePath}/.git" ]; then
           COMMIT=$(${pkgs.git}/bin/git -C ${flakePath} rev-parse HEAD)
