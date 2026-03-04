@@ -69,6 +69,7 @@ in {
       
       postStart = ''
         if [ -d "${flakePath}/.git" ]; then
+          ${pkgs.coreutils}/bin/chown -R ${cfg.user}:${targetUser.group} ${flakePath}
           COMMIT=$(${pkgs.git}/bin/git -C ${flakePath} rev-parse HEAD)
           ${pkgs.curl}/bin/curl -sf -X POST \
             -H "Content-Type: application/json" \

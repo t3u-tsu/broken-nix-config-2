@@ -33,7 +33,9 @@ if [ "$PUSH_CHANGES" = "true" ]; then
   # --- Producer Mode ---
   echo "Producer mode: Checking for updates..."
   git reset --hard origin/main
+  chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
   nix flake update
+  chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
   
   # Run nvfetcher if requested
   IFS=' ' read -r -a DIRS <<< "$NVFETCHER_DIRS"
@@ -54,6 +56,7 @@ if [ "$PUSH_CHANGES" = "true" ]; then
   if ! git diff --cached --exit-code; then
     git -c user.name="$GIT_USER_NAME" -c user.email="$GIT_USER_EMAIL" commit -m "chore(auto): update system and plugins $(date +%F)"
     git push "https://x-access-token:$TOKEN@$REMOTE_URL" main
+    chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
   fi
   
   NEW_COMMIT=$(git rev-parse HEAD)
@@ -76,6 +79,7 @@ else
      # Fetch everything from main to ensure we have the commit object
      git fetch origin main
      git reset --hard "$HUB_COMMIT"
+     chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
      
      # Use NIXOS_NO_CHECK=1 for auto-updates to prevent stopping on dbus/systemd inhibitors
      # Also use --no-reexec to avoid D-Bus connection loss issues during switch
@@ -91,4 +95,8 @@ fi
 # Report status back to hub
 REPORT_COMMIT=$(git rev-parse HEAD)
 TIMESTAMP=$(date -Iseconds)
+
+# Ensure ownership is correct before finishing
+chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
+
 curl -X POST -H "Content-Type: application/json" -d "{\"host\": \"$HOSTNAME\", \"commit\": \"$REPORT_COMMIT\", \"timestamp\": \"$TIMESTAMP\"}" "$HUB_URL/consumer/reported"
