@@ -3,6 +3,5 @@
     ./core
     ./packages
     ./shell
-    ./profiles
   ];
 }
