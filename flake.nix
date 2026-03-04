@@ -2,9 +2,10 @@
   description = "My NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -25,12 +26,18 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, sops-nix, nix-minecraft, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, disko, sops-nix, nix-minecraft, ... }@inputs:
     let
-      # Overlays for cross-compilation and Minecraft
+      # Overlays for cross-compilation, Minecraft, and Unstable packages
       overlays = [
         nix-minecraft.overlay
         (final: prev: {
+          # Access unstable packages via 'unstable' attribute
+          unstable = import nixpkgs-unstable {
+            inherit (prev.stdenv.hostPlatform) system;
+            config.allowUnfree = true;
+          };
+          
           ubootOrangePiZero3 = prev.buildUBoot {
             version = "2024.01";
             defconfig = "orangepi_zero3_defconfig";
