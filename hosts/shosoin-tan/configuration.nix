@@ -4,12 +4,13 @@
   imports = [
     ./disko-config.nix
     ./services
-    ../../services/minecraft
-    ../../services/backup
-    ../../services/discord-bridge
-    ../../common
-    ../../common/tower-server
+    ../../modules/services/minecraft
+    ../../modules/services/backup
+    ../../modules/services/discord-bridge
+    ../../modules
   ];
+
+  my.hardware.pc-tools.enable = true;
 
   # GT 210 / GT 710 configuration
 

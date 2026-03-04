@@ -4,6 +4,6 @@
   imports = [
     ./ddns.nix
     ./wireguard.nix
-    ../../../services/update-hub
+    ../../../modules/services/update-hub
   ];
 }

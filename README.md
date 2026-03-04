@@ -1,51 +1,22 @@
 # My NixOS Fleet
 
-This repository manages multiple NixOS configurations using Flakes. It is designed for secure, reproducible, and multi-architecture system management.
-
-## ℹ️ Documentation Structure
-
-Detailed documentation is distributed across the repository. Please refer to the specific `README.md` files in these locations:
-
-- `hosts/<hostname>/`: Hardware specs and deployment guides for specific machines.
-- `services/<service-name>/`: Deep dives into specific service configurations (e.g., Minecraft).
-- `common/`: Settings shared across all hosts.
+This repository manages multiple NixOS configurations using Flakes and a **Modular Architecture**.
 
 ## 📂 Directory Structure
+
+The repository is divided into "Mechanisms (Modules)" and "Entities (Hosts)".
 
 ```text
 .
 ├── flake.nix           # Entry point for the configuration
 ├── hosts/              # Host-specific configurations
-├── common/             # Shared configurations across all hosts
-├── services/           # Common service configurations
-│   ├── minecraft/      # Minecraft Network (Velocity + Paper)
-│   ├── backup/         # Automated Restic Backups
-│   └── update-hub/     # Coordinated Update System (Hub & Client)
-├── lib/                # Common library functions
-└── secrets/            # Encrypted secrets (SOPS)
+└── modules/            # Reusable modules
+    ├── core/           # Base settings (Nix, Network, WireGuard)
+    ├── packages/       # Functional package groups (my.packages.*)
+    ├── shell/          # Shell integration (Zsh & Home-manager)
+    ├── services/       # Server services (Minecraft, Backup, etc.)
+    └── profiles/       # Role-based presets (Tower Server, etc.)
 ```
-
-## 🖥️ The Fleet (Hosts)
-
-| Host | Mgmt IP (WG0) | App IP (WG1) | Role | Storage |
-| :--- | :--- | :--- | :--- | :--- |
-| `torii-chan` | `10.0.0.1` | `10.0.1.1` | Gateway / Update Hub / DDNS | SD + HDD |
-| `sando-kun` | `10.0.0.2` | `10.0.1.2` | Sando Server | HDD + ZFS Mirror |
-| `kagutsuchi-sama` | `10.0.0.3` | `10.0.1.3` | Compute Server / Backup Receiver | SSD + 3TB HDD |
-| `shosoin-tan` | `10.0.0.4` | `10.0.1.4` | Minecraft / Discord Bridge / Producer | SSD + ZFS Mirror |
-
-## 🛠️ Core Technologies
-
-- **Nix Flakes:** For reproducible builds and dependency management.
-- **sops-nix:** For encrypting secrets (passwords, API keys) via `age`. Enables secure dynamic injection of RCON passwords.
-- **nvfetcher:** For managing external binary assets with automatic version tracking.
-- **WireGuard:** For secure management (wg0) and application (wg1) networks.
-- **Coordinated Auto Updates:** Daily automated updates at 4 AM with Webhook push notification sync.
-- **Minecraft Discord Bridge:** Custom multi-tenant Go-based management bot for whitelists.
-- **Automated Backup (Restic):** Automated backups every 2 hours with Minecraft data consistency hooks.
-- **Build Optimization:** aarch64 emulation building to fully utilize NixOS official binary caches.
-
----
 
 ## 🚀 Deployment and Updates
 
@@ -57,20 +28,12 @@ After pushing to GitHub, you can trigger updates on all hosts by notifying the H
 curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-parse HEAD)\", \"host\": \"$(hostname)\"}" http://10.0.0.1:8080/producer/done
 ```
 
-### Manual Deployment (Emergency or New Setup)
-```bash
-# Example: Deploy to shosoin-tan
-nixos-rebuild switch --flake .#shosoin-tan --target-host t3u@10.0.0.4 --sudo
-```
+## 🛠️ Key Features
 
-For more details, see [services/update-hub](services/update-hub/README.md).
+- **Zsh & Home-manager**: Zsh is the default shell on all hosts, deeply integrated with completion and aliases.
+- **Modular Packages**: Control package groups via options like `my.packages.monitoring.enable = false`.
+- **Smart Hardware Tools**: Opt-in to physical server tools via `my.hardware.pc-tools.enable = true`.
+- **sops-nix**: Secret encryption via `age`.
+- **Automated Backup**: Restic backups every 2 hours.
 
----
-
-## Getting Started
-
-To learn about a specific host or service, navigate to its directory:
-```bash
-cd hosts/kagutsuchi-sama
-cat README.md
-```
+For more details, see [GEMINI.md](GEMINI.md) or specific `README.md` files in subdirectories.

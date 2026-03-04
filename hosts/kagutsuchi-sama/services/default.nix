@@ -3,6 +3,6 @@
 {
   imports = [
     ./wireguard.nix
-    ../../../services/backup/receiver.nix
+    ../../../modules/services/backup/receiver.nix
   ];
 }
