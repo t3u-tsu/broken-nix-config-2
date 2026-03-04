@@ -2,6 +2,7 @@
 
 {
   home-manager.users.t3u = {
+    home.stateVersion = config.system.stateVersion;
     programs.zsh = {
       enable = true;
       enableCompletion = true;

@@ -41,7 +41,7 @@ A Discord management tool, [minecraft-discord-bridge](https://github.com/t3u-tsu
 Plugins (ViaVersion, ViaBackwards) are managed in the `plugins/` directory using **nvfetcher**. This allows automatic fetching of latest hashes and declarative version management.
 
 - **Automated Update**:
-  If `my.autoUpdate.enable = true` is set on the host, `nvfetcher` runs automatically every day at 4 AM, and updated plugin information is pushed to the repository.
+  If `my.updateHub.client.enable = true` is set on the host, `nvfetcher` runs automatically every day at 4 AM, and updated plugin information is pushed to the repository.
 - **Manual Update**:
   ```bash
   (cd services/minecraft/plugins && nvfetcher -c nvfetcher.toml)

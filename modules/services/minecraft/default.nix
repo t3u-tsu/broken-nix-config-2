@@ -12,7 +12,7 @@
   };
 
   # Automatically register nvfetcher update task if auto-update is enabled
-  my.autoUpdate.nvfetcher = [
+  my.updateHub.client.nvfetcher = [
     (inputs.self.lib.autoUpdate.mkNvfetcherTask "services/minecraft/plugins")
   ];
 }
