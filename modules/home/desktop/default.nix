@@ -42,6 +42,30 @@
     style.name = "breeze";
   };
 
-  # Ensure user environment is Japanese
-  home.language.base = "ja_JP.UTF-8";
-}
+    # Ensure user environment is Japanese
+
+    home.language.base = "ja_JP.UTF-8";
+
+  
+
+    # Default Terminal
+
+    home.sessionVariables.TERMINAL = "alacritty";
+
+  
+
+    # KDE Default Terminal
+
+    home.file.".config/kdeglobals".text = ''
+
+      [General]
+
+      TerminalApplication=alacritty
+
+      TerminalService=Alacritty.desktop
+
+    '';
+
+  }
+
+  

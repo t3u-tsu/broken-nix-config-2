@@ -57,7 +57,7 @@ in {
             installation_mode = "force_installed";
           };
           # Keepa
-          "amzn_dot_com_price_checker@keepa.com" = {
+          "amptra@keepa.com" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepa/latest.xpi";
             installation_mode = "force_installed";
           };
@@ -72,18 +72,23 @@ in {
             installation_mode = "force_installed";
           };
           # Wappalyzer
-          "wappalyzer@crunch.mu" = {
+          "wappalyzer@crunchlabz.com" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/wappalyzer/latest.xpi";
             installation_mode = "force_installed";
           };
           # YouTube NonStop
-          "{67000af4-6df3-4403-8be3-0668da0bbbe4}" = {
+          "{0d7cafdd-501c-49ca-8ebb-e3341caaa55e}" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/youtube-nonstop/latest.xpi";
             installation_mode = "force_installed";
           };
           # YouTube Screenshot
-          "{da02066c-cd98-469a-80eb-000000000000}" = {
+          "{d8b32864-153d-47fb-93ea-c273c4d1ef17}" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/take-youtube-screenshots/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # LINE
+          "LINEPorted@FoxRefire" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/line-on-browser/latest.xpi";
             installation_mode = "force_installed";
           };
         };
@@ -145,6 +150,7 @@ in {
           "browser.newtabpage.enabled" = false; # Clean new tab
           "browser.startup.page" = 3; # Resume last session
           "browser.toolbars.bookmarks.visibility" = "always";
+          "browser.bookmarks.addedImportButton" = false;
           
           # Language & Localization
           "intl.accept_languages" = "ja-jp,ja,en-us,en";
@@ -155,11 +161,17 @@ in {
           "zen.theme.content-element-separation" = 0;
           "zen.workspaces.show-workspace-indicator" = true;
           "zen.theme.essentials-favicon-bg" = true;
+          
+          # Zen Verified settings
+          "zen.welcome-screen.seen" = true;
+          "browser.aboutwelcome.enabled" = false;
 
           # Privacy & Security
           "privacy.trackingprotection.enabled" = true;
           "privacy.trackingprotection.socialtracking.enabled" = true;
           "dom.security.https_only_mode" = true;
+          "network.cookie.cookieBehavior" = 0; # Allow all cookies
+          "network.cookie.lifetimePolicy" = 0; # Keep until expired
           
           # Performance
           "gfx.webrender.all" = true;

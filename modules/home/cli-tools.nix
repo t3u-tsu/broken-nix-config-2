@@ -35,6 +35,6 @@
     la = "eza -a";
     tree = "eza --tree";
     cat = "bat";
-    grep = "ripgrep";
+    grep = "rg";
   };
 }
