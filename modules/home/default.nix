@@ -34,5 +34,9 @@
       enable = true;
       nix-direnv.enable = true;
     };
+
+    # Command-not-found & comma (,) integration
+    programs.nix-index.enable = true;
+    programs.nix-index-database.comma.enable = true;
   };
 }

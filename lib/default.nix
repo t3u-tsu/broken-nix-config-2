@@ -13,9 +13,13 @@
         sops-nix.nixosModules.sops
         nix-minecraft.nixosModules.minecraft-servers
         home-manager.nixosModules.home-manager
+        inputs.nix-index-database.nixosModules.nix-index
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.sharedModules = [
+            inputs.nix-index-database.homeModules.nix-index
+          ];
           nixpkgs.overlays = overlays;
         }
         (if targetSystem != null then {
