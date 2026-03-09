@@ -44,6 +44,7 @@
     - システム全体のテーマを **Dracula** で統一（Alacritty, GTK, Qt）。
     - **awww** (Codeberg 版) によるアニメーション壁紙の導入。
     - キーバインドを **Omarchy** 風に再編し、Vim キー (HJKL) とのハイブリッド構成を実現。
+    - 重複していた外部ツール（SwayNC, wlogout, swayosd, 各種アプレット）を排除し、**Noctalia Shell** の内蔵機能に完全一本化。
     - バイナリキャッシュ（niri, yazi, chaotic-nyx 等）を大幅拡充しビルドを高速化。
     - `README` に主要な参考文献（ryan4yin, omarchy-nix, natsukium, asa1984, ms0503）を明記。
 - **2026-03-09**: Zen Browser の高度なカスタマイズと開発環境の構造化。
