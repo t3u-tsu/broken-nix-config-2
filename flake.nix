@@ -63,6 +63,7 @@
         # 1. For SD card creation (No Disko, uses standard modules)
         "torii-chan-sd" = lib.mkSystem {
           name = "torii-chan"; # Same hostname
+          username = "t3u";
           system = "x86_64-linux";
           targetSystem = "aarch64-linux";
           extraModules = [
@@ -77,6 +78,7 @@
         # 2. For Production / HDD operation
         "torii-chan" = lib.mkSystem {
           name = "torii-chan";
+          username = "t3u";
           system = "aarch64-linux";
           extraModules = [
              ./hosts/torii-chan/fs-hdd.nix
@@ -87,6 +89,7 @@
         # 3. For continuous development on SD card (No HDD)
         "torii-chan-sd-live" = lib.mkSystem {
           name = "torii-chan";
+          username = "t3u";
           system = "aarch64-linux";
           extraModules = [
              ./hosts/torii-chan/fs-sd.nix
@@ -97,24 +100,28 @@
         # 4. Tower Server (shosoin-tan)
         "shosoin-tan" = lib.mkSystem {
           name = "shosoin-tan";
+          username = "t3u";
           system = "x86_64-linux";
         };
 
         # 5. Tower Server (kagutsuchi-sama)
         "kagutsuchi-sama" = lib.mkSystem {
           name = "kagutsuchi-sama";
+          username = "t3u";
           system = "x86_64-linux";
         };
 
         # 6. Tower Server (sando-kun)
         "sando-kun" = lib.mkSystem {
           name = "sando-kun";
+          username = "t3u";
           system = "x86_64-linux";
         };
 
         # 7. Desktop PC (BrokenPC)
         "BrokenPC" = lib.mkSystem {
           name = "BrokenPC";
+          username = "t3u";
           system = "x86_64-linux";
         };
       };

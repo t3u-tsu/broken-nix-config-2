@@ -1,9 +1,9 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 {
   my.updateHub.client = {
-    enable = lib.mkDefault true;
-    user = lib.mkDefault "t3u";
-    pushChanges = lib.mkDefault false; # Default to Consumer mode
+    enable = true;
+    user = lib.mkDefault config.my.user.name;
+    onCalendar = "*-*-* 04:00:00";
   };
 }

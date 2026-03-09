@@ -42,7 +42,7 @@ in
     logReversePathDrops = false;
   };
 
-  users.users.${username} = {
+  users.users.${config.my.user.name} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     hashedPasswordFile = config.sops.secrets.torii_chan_t3u_password_hash.path;
@@ -87,7 +87,7 @@ in
     server.enable = true;
     client = {
       enable = true;
-      user = username;
+      user = config.my.user.name;
       onCalendar = "*-*-* 05:00:00";
     };
   };

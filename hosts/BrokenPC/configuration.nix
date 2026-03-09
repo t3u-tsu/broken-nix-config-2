@@ -5,7 +5,7 @@
     ./disko-config.nix
     ./services
     ../../modules
-    ../../modules/services/desktop/plasma.nix
+    ../../modules/profiles/desktop
   ];
 
 
@@ -72,9 +72,6 @@
     boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   };
 
-  # Enable KDE Plasma
-  my.services.desktop.plasma.enable = true;
-
   # Hostname
   networking.hostName = "BrokenPC";
 
@@ -87,26 +84,26 @@
 
   # User account
   users.mutableUsers = false;
-  users.users.t3u = {
+  users.users.${config.my.user.name} = {
     isNormalUser = true;
-    description = "t3u";
+    description = config.my.user.name;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
     shell = pkgs.zsh;
     hashedPasswordFile = config.sops.secrets.brokenpc_t3u_password_hash.path;
   };
 
-  # Ensure /data exists and is owned by t3u
+  # Ensure /data exists and is owned by the user
   systemd.tmpfiles.rules = [
-    "d /data 0755 t3u users -"
+    "d /data 0755 ${config.my.user.name} users -"
   ];
 
   # Root account password
   users.users.root.hashedPasswordFile = config.sops.secrets.brokenpc_root_password_hash.path;
 
-  # SSH Key for t3u (Managed by SOPS)
+  # SSH Key for the user (Managed by SOPS)
   sops.secrets.brokenpc_ssh_private_key = {
-    path = "/home/t3u/.ssh/id_ed25519";
-    owner = "t3u";
+    path = "/home/${config.my.user.name}/.ssh/id_ed25519";
+    owner = config.my.user.name;
     group = "users";
     mode = "0600";
   };

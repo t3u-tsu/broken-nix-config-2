@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  username = "t3u";
+  username = config.my.user.name;
   hostKey = builtins.replaceStrings [ "-" ] [ "_" ] config.networking.hostName;
 in
 {

@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  home-manager.users.t3u = {
+  home-manager.users.${config.my.user.name} = {
     home.stateVersion = config.system.stateVersion;
     programs.zsh = {
       enable = true;

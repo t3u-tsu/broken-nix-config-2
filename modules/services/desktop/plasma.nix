@@ -20,19 +20,11 @@ in {
     i18n.defaultLocale = "ja_JP.UTF-8";
     time.timeZone = "Asia/Tokyo";
 
-    # Japanese Fonts
-    fonts.packages = with pkgs; [
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      noto-fonts-color-emoji
-    ];
-
-    # Desktop basic tools
+    # Plasma basic tools
     environment.systemPackages = with pkgs.kdePackages; [
       konsole
       dolphin
       kate
-      pkgs.firefox
     ];
   };
 }

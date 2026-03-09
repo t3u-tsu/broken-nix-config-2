@@ -17,7 +17,7 @@ in {
       enable = mkEnableOption "Automatic system and plugin updates (Client)";
       user = mkOption {
         type = types.str;
-        default = "t3u";
+        default = config.my.user.name;
         description = "The user who owns the nix-config repository";
       };
       subdir = mkOption {
