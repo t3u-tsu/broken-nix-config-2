@@ -20,13 +20,14 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # GPU Configuration (NVIDIA + AMD Hybrid)
+  # Default: Use NVIDIA driver for external monitor output (via PRIME offload)
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement.enable = true; # Power management for hybrid graphics
+    powerManagement.enable = true;
     powerManagement.finegrained = true;
-    open = false; # Proprietary drivers are recommended for mobile
+    open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
@@ -39,6 +40,18 @@
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:7:0:0";
     };
+  };
+
+  # Specialisation: Add a "No NVIDIA" boot option for emergency or power saving
+  specialisation."No-NVIDIA".configuration = {
+    system.nixos.tags = [ "no-nvidia" ];
+    # Force AMD driver only
+    services.xserver.videoDrivers = lib.mkForce [ "amdgpu" ];
+    # Disable NVIDIA settings in this mode
+    hardware.nvidia.prime.offload.enable = lib.mkForce false;
+    hardware.nvidia.modesetting.enable = lib.mkForce false;
+    # Disable the NVIDIA kernel module to prevent it from even loading
+    boot.blacklistedKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   };
 
   # Enable KDE Plasma
