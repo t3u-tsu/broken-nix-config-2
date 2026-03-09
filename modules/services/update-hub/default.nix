@@ -47,6 +47,11 @@ in {
         default = "*-*-* 04:00:00";
         description = "Systemd OnCalendar expression for the update timer";
       };
+      extraRebuildArgs = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "Extra arguments to pass to nixos-rebuild switch";
+      };
       hubUrl = mkOption {
         type = types.str;
         default = "http://10.0.1.1:8080";

@@ -33,7 +33,7 @@ in {
 
       spawn-at-startup = [
         # awww is the new swww from Codeberg
-        { command = [ "${inputs.awww.packages.${pkgs.system}.default}/bin/awww-daemon" ]; }
+        { command = [ "${inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/awww-daemon" ]; }
         { command = [ "${pkgs.swaynotificationcenter}/bin/swaync" ]; }
         { command = [ "${pkgs.networkmanagerapplet}/bin/nm-applet" "--indicator" ]; }
         { command = [ "${pkgs.blueman}/bin/blueman-applet" ]; }
@@ -111,7 +111,7 @@ in {
     };
 
     home.packages = with pkgs; [
-      inputs.awww.packages.${pkgs.system}.default
+      inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.default
       xwayland-satellite
       brightnessctl
       playerctl

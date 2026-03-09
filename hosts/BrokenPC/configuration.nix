@@ -112,7 +112,10 @@
   my.hardware.pc-tools.enable = true;
 
   # Update Hub Client integration
-  my.updateHub.client.enable = true;
+  my.updateHub.client = {
+    enable = true;
+    extraRebuildArgs = [ "--no-reexec" ];
+  };
 
   # State version
   system.stateVersion = "25.11";

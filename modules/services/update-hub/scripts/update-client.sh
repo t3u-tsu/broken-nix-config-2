@@ -25,6 +25,13 @@ fi
 
 cd "$FLAKE_PATH"
 
+# Branch protection: Only update if on 'main' branch
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
+  echo "Current branch is '$CURRENT_BRANCH', not 'main'. Skipping auto-update to avoid overwriting local work."
+  exit 0
+fi
+
 # Fetch latest state
 git fetch origin main
 CURRENT_HEAD=$(git rev-parse HEAD)
@@ -63,7 +70,7 @@ if [ "$PUSH_CHANGES" = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$NEW_COMMIT\", \"host\": \"$HOSTNAME\"}" "$HUB_URL/producer/done"
   
   if [ "$CURRENT_HEAD" != "$NEW_COMMIT" ]; then
-    nixos-rebuild switch --flake .
+    nixos-rebuild switch --flake . $EXTRA_REBUILD_ARGS
   fi
 else
   # --- Consumer Mode ---
@@ -82,7 +89,7 @@ else
      chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
      
      # Use NIXOS_NO_CHECK=1 for auto-updates to prevent stopping on dbus/systemd inhibitors
-     if NIXOS_NO_CHECK=1 nixos-rebuild switch --flake .; then
+     if NIXOS_NO_CHECK=1 nixos-rebuild switch --flake . $EXTRA_REBUILD_ARGS; then
          echo "Update successful."
      else
          echo "Update failed! Notifying hub of failure (TODO)."

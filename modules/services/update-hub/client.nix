@@ -46,6 +46,7 @@ in {
         GIT_USER_EMAIL = cfg.gitUserEmail;
         NVFETCHER_DIRS = nvDirs;
         NVFETCHER_CONFIGS = nvConfigs;
+        EXTRA_REBUILD_ARGS = concatStringsSep " " cfg.extraRebuildArgs;
       };
 
       script = "${updateClientScript}/bin/nixos-auto-update";
