@@ -38,6 +38,14 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-10**: Niri への完全移行とデスクトップ体験の究極化。
+    - **Niri** (Scrollable-Tiling) への完全移行を実施し、KDE Plasma を排除。
+    - ログインマネージャを **greetd (tuigreet)** へ変更し、TUI ベースの高速な起動を実現。
+    - システム全体のテーマを **Dracula** で統一（Alacritty, GTK, Qt）。
+    - **awww** (Codeberg 版) によるアニメーション壁紙の導入。
+    - キーバインドを **Omarchy** 風に再編し、Vim キー (HJKL) とのハイブリッド構成を実現。
+    - バイナリキャッシュ（niri, yazi, chaotic-nyx 等）を大幅拡充しビルドを高速化。
+    - `README` に主要な参考文献（ryan4yin, omarchy-nix, natsukium, asa1984, ms0503）を明記。
 - **2026-03-09**: Zen Browser の高度なカスタマイズと開発環境の構造化。
     - Zen Browser の**コンテナ設定**（Personal, School, Work）を英語名で再定義。
     - `modules/home/desktop/dev-tools/` ディレクトリを新設し、Neovim や VSCode の設定を詳細管理可能にした。

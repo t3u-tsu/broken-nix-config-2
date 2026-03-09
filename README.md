@@ -38,3 +38,13 @@ curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-pa
 - **Automated Backup**: Restic backups managed on shosoin-tan.
 
 For more details, see [GEMINI.md](GEMINI.md) or specific `README.md` files in subdirectories.
+
+## 📚 References
+
+This configuration was built with inspiration and knowledge from the following amazing repositories:
+
+- **[ryan4yin/nix-config](https://github.com/ryan4yin/nix-config)**: Overall modular architecture and Niri setup.
+- **[omarchy-nix](https://github.com/henrysipp/omarchy-nix)**: Intuitive keybindings (Omarchy style).
+- **[natsukium/dotfiles](https://github.com/natsukium/dotfiles)**: Declarative Zen Browser configuration.
+- **[asa1984/dotfiles](https://github.com/asa1984/dotfiles)**: Best practices for NixOS and Home-manager.
+- **[ms0503/dotfiles](https://github.com/ms0503/dotfiles)**: Structured module design.

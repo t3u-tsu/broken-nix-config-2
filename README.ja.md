@@ -38,3 +38,13 @@ curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-pa
 - **Automated Backup**: Restic による自動バックアップ (shosoin-tan)。
 
 詳細は [GEMINI.md](GEMINI.md) または各モジュールの `README.md` を参照してください。
+
+## 📚 参考文献 (References)
+
+本構成の構築にあたり、多くの知見を以下のリポジトリから参考にさせていただきました：
+
+- **[ryan4yin/nix-config](https://github.com/ryan4yin/nix-config)**: 全体的なモジュール構造と Niri 構成。
+- **[omarchy-nix](https://github.com/henrysipp/omarchy-nix)**: 快適なキーバインド（Omarchy スタイル）の設計。
+- **[natsukium/dotfiles](https://github.com/natsukium/dotfiles)**: Zen Browser の宣言的な詳細設定。
+- **[asa1984/dotfiles](https://github.com/asa1984/dotfiles)**: NixOS および Home-manager 設定のベストプラクティス。
+- **[ms0503/dotfiles](https://github.com/ms0503/dotfiles)**: 構造化されたモジュール設計。
