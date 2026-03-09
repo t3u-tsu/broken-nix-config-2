@@ -19,6 +19,15 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  # Firmware management (Crucial for Wi-Fi, BT, and GPU)
+  hardware.enableRedistributableFirmware = true;
+
+  # Graphics (OpenGL/Vulkan)
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
   # CRITICAL: Prevent Nouveau and force amdgpu
   boot.blacklistedKernelModules = [ "nouveau" ];
   boot.kernelParams = [ 

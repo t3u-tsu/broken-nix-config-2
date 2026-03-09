@@ -106,6 +106,11 @@
           publicKey = "4rxYZxUdPbu86bKCwcKwNDYHq4DGN38k0tjG6yhDwCA=";
           allowedIPs = [ "10.0.1.2/32" ];
         }
+        {
+          # BrokenPC
+          publicKey = "VAvwzVJ1dDOy+A2OMFRXEGYe8E3lXJeYki0Z5I635AE=";
+          allowedIPs = [ "10.0.1.100/32" ];
+        }
       ];
     };
   };

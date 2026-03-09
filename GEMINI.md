@@ -33,6 +33,10 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-09**: BrokenPC のハードウェア構成最適化と不具合修正。
+    - `hardware.enableRedistributableFirmware = true;` を有効化し、Wi-Fi (mt7921e), Bluetooth, Ethernet, AMD GPU のファームウェア読み込み失敗を解消。
+    - `boot.kernelPackages = pkgs.linuxPackages_latest;` を採用し、Ryzen 6000 シリーズと故障を抱える 3050Ti に対する最新の安定性改善を導入。
+    - `hardware.graphics` (OpenGL/Vulkan) を明示的に有効化。
 - **2026-03-09**: BrokenPC のセットアップと Sops 構成の最適化。
     - `secrets/secrets.yaml` に `BrokenPC` 用のパスワードハッシュを追加。
     - `modules/core/sops.nix` への設定集約により、全ホストでの Sops 設定の重複を排除。
