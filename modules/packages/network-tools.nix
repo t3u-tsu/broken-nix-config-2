@@ -9,12 +9,14 @@ in {
       bandwhich
       curl
       dnsutils
+      gping
       lsof
       mtr
       nmap
       rsync
       tcpdump
       wget
+      xh
     ];
   };
 }

@@ -9,7 +9,23 @@
       vscode
       vlc
       gimp
+      lazygit
+      mangohud
     ];
+
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        font = {
+          normal = { family = "JetBrainsMono Nerd Font"; style = "Regular"; };
+          size = 11;
+        };
+        window = {
+          opacity = 0.95;
+          padding = { x = 6; y = 6; };
+        };
+      };
+    };
 
     # VSCode settings (Example of declarative config)
     programs.vscode = {

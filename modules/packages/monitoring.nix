@@ -15,6 +15,8 @@ in {
       hwinfo
       hwloc
       lm_sensors
+      procs
+      bottom
     ] ++ lib.optionals hwCfg.enable [
       nvme-cli
       pciutils

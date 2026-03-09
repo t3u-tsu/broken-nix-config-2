@@ -45,7 +45,7 @@ in {
   };
 
   imports = [
-    ./core.nix
+    ./base.nix
     ./monitoring.nix
     ./network-tools.nix
     ./data.nix
