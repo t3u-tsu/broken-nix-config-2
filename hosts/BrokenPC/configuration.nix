@@ -3,15 +3,15 @@
 {
   imports = [
     ./disko-config.nix
-    # Include modules
+    ./services
     ../../modules
     ../../modules/services/desktop/plasma.nix
   ];
 
-  # Allow unfree packages (NVIDIA drivers, etc.)
+  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Hardware settings (Extracted from /etc/nixos/hardware-configuration.nix)
+  # Hardware settings
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
@@ -20,7 +20,6 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # GPU Configuration (NVIDIA + AMD Hybrid)
-  # Default: Use NVIDIA driver for external monitor output (via PRIME offload)
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -36,21 +35,17 @@
         enable = true;
         enableOffloadCmd = true;
       };
-      # Bus ID: 01:00.0 (NVIDIA) and 07:00.0 (AMD)
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:7:0:0";
     };
   };
 
-  # Specialisation: Add a "No NVIDIA" boot option for emergency or power saving
+  # Specialisation: No-NVIDIA Mode
   specialisation."No-NVIDIA".configuration = {
     system.nixos.tags = [ "no-nvidia" ];
-    # Force AMD driver only
     services.xserver.videoDrivers = lib.mkForce [ "amdgpu" ];
-    # Disable NVIDIA settings in this mode
     hardware.nvidia.prime.offload.enable = lib.mkForce false;
     hardware.nvidia.modesetting.enable = lib.mkForce false;
-    # Disable the NVIDIA kernel module to prevent it from even loading
     boot.blacklistedKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   };
 
@@ -67,16 +62,15 @@
   # Basic networking
   networking.networkmanager.enable = true;
 
-  # User account (Default t3u)
+  # User account
   users.users.t3u = {
     isNormalUser = true;
     description = "t3u";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
-    # Use standard shell (Zsh is managed by modules/shell)
     shell = pkgs.zsh;
   };
 
-  # Local network tools (PC tools)
+  # Local network tools
   my.hardware.pc-tools.enable = true;
 
   # State version
