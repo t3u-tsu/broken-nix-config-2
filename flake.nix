@@ -32,6 +32,18 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    awww = {
+      url = "git+https://codeberg.org/LGFae/awww";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, disko, sops-nix, nix-minecraft, ... }@inputs:
@@ -39,6 +51,7 @@
       # Overlays for cross-compilation, Minecraft, and Unstable packages
       overlays = [
         nix-minecraft.overlay
+        inputs.niri.overlays.niri
         (final: prev: {
           # Access unstable packages via 'unstable' attribute
           unstable = import nixpkgs-unstable {
