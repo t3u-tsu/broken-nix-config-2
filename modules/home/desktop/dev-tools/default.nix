@@ -12,6 +12,7 @@ in {
     ./neovim.nix
     ./vscode.nix
     ./git-tools.nix
+    ./ai-tools.nix
   ];
 
   config = mkIf cfg.enable {
@@ -20,6 +21,7 @@ in {
       neovim.enable = mkDefault true;
       vscode.enable = mkDefault false; # Use Neovim by default
       git-tools.enable = mkDefault true;
+      ai-tools.enable = mkDefault true;
     };
   };
 }
