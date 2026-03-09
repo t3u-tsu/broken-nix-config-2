@@ -14,25 +14,31 @@
 
 故障したNVIDIA GPUとハイブリッドグラフィックスの特性を考慮し、以下の手順でインストールを行ってください。
 
-### フェーズ 1: ディスクの準備
+### フェーズ 1: ディスクの準備とインストール
 1. **NixOSインストーラUSBから起動。**
 2. **ネットワーク設定:** Wi-Fiまたは有線LANに接続。
-3. **Diskoの実行:** 
+3. **インストールスクリプトの実行:** 
+   リポジトリをクローンし、同梱のスクリプトを実行することで、ディスクの初期化からインストールまでを一括で行えます。
+   ```bash
+   git clone https://github.com/t3u/nix-config.git
+   cd nix-config/hosts/BrokenPC
+   chmod +x install.sh
+   ./install.sh
+   ```
+
+   ※ 手動で行う場合は以下のコマンドを使用します：
    ```bash
    nix build .#nixosConfigurations.BrokenPC.config.system.build.diskoScript
    sudo ./result --mode zap_create_mount
+   sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
    ```
 
-### フェーズ 2: 秘密鍵の転送 (任意)
-秘密情報（Sops）を使用する場合、ageキーを転送します。
+### フェーズ 2: 秘密鍵の転送 (重要)
+秘密情報（Sops）を復号化するため、ageキーを配置します。これを行わないと、ユーザーパスワードのハッシュ値が復号できず、ログイン不能になる可能性があります。
 ```bash
 sudo mkdir -p /mnt/var/lib/sops-nix
-# /mnt/var/lib/sops-nix/key.txt に秘密鍵をコピー
-```
-
-### フェーズ 3: システムインストール
-```bash
-sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
+# /mnt/var/lib/sops-nix/key.txt に秘密鍵をコピーしてください
+# 例: sudo cp /path/to/your/key.txt /mnt/var/lib/sops-nix/key.txt
 ```
 
 ## 🔐 設定の特徴

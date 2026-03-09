@@ -33,6 +33,10 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-09**: BrokenPC のセットアップと Sops 構成の最適化。
+    - `secrets/secrets.yaml` に `BrokenPC` 用のパスワードハッシュを追加。
+    - `modules/core/sops.nix` への設定集約により、全ホストでの Sops 設定の重複を排除。
+    - `BrokenPC` のインストールスクリプト作成（予定）。
 - **2026-03-05**: リポジトリ構成の大規模再編。
     - `common/` および `services/` を `modules/` 配下へ統合。
     - パッケージ管理のオプトイン/オプトアウト化、ハードウェア特性フラグの導入。

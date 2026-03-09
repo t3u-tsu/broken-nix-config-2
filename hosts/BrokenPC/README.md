@@ -14,25 +14,30 @@ NixOS desktop machine with a hybrid GPU configuration. This host is a "Victus by
 
 Due to the faulty NVIDIA GPU and hybrid graphics, follow this procedure for a stable installation.
 
-### Phase 1: Disk Preparation
+### Phase 1: Disk Preparation and Installation
 1. **Boot from NixOS Installer USB.**
 2. **Setup Network:** Connect to Wi-Fi/Ethernet.
-3. **Run Disko:** 
+3. **Run Install Script:** 
+   Clone the repository and run the provided script to automate partitioning and installation:
+   ```bash
+   git clone https://github.com/t3u/nix-config.git
+   cd nix-config/hosts/BrokenPC
+   chmod +x install.sh
+   ./install.sh
+   ```
+
+   ※ Manual procedure:
    ```bash
    nix build .#nixosConfigurations.BrokenPC.config.system.build.diskoScript
    sudo ./result --mode zap_create_mount
+   sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
    ```
 
-### Phase 2: Transfer Secret Key (Optional)
-If you use encrypted secrets, transfer your age key to the target:
+### Phase 2: Transfer Secret Key (Important)
+To ensure user passwords work on first boot, your age key needs to be at /mnt/var/lib/sops-nix/key.txt.
 ```bash
 sudo mkdir -p /mnt/var/lib/sops-nix
-# Copy your key to /mnt/var/lib/sops-nix/key.txt
-```
-
-### Phase 3: System Installation
-```bash
-sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
+# Copy your age key to /mnt/var/lib/sops-nix/key.txt
 ```
 
 ## 🔐 Configuration Features
