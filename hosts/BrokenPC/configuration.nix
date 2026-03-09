@@ -12,26 +12,32 @@
   nixpkgs.config.allowUnfree = true;
 
   # Hardware settings (AMD CPU + HP Victus specifics)
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  # CRITICAL: Blacklist nouveau to prevent crash during driver switching
+  # CRITICAL: Prevent Nouveau and force amdgpu
   boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.kernelParams = [ "nouveau.modeset=0" "nvidia-drm.modeset=1" ];
+  boot.kernelParams = [ 
+    "nouveau.modeset=0" 
+    "amdgpu.modeset=1"
+    "nvidia-drm.modeset=1"
+    "modprobe.blacklist=nouveau"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+  ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # GPU Configuration (NVIDIA + AMD Hybrid)
-  # Use proprietary NVIDIA drivers for HP Victus external display support
-  services.xserver.videoDrivers = [ "nvidia" ];
+  # GPU Configuration (Super-Conservative NVIDIA + AMD Hybrid)
+  services.xserver.videoDrivers = [ "amdgpu" "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = false; # Proprietary is safer for 3050 Ti
+    powerManagement.enable = false; 
+    powerManagement.finegrained = false;
+
+    open = false; 
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
@@ -40,7 +46,7 @@
         enable = true;
         enableOffloadCmd = true;
       };
-      # Bus IDs for HP Victus 16 (Ryzen 6000 + RTX 30)
+      # Bus IDs for HP Victus 16
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:7:0:0";
     };
@@ -52,7 +58,7 @@
     services.xserver.videoDrivers = lib.mkForce [ "amdgpu" ];
     hardware.nvidia.prime.offload.enable = lib.mkForce false;
     hardware.nvidia.modesetting.enable = lib.mkForce false;
-    boot.blacklistedKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+    boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   };
 
   # Enable KDE Plasma
