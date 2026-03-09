@@ -8,6 +8,9 @@
     ../../modules/services/desktop/plasma.nix
   ];
 
+  # Allow unfree packages (NVIDIA drivers, etc.)
+  nixpkgs.config.allowUnfree = true;
+
   # Hardware settings (Extracted from /etc/nixos/hardware-configuration.nix)
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
@@ -15,6 +18,28 @@
   boot.extraModulePackages = [ ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # GPU Configuration (NVIDIA + AMD Hybrid)
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = true; # Power management for hybrid graphics
+    powerManagement.finegrained = true;
+    open = false; # Proprietary drivers are recommended for mobile
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      # Bus ID: 01:00.0 (NVIDIA) and 07:00.0 (AMD)
+      nvidiaBusId = "PCI:1:0:0";
+      amdgpuBusId = "PCI:7:0:0";
+    };
+  };
 
   # Enable KDE Plasma
   my.services.desktop.plasma.enable = true;
