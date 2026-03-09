@@ -22,9 +22,7 @@ in {
 
     # Plasma basic tools
     environment.systemPackages = with pkgs.kdePackages; [
-      konsole
       dolphin
-      kate
     ];
   };
 }

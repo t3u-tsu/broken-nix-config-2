@@ -8,6 +8,16 @@
     imports = [
       ../../home/desktop
     ];
+
+    # Enable desktop categories by default in this profile
+    my.home.desktop = {
+      browsers.enable = true;
+      communication.enable = true;
+      dev-tools.enable = true;
+      utils.enable = true;
+      creative.enable = true; # Enabled by default for desktop profile
+      terminal.alacritty.enable = true;
+    };
   };
 
   # Enable core desktop service

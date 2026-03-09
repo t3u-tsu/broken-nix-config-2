@@ -17,8 +17,10 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.sharedModules = [
             inputs.nix-index-database.homeModules.nix-index
+            inputs.zen-browser.homeModules.default
           ];
           nixpkgs.overlays = overlays;
         }

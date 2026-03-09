@@ -3,7 +3,10 @@
 {
   imports = [
     ./alacritty.nix
-    ./vscode.nix
-    ./apps.nix
+    ./browsers.nix
+    ./communication.nix
+    ./creative.nix
+    ./dev-tools.nix
+    ./utils.nix
   ];
 }

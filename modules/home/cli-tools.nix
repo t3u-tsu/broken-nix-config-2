@@ -7,6 +7,10 @@
   programs.zoxide.enable = true;
   programs.fd.enable = true;
   programs.ripgrep.enable = true;
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   programs.tealdeer = {
     enable = true;
     settings.updates.auto_update = true;
