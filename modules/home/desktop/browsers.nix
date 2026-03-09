@@ -152,6 +152,13 @@ in {
           "browser.toolbars.bookmarks.visibility" = "always";
           "browser.bookmarks.addedImportButton" = false;
           
+          # Disable Built-in Password Manager (Using Bitwarden)
+          "signon.rememberSignons" = false;
+          "signon.autofillForms" = false;
+          "signon.generation.enabled" = false;
+          "signon.management.page.breach-alerts.enabled" = false;
+          "signon.showAutoCompleteFooter" = false;
+
           # Language & Localization
           "intl.accept_languages" = "ja-jp,ja,en-us,en";
           "intl.locale.requested" = "ja";
