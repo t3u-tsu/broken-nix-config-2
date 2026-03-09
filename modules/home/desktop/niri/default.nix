@@ -34,9 +34,6 @@ in {
       spawn-at-startup = [
         # awww is the new swww from Codeberg
         { command = [ "${inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/awww-daemon" ]; }
-        { command = [ "${pkgs.swaynotificationcenter}/bin/swaync" ]; }
-        { command = [ "${pkgs.networkmanagerapplet}/bin/nm-applet" "--indicator" ]; }
-        { command = [ "${pkgs.blueman}/bin/blueman-applet" ]; }
       ];
 
       binds = {

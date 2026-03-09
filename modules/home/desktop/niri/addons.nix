@@ -11,20 +11,11 @@ in {
     # Clipboard History
     services.cliphist.enable = true;
 
-    # Network Manager Applet
-    services.network-manager-applet.enable = true;
-
-    # Bluetooth Applet
-    services.blueman-applet.enable = true;
-
     # Additional GUI tools
     home.packages = with pkgs; [
       nautilus
-      gnome-terminal
       adwaita-icon-theme
-      wlogout
       hyprpolkitagent
-      swaynotificationcenter
     ];
   };
 }
