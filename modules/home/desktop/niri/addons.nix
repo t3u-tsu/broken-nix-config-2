@@ -5,25 +5,6 @@ let
   cfg = config.my.home.desktop.niri;
 in {
   config = mkIf cfg.enable {
-    # Launcher (Fuzzel)
-    programs.fuzzel = {
-      enable = true;
-      settings = {
-        main = {
-          font = "JetBrainsMono Nerd Font:size=12";
-          terminal = "alacritty";
-        };
-        colors = {
-          background = "282a36ff";
-          text = "f8f8f2ff";
-          match = "8be9fdff";
-          selection = "44475aff";
-          selection-text = "f8f8f2ff";
-          border = "bd93f9ff";
-        };
-      };
-    };
-
     # Notifications (SwayNC) - We will use the package and spawn it
     # services.swaync is not available in standard HM, using package instead
 
