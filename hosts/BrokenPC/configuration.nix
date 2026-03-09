@@ -86,6 +86,11 @@
     hashedPasswordFile = config.sops.secrets.brokenpc_t3u_password_hash.path;
   };
 
+  # Ensure /data exists and is owned by t3u
+  systemd.tmpfiles.rules = [
+    "d /data 0755 t3u users -"
+  ];
+
   # Root account password
   users.users.root.hashedPasswordFile = config.sops.secrets.brokenpc_root_password_hash.path;
 

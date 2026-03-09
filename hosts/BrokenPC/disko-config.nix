@@ -39,6 +39,24 @@
           };
         };
       };
+      # Extra 1TB SSD for data/games
+      extra = {
+        type = "disk";
+        device = "/dev/disk/by-id/nvme-FIKWOT_FN500_1TB_AA000000000000000188";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/data";
+              };
+            };
+          };
+        };
+      };
     };
   };
 }

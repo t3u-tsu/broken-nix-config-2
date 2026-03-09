@@ -7,16 +7,19 @@ set -e
 
 REPO_URL="https://github.com/t3u/nix-config.git"
 HOST="BrokenPC"
-DISK_ID="nvme-MTFDKBA512TFH-1BC1AABHA_UMDMC01ZRH9LRX"
+DISK_MAIN="nvme-MTFDKBA512TFH-1BC1AABHA_UMDMC01ZRH9LRX"
+DISK_EXTRA="nvme-FIKWOT_FN500_1TB_AA000000000000000188"
 
 echo "=== BrokenPC (HP Victus 16) NixOS Installer ==="
 
 # 1. Check disk existence
-if [ ! -e "/dev/disk/by-id/$DISK_ID" ]; then
-    echo "ERROR: Target disk $DISK_ID not found!"
-    echo "Please check if the NVMe drive is correctly recognized."
-    exit 1
-fi
+for disk in "$DISK_MAIN" "$DISK_EXTRA"; do
+    if [ ! -e "/dev/disk/by-id/$disk" ]; then
+        echo "ERROR: Target disk $disk not found!"
+        echo "Please check if all NVMe drives are correctly recognized."
+        exit 1
+    fi
+done
 
 # 2. Preparation
 echo "Cloning configuration repository..."
