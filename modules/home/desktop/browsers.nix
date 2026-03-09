@@ -21,14 +21,94 @@ in {
 
     programs.zen-browser = mkIf cfg.zen.enable {
       enable = true;
+      
+      policies = {
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableFirefoxScreenshots = true;
+        OverrideFirstRunPage = "";
+        OverridePostUpdatePage = "";
+        DontCheckDefaultBrowser = true;
+        DisplayBookmarksToolbar = "never"; # or "always"
+        
+        # Declarative Extensions via Policy (Reliable way)
+        ExtensionSettings = {
+          "*".installation_mode = "allowed"; # Allow manual installs too
+          # uBlock Origin
+          "uBlock0@raymondhill.net" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # Dark Reader
+          "addon@darkreader.org" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # Bitwarden
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # SponsorBlock
+          "sponsorBlocker@ajay.app" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
+            installation_mode = "force_installed";
+          };
+        };
+      };
+
       # Create a default profile named after the user
       profiles.${osConfig.my.user.name} = {
         isDefault = true;
+        
+        search = {
+          default = "google";
+          force = true;
+          engines = {
+            "Nix Packages" = {
+              urls = [{
+                template = "https://search.nixos.org/packages";
+                params = [
+                  { name = "type"; value = "packages"; }
+                  { name = "query"; value = "{searchTerms}"; }
+                ];
+              }];
+              icon = "https://nixos.org/favicon.png";
+              definedAliases = [ "@n" ];
+            };
+            "NixOS Wiki" = {
+              urls = [{ template = "https://wiki.nixos.org/index.php?search={searchTerms}"; }];
+              icon = "https://wiki.nixos.org/favicon.png";
+              definedAliases = [ "@nw" ];
+            };
+            "MyNixOS" = {
+              urls = [{ template = "https://mynixos.com/search?q={searchTerms}"; }];
+              definedAliases = [ "@my" ];
+            };
+            "google".metaData.alias = "@g"; # builtin engines
+          };
+        };
+
         settings = {
-          # Recommended settings for a smoother experience
+          # General UI/UX
           "extensions.autoDisableScopes" = 0;
           "browser.aboutConfig.showWarning" = false;
           "browser.shell.checkDefaultBrowser" = false;
+          "browser.newtabpage.enabled" = false; # Clean new tab
+          "browser.startup.page" = 3; # Resume last session
+          
+          # Privacy & Security
+          "privacy.trackingprotection.enabled" = true;
+          "privacy.trackingprotection.socialtracking.enabled" = true;
+          "dom.security.https_only_mode" = true;
+          
+          # Performance
+          "gfx.webrender.all" = true;
+          "media.ffmpeg.vaapi.enabled" = true; # Hardware acceleration
+          
+          # Smooth Scrolling
+          "general.smoothScroll" = true;
         };
       };
     };
