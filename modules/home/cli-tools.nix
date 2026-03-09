@@ -24,6 +24,11 @@
     enableZshIntegration = false;
   };
 
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+
   home.shellAliases = {
     ls = "eza";
     ll = "eza -l";
