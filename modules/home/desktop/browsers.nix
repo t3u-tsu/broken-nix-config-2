@@ -137,9 +137,9 @@ in {
         };
 
         containers = {
-          "Work" = { id = 1; icon = "briefcase"; color = "blue"; };
-          "Personal" = { id = 2; icon = "fingerprint"; color = "green"; };
-          "Shopping" = { id = 3; icon = "cart"; color = "yellow"; };
+          "Personal" = { id = 1; icon = "fingerprint"; color = "green"; };
+          "School" = { id = 2; icon = "circle"; color = "yellow"; };
+          "Work" = { id = 3; icon = "briefcase"; color = "blue"; };
         };
 
         settings = {

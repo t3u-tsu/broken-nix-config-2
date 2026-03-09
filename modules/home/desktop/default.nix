@@ -6,7 +6,7 @@
     ./browsers.nix
     ./communication.nix
     ./creative.nix
-    ./dev-tools.nix
+    ./dev-tools
     ./utils.nix
     ./theme.nix
     ./xdg.nix
