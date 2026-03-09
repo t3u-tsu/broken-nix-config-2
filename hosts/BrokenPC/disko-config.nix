@@ -7,9 +7,9 @@
         content = {
           type = "gpt";
           partitions = {
+            # Matching shosoin-tan's naming convention
             ESP = {
               priority = 1;
-              name = "ESP";
               size = "2G";
               type = "EF00";
               content = {
@@ -21,7 +21,6 @@
             };
             swap = {
               priority = 2;
-              name = "swap";
               size = "32G";
               content = {
                 type = "swap";
@@ -30,7 +29,6 @@
             };
             root = {
               priority = 3;
-              name = "root";
               size = "100%";
               content = {
                 type = "filesystem";

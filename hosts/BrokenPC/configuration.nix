@@ -8,6 +8,11 @@
     ../../modules/services/desktop/plasma.nix
   ];
 
+  # Sops (Secret Management) configuration
+  # Matching torii-chan and tower-server pattern
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -84,6 +89,9 @@
 
   # Local network tools
   my.hardware.pc-tools.enable = true;
+
+  # Update Hub Client integration
+  my.updateHub.client.enable = true;
 
   # State version
   system.stateVersion = "25.11";
