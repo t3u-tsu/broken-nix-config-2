@@ -36,7 +36,7 @@
 - **2026-03-09**: BrokenPC のセットアップと Sops 構成の最適化。
     - `secrets/secrets.yaml` に `BrokenPC` 用のパスワードハッシュを追加。
     - `modules/core/sops.nix` への設定集約により、全ホストでの Sops 設定の重複を排除。
-    - `BrokenPC` のインストールスクリプト作成（予定）。
+    - 1TB SSD を追加し、`/data` にマウントするよう `disko` 構成を更新。
 - **2026-03-05**: リポジトリ構成の大規模再編。
     - `common/` および `services/` を `modules/` 配下へ統合。
     - パッケージ管理のオプトイン/オプトアウト化、ハードウェア特性フラグの導入。

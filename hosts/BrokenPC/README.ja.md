@@ -14,26 +14,21 @@
 
 故障したNVIDIA GPUとハイブリッドグラフィックスの特性を考慮し、以下の手順でインストールを行ってください。
 
-### フェーズ 1: ディスクの準備とインストール
+### フェーズ 1: ディスクの準備
 1. **NixOSインストーラUSBから起動。**
 2. **ネットワーク設定:** Wi-Fiまたは有線LANに接続。
-3. **インストールスクリプトの実行:** 
-   リポジトリをクローンし、同梱のスクリプトを実行することで、ディスクの初期化からインストールまでを一括で行えます。
-   ```bash
-   git clone https://github.com/t3u/nix-config.git
-   cd nix-config/hosts/BrokenPC
-   chmod +x install.sh
-   ./install.sh
-   ```
-
-   ※ 手動で行う場合は以下のコマンドを使用します：
+3. **Diskoの実行:** 
    ```bash
    nix build .#nixosConfigurations.BrokenPC.config.system.build.diskoScript
    sudo ./result --mode zap_create_mount
-   sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
    ```
 
-### フェーズ 2: 秘密鍵の転送 (重要)
+### フェーズ 2: システムインストール
+```bash
+sudo NIXPKGS_ALLOW_UNFREE=1 nixos-install --flake .#BrokenPC
+```
+
+### フェーズ 3: 秘密鍵の転送 (重要)
 秘密情報（Sops）を復号化するため、ageキーを配置します。これを行わないと、ユーザーパスワードのハッシュ値が復号できず、ログイン不能になる可能性があります。
 ```bash
 sudo mkdir -p /mnt/var/lib/sops-nix
