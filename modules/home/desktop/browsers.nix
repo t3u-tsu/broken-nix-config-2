@@ -21,6 +21,7 @@ in {
 
     programs.zen-browser = mkIf cfg.zen.enable {
       enable = true;
+      nativeMessagingHosts = [ pkgs.bitwarden-desktop ];
       
       policies = {
         DisableTelemetry = true;
@@ -116,8 +117,24 @@ in {
               urls = [{ template = "https://mynixos.com/search?q={searchTerms}"; }];
               definedAliases = [ "@my" ];
             };
+            "GitHub" = {
+              urls = [{ template = "https://github.com/search?q={searchTerms}&type=code"; }];
+              icon = "https://github.com/favicon.ico";
+              definedAliases = [ "@gh" ];
+            };
+            "Google Translate" = {
+              urls = [{ template = "https://translate.google.com/?sl=auto&tl=ja&text={searchTerms}&op=translate"; }];
+              icon = "https://www.gstatic.com/lamda/images/favicon_v2_78462ef77d0c794346ad.png";
+              definedAliases = [ "@tr" ];
+            };
             "google".metaData.alias = "@g"; # builtin engines
           };
+        };
+
+        containers = {
+          "Work" = { id = 1; icon = "briefcase"; color = "blue"; };
+          "Personal" = { id = 2; icon = "fingerprint"; color = "green"; };
+          "Shopping" = { id = 3; icon = "cart"; color = "yellow"; };
         };
 
         settings = {
@@ -127,7 +144,18 @@ in {
           "browser.shell.checkDefaultBrowser" = false;
           "browser.newtabpage.enabled" = false; # Clean new tab
           "browser.startup.page" = 3; # Resume last session
+          "browser.toolbars.bookmarks.visibility" = "always";
           
+          # Language & Localization
+          "intl.accept_languages" = "ja-jp,ja,en-us,en";
+          "intl.locale.requested" = "ja";
+          
+          # Zen Specific UI Tweaks
+          "zen.view.compact.color-sidebar" = true;
+          "zen.theme.content-element-separation" = 0;
+          "zen.workspaces.show-workspace-indicator" = true;
+          "zen.theme.essentials-favicon-bg" = true;
+
           # Privacy & Security
           "privacy.trackingprotection.enabled" = true;
           "privacy.trackingprotection.socialtracking.enabled" = true;
