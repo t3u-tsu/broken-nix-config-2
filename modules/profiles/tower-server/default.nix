@@ -1,12 +1,9 @@
-{ ... }:
-
-{
+{ ... }: {
   imports = [
+    ./auto-update.nix
     ./boot.nix
-    ./sops.nix
+    ./security.nix
     ./ssh.nix
     ./user.nix
-    ./auto-update.nix
-    ./security.nix
   ];
 }
