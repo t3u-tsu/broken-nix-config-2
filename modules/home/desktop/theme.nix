@@ -34,5 +34,19 @@ in {
       platformTheme.name = "gtk"; 
       style.name = "adwaita-dark";
     };
+
+    # Cursor Theme (Dracula)
+    home.pointerCursor = {
+      package = pkgs.dracula-theme;
+      name = "Dracula-cursors";
+      size = 24;
+      gtk.enable = true;
+      x11.enable = true;
+    };
+
+    home.sessionVariables = {
+      XCURSOR_THEME = "Dracula-cursors";
+      XCURSOR_SIZE = "24";
+    };
   };
 }
