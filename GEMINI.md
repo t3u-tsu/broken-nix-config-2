@@ -38,6 +38,11 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-09**: Zen Browser の高度なカスタマイズと開発環境の構造化。
+    - Zen Browser の**コンテナ設定**（Personal, School, Work）を英語名で再定義。
+    - `modules/home/desktop/dev-tools/` ディレクトリを新設し、Neovim や VSCode の設定を詳細管理可能にした。
+    - 拡張機能の ID 修正（YouTube NonStop, Screenshot, LINE）を行い、確実に宣言的インストールされるようにした。
+    - **Alacritty** をシステムおよび KDE 側のデフォルトターミナルとして固定。
 - **2026-03-09**: デスクトップ環境の大規模刷新と構成の高度化。
     - `modules/home/desktop/` をカテゴリー別（browsers, communication, dev-tools, etc.）にオプション化し、柔軟な管理を可能にした。
     - メイン環境を **Zen Browser**, **Vesktop**, **Neovim** へ刷新し、**Yazi** を導入。

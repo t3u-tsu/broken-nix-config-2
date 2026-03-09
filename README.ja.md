@@ -11,11 +11,11 @@
 ├── flake.nix           # 構成のエントリポイント
 ├── hosts/              # ホスト固有の設定 (torii-chan, shosoin-tan, etc.)
 └── modules/            # 再利用可能なモジュール集
-    ├── core/           # 基盤設定 (Nix, Network, WireGuard)
-    ├── packages/       # 機能別パッケージ群 (my.packages.*)
-    ├── shell/          # Zsh & Home-manager による環境統合
-    ├── services/       # サーバーサービス (Minecraft, Backup, etc.)
-    └── profiles/       # 役割ごとのプリセット (Tower Server, etc.)
+    ├── core/           # 基盤設定 (Nix, Network, User, Sops)
+    ├── packages/       # システムパッケージ群 (base, monitoring, etc.)
+    ├── home/           # Home-manager によるユーザー環境 (Shell, Desktop, SSH)
+    ├── services/       # 各種サービス (Minecraft, Update Hub, Desktop)
+    └── profiles/       # 役割ごとのプロファイル (Desktop, Tower Server)
 ```
 
 ## 🚀 デプロイと反映
@@ -30,10 +30,11 @@ curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-pa
 
 ## 🛠️ 主な機能
 
-- **Zsh & Home-manager**: 全ホストで Zsh がデフォルト。エイリアスや補完が高度に統合。
-- **Modular Packages**: `my.packages.monitoring.enable = false` のように機能別に制御可能。
+- **Modular Architecture**: システム層 (NixOS) とユーザー層 (Home-manager) を明確に分離。
+- **Modern CLI Tools**: Starship, Atuin, Zellij, Yazi, fzf, ripgrep 等を全ホストで標準化。
+- **Desktop Environment**: Zen Browser (宣言的設定), Vesktop, Neovim, Alacritty による最強のデスクトップ体験。
 - **Smart Hardware Tools**: `my.hardware.pc-tools.enable = true` で物理サーバー用ツールをオプトイン。
-- **sops-nix**: `age` を用いた機密情報の暗号化。
-- **Automated Backup**: Restic による 2 時間おきの自動バックアップ。
+- **sops-nix**: `age` を用いた機密情報の暗号化管理。
+- **Automated Backup**: Restic による自動バックアップ (shosoin-tan)。
 
 詳細は [GEMINI.md](GEMINI.md) または各モジュールの `README.md` を参照してください。

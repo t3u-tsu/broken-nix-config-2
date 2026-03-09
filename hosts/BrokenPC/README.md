@@ -50,7 +50,9 @@ A boot entry named `No-NVIDIA` is available in the systemd-boot menu. This mode:
 - Recommended for maximum stability when an external monitor is not required.
 
 ### Services & Integration
-- **DE:** KDE Plasma 6 (Wayland) with Japanese localization.
+- **DE:** KDE Plasma 6 (Wayland) Japanese environment with **Dark Mode**.
+- **Main Apps:** **Zen Browser** (declarative), **Vesktop**, **Neovim**, and **Alacritty**.
+- **CLI Tools:** Standardized with Starship, Atuin, Zellij, **Yazi**, fzf, and ripgrep (rg).
 - **Update Hub:** Configured as a client to receive updates from the producer (`shosoin-tan`).
 - **Hardware Tools:** Enabled `pc-tools` for local hardware management.
 

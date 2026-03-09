@@ -11,11 +11,11 @@ The repository is divided into "Mechanisms (Modules)" and "Entities (Hosts)".
 ├── flake.nix           # Entry point for the configuration
 ├── hosts/              # Host-specific configurations
 └── modules/            # Reusable modules
-    ├── core/           # Base settings (Nix, Network, WireGuard)
-    ├── packages/       # Functional package groups (my.packages.*)
-    ├── shell/          # Shell integration (Zsh & Home-manager)
-    ├── services/       # Server services (Minecraft, Backup, etc.)
-    └── profiles/       # Role-based presets (Tower Server, etc.)
+    ├── core/           # Base settings (Nix, Network, User, Sops)
+    ├── packages/       # System package groups (base, monitoring, etc.)
+    ├── home/           # User environment via Home-manager (Shell, Desktop, SSH)
+    ├── services/       # Various services (Minecraft, Update Hub, Desktop)
+    └── profiles/       # Role-based profiles (Desktop, Tower Server)
 ```
 
 ## 🚀 Deployment and Updates
@@ -30,10 +30,11 @@ curl -X POST -H "Content-Type: application/json" -d "{\"commit\": \"$(git rev-pa
 
 ## 🛠️ Key Features
 
-- **Zsh & Home-manager**: Zsh is the default shell on all hosts, deeply integrated with completion and aliases.
-- **Modular Packages**: Control package groups via options like `my.packages.monitoring.enable = false`.
+- **Modular Architecture**: Clear separation between system (NixOS) and user (Home-manager) layers.
+- **Modern CLI Tools**: Starship, Atuin, Zellij, Yazi, fzf, ripgrep standardized across all hosts.
+- **Desktop Environment**: Powered by Zen Browser (declarative), Vesktop, Neovim, and Alacritty.
 - **Smart Hardware Tools**: Opt-in to physical server tools via `my.hardware.pc-tools.enable = true`.
 - **sops-nix**: Secret encryption via `age`.
-- **Automated Backup**: Restic backups every 2 hours.
+- **Automated Backup**: Restic backups managed on shosoin-tan.
 
 For more details, see [GEMINI.md](GEMINI.md) or specific `README.md` files in subdirectories.

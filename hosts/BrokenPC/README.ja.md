@@ -51,7 +51,9 @@ systemd-bootメニューに `No-NVIDIA` というエントリが用意されて�
 - 外部モニターが不要な場合や、究極の安定性が必要な場合に推奨されます。
 
 ### サービスと統合
-- **デスクトップ環境:** KDE Plasma 6 (Wayland) 日本語環境。
+- **デスクトップ環境:** KDE Plasma 6 (Wayland) 日本語環境 + **ダークモード**。
+- **メインアプリ:** **Zen Browser** (宣言的設定), **Vesktop**, **Neovim**, **Alacritty**。
+- **CLIツール:** Starship, Atuin, Zellij, **Yazi**, fzf, ripgrep (rg) が標準搭載。
 - **Update Hub:** クライアントとして設定され、`shosoin-tan` からの更新通知を受け取ります。
 - **ハードウェアツール:** `pc-tools` が有効化されており、ローカルなハードウェア管理が可能です。
 
