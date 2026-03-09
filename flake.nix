@@ -111,6 +111,12 @@
           name = "sando-kun";
           system = "x86_64-linux";
         };
+
+        # 7. Desktop PC (BrokenPC)
+        "BrokenPC" = lib.mkSystem {
+          name = "BrokenPC";
+          system = "x86_64-linux";
+        };
       };
     };
 }
