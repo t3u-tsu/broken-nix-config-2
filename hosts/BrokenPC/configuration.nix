@@ -77,12 +77,17 @@
   networking.networkmanager.enable = true;
 
   # User account
+  users.mutableUsers = false;
   users.users.t3u = {
     isNormalUser = true;
     description = "t3u";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
     shell = pkgs.zsh;
+    hashedPasswordFile = config.sops.secrets.brokenpc_t3u_password_hash.path;
   };
+
+  # Root account password
+  users.users.root.hashedPasswordFile = config.sops.secrets.brokenpc_root_password_hash.path;
 
   # Local network tools
   my.hardware.pc-tools.enable = true;
