@@ -15,11 +15,16 @@
 
 ### 開発ワークフロー
   0. 作業の開始前に、関連する全ての`README.md`を読み、内容を把握してから作業を開始すること。
-  1. Nix Flake は Git 管理下のファイルのみを認識するため、新規作成・変更したファイルは必ず `git add .` すること。
-  2. `nix flake check` を実行し、構文エラーがないか確認する。
-  3. 変更を `git commit` する。
-  4. `git push` する。
-  5. 各ホストへの反映は自動または Hub 通知経由で行う。
+  1. **作業ブランチの作成**: 原則として `main` で直接作業せず、`feature/xxx` や `refactor/xxx` ブランチを作成して作業する。
+  2. **変更と追跡**: ファイルを作成・変更したら `git add .` する（Flake は Git 管理下のファイルのみ認識するため）。
+  3. **安全性検証**:
+     - `nix flake check` で構文と一貫性を確認。
+     - `sudo nixos-rebuild dry-activate --flake .#<hostname>` でビルド可能性を最終確認。
+  4. **適用とテスト**: 必要に応じて `sudo nixos-rebuild switch` を行い、ローカル環境で動作確認。
+  5. **コミット・マージ**: `git commit` 後、`main` ブランチへマージする。
+  6. **プッシュと通知**:
+     - `git push` を実行。
+     - **重要**: `curl` を使用して Hub (torii-chan) へ通知を送り、全ホストの自動更新をトリガーする。
 
 ### 主要コマンド
 - torii-chan デプロイ: `nixos-rebuild switch --flake .#torii-chan --target-host t3u@10.0.0.1 --sudo`
@@ -33,6 +38,12 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-09**: デスクトップ環境の大規模刷新と構成の高度化。
+    - `modules/home/desktop/` をカテゴリー別（browsers, communication, dev-tools, etc.）にオプション化し、柔軟な管理を可能にした。
+    - メイン環境を **Zen Browser**, **Vesktop**, **Neovim** へ刷新し、**Yazi** を導入。
+    - システム全体の**ダークモード**化（Breeze-Dark）と、管理用ネットワーク経由の **SSH config 宣言的生成**を実装。
+    - `nix-gaming` などのバイナリキャッシュを追加し、ビルドを高速化。
+    - 開発ワークフローを「ブランチベースの検証・通知型」に洗練させた。
 - **2026-03-09**: BrokenPC のネットワーク統合と SSH アクセス構成。
     - BrokenPC 用の WireGuard 鍵ペアおよび SSH 鍵ペアを SOPS (`secrets/secrets.yaml`) に統合。
     - `hosts/BrokenPC/services/wireguard.nix` を新規作成し、管理用 (`wg0`) およびアプリ用 (`wg1`) ネットワークを構築。
