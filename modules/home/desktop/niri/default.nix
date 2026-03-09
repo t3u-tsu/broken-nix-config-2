@@ -93,13 +93,13 @@ in {
         "Mod+Shift+E".action.spawn = [ "noctalia-shell" "ipc" "call" "sessionMenu" "toggle" ];
         "Mod+Escape".action.spawn = [ "noctalia-shell" "ipc" "call" "sessionMenu" "toggle" ];
         
-        # Audio & Brightness via swayosd
-        "XF86AudioRaiseVolume".action.spawn = [ "swayosd-client" "--output-volume" "raise" ];
-        "XF86AudioLowerVolume".action.spawn = [ "swayosd-client" "--output-volume" "lower" ];
-        "XF86AudioMute".action.spawn = [ "swayosd-client" "--output-volume" "mute-toggle" ];
-        "XF86AudioMicMute".action.spawn = [ "swayosd-client" "--input-volume" "mute-toggle" ];
-        "XF86MonBrightnessUp".action.spawn = [ "swayosd-client" "--brightness" "raise" ];
-        "XF86MonBrightnessDown".action.spawn = [ "swayosd-client" "--brightness" "lower" ];
+        # Audio & Brightness via Noctalia Shell IPC
+        "XF86AudioRaiseVolume".action.spawn = [ "noctalia-shell" "ipc" "call" "volume" "increase" ];
+        "XF86AudioLowerVolume".action.spawn = [ "noctalia-shell" "ipc" "call" "volume" "decrease" ];
+        "XF86AudioMute".action.spawn = [ "noctalia-shell" "ipc" "call" "volume" "muteOutput" ];
+        "XF86AudioMicMute".action.spawn = [ "noctalia-shell" "ipc" "call" "volume" "muteInput" ];
+        "XF86MonBrightnessUp".action.spawn = [ "noctalia-shell" "ipc" "call" "brightness" "increase" ];
+        "XF86MonBrightnessDown".action.spawn = [ "noctalia-shell" "ipc" "call" "brightness" "decrease" ];
       };
 
       window-rules = [

@@ -11,9 +11,6 @@ in {
     # Clipboard History
     services.cliphist.enable = true;
 
-    # OSD (swayosd)
-    services.swayosd.enable = true;
-
     # Network Manager Applet
     services.network-manager-applet.enable = true;
 

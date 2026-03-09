@@ -18,10 +18,10 @@ in {
           floating = true;
           backgroundOpacity = 0.8;
         };
-        # Dracula-like colors can be set here if noctalia supports them
         colorSchemes = {
           darkMode = true;
-          useWallpaperColors = false; # Set to false to force dracula-ish colors if needed
+          useWallpaperColors = false; 
+          predefinedScheme = "Dracula";
         };
       };
     };
