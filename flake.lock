@@ -42,6 +42,22 @@
         "type": "github"
       }
     },
+    "dracula-alacritty": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1745504714,
+        "narHash": "sha256-SzhZPvblz+U2vIHuLcjdA3pf7RfV2r0yrLZytkQ9s94=",
+        "owner": "dracula",
+        "repo": "alacritty",
+        "rev": "c8a3a13404b78d520d04354e133b5075d9b785e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dracula",
+        "repo": "alacritty",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -349,6 +365,7 @@
       "inputs": {
         "awww": "awww",
         "disko": "disko",
+        "dracula-alacritty": "dracula-alacritty",
         "home-manager": "home-manager",
         "minecraft-discord-bridge": "minecraft-discord-bridge",
         "niri": "niri",
