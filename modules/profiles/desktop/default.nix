@@ -15,8 +15,11 @@
       communication.enable = true;
       dev-tools.enable = true;
       utils.enable = true;
-      creative.enable = true; # Enabled by default for desktop profile
+      creative.enable = true;
       terminal.alacritty.enable = true;
+      theme.enable = true;
+      xdg.enable = true;
+      locales.enable = true;
     };
   };
 
