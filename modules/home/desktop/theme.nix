@@ -5,28 +5,34 @@ let
   cfg = config.my.home.desktop.theme;
 in {
   options.my.home.desktop.theme = {
-    enable = mkEnableOption "System-wide Dark Mode and Desktop Appearance";
+    enable = mkEnableOption "System-wide Dracula Theme and Desktop Appearance";
   };
 
   config = mkIf cfg.enable {
-    # GTK Appearance
+    home.packages = with pkgs; [
+      dracula-theme
+      dracula-icon-theme
+      dracula-qt5-theme
+    ];
+
+    # GTK Appearance (Dracula)
     gtk = {
       enable = true;
       theme = {
-        name = "Breeze-Dark";
-        package = pkgs.kdePackages.breeze-gtk;
+        name = "Dracula";
+        package = pkgs.dracula-theme;
       };
       iconTheme = {
-        name = "breeze-dark";
-        package = pkgs.kdePackages.breeze-icons;
+        name = "Dracula";
+        package = pkgs.dracula-icon-theme;
       };
     };
 
     # Qt Appearance Integration
     qt = {
       enable = true;
-      platformTheme.name = "kde";
-      style.name = "breeze";
+      platformTheme.name = "gtk"; 
+      style.name = "adwaita-dark";
     };
   };
 }

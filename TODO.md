@@ -17,6 +17,26 @@
 
 ### **進行中・今後のタスク**
 
+- [ ] **Niri デスクトップ環境への移行 (Scrollable-Tiling Wayland)**:
+  - [ ] **基盤構築 (NixOS)**:
+    - `modules/services/desktop/niri.nix`: コンポジター本体とポータル設定。
+    - `modules/services/desktop/greetd.nix`: `tuigreet` による TUI ログイン画面の構築。
+    - `modules/services/desktop/pipewire.nix`: PipeWire によるオーディオ・録画基盤の確立。
+  - [ ] **ユーザー環境の構築 (Home Manager - modules/home/desktop/niri/)**:
+    - `default.nix`: Niri 本体設定・キーバインド・ワークスペース管理。
+    - `shell.nix`: `noctalia-shell` 統合。
+    - `addons.nix`: `fuzzel`, `swaync`, `wlogout`, `swayosd` 等。
+    - `wallpaper.nix`: `awww` によるアニメーション壁紙の設定。
+    - `power.nix`: `hyprlock`, `hypridle` による電源管理。
+  - [ ] **システム全体のテーマ統一 (Dracula Theme)**:
+    - Alacritty, Fuzzel, Waybar, Starship, GTK/Qt すべてを Dracula テーマで統一する。
+  - [ ] **周辺ツールの統合**:
+    - `nautilus` (ファイルマネージャ) への移行。
+    - `cliphist` + `wl-clipboard` によるクリップボード履歴。
+    - `nm-applet`, `blueman-applet` によるネットワーク・BT管理。
+    - `grim`, `slurp`, `playerctl` 等の利便性向上ツールの設定。
+  - [ ] **クリエイティブ強化**: `modules/home/desktop/creative.nix` への `OBS Studio` 追加。
+
 - [ ] **SOPS 機密情報の構造化と権限分離**:
   - 現在 `secrets/secrets.yaml` に集中している機密情報を、ホスト別・サービス別に分割し、各ホストの復号権限を最小化する。
 - [ ] **NVIDIA ドライバ設定の抽象化**:
