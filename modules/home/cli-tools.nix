@@ -24,6 +24,7 @@
     ls = "eza";
     ll = "eza -l";
     la = "eza -a";
+    tree = "eza --tree";
     cat = "bat";
     grep = "ripgrep";
   };

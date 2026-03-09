@@ -9,6 +9,7 @@
       ./starship.nix
       ./atuin.nix
       ./git.nix
+      ./ssh.nix
       ./cli-tools.nix
     ];
 

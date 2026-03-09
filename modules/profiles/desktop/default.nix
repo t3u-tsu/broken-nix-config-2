@@ -1,10 +1,14 @@
-{ ... }: {
+{ config, ... }: {
   imports = [
-    ../../services/desktop/plasma.nix
-    ../../services/desktop/fcitx5.nix
-    ../../services/desktop/fonts.nix
-    ../../home/desktop.nix
+    ../../services/desktop
   ];
+
+  # Integrate Home-manager desktop settings for the primary user
+  home-manager.users.${config.my.user.name} = {
+    imports = [
+      ../../home/desktop
+    ];
+  };
 
   # Enable core desktop service
   my.services.desktop.plasma.enable = true;
