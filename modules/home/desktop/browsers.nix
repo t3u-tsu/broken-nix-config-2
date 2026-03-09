@@ -55,6 +55,36 @@ in {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
             installation_mode = "force_installed";
           };
+          # Keepa
+          "amzn_dot_com_price_checker@keepa.com" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepa/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # Tampermonkey
+          "firefox@tampermonkey.net" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/tampermonkey/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # Video DownloadHelper
+          "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/video-downloadhelper/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # Wappalyzer
+          "wappalyzer@crunch.mu" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/wappalyzer/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # YouTube NonStop
+          "{67000af4-6df3-4403-8be3-0668da0bbbe4}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/youtube-nonstop/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          # YouTube Screenshot
+          "{da02066c-cd98-469a-80eb-000000000000}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/take-youtube-screenshots/latest.xpi";
+            installation_mode = "force_installed";
+          };
         };
       };
 
