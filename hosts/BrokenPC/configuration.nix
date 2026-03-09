@@ -8,10 +8,7 @@
     ../../modules/services/desktop/plasma.nix
   ];
 
-  # Sops (Secret Management) configuration
-  # Matching torii-chan and tower-server pattern
-  sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
