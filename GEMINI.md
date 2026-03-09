@@ -33,6 +33,11 @@
 - **マイクラコンソール**: `sudo tmux -S /run/minecraft/<サービス名>.sock attach`
 
 ### 作業記録 (Activity Log)
+- **2026-03-09**: BrokenPC のネットワーク統合と SSH アクセス構成。
+    - BrokenPC 用の WireGuard 鍵ペアおよび SSH 鍵ペアを SOPS (`secrets/secrets.yaml`) に統合。
+    - `hosts/BrokenPC/services/wireguard.nix` を新規作成し、管理用 (`wg0`) およびアプリ用 (`wg1`) ネットワークを構築。
+    - `torii-chan` のピア設定を更新し、BrokenPC との相互通信を可能にした。
+    - SOPS を利用して `~t3u/.ssh/id_ed25519` を宣言的に配置。
 - **2026-03-09**: BrokenPC のハードウェア構成最適化と不具合修正。
     - `hardware.enableRedistributableFirmware = true;` を有効化し、Wi-Fi (mt7921e), Bluetooth, Ethernet, AMD GPU のファームウェア読み込み失敗を解消。
     - `boot.kernelPackages = pkgs.linuxPackages_latest;` を採用し、Ryzen 6000 シリーズと故障を抱える 3050Ti に対する最新の安定性改善を導入。

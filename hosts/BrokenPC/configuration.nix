@@ -103,6 +103,14 @@
   # Root account password
   users.users.root.hashedPasswordFile = config.sops.secrets.brokenpc_root_password_hash.path;
 
+  # SSH Key for t3u (Managed by SOPS)
+  sops.secrets.brokenpc_ssh_private_key = {
+    path = "/home/t3u/.ssh/id_ed25519";
+    owner = "t3u";
+    group = "users";
+    mode = "0600";
+  };
+
   # Local network tools
   my.hardware.pc-tools.enable = true;
 

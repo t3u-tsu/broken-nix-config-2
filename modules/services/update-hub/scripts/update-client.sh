@@ -82,8 +82,7 @@ else
      chown -R "$USERNAME:$GROUPNAME" "$FLAKE_PATH"
      
      # Use NIXOS_NO_CHECK=1 for auto-updates to prevent stopping on dbus/systemd inhibitors
-     # Also use --no-reexec to avoid D-Bus connection loss issues during switch
-     if NIXOS_NO_CHECK=1 nixos-rebuild switch --flake . --no-reexec; then
+     if NIXOS_NO_CHECK=1 nixos-rebuild switch --flake .; then
          echo "Update successful."
      else
          echo "Update failed! Notifying hub of failure (TODO)."
