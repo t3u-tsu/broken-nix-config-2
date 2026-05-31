@@ -10,8 +10,8 @@ echo "Generating a new master age keypair..."
 
 # 新しいキーペアを生成
 KEY_OUT=$(age-keygen)
-NEW_SECRET_KEY=$(echo "$KEY_OUT" | grep "AGE-SECRET-KEY-")
-NEW_PUBLIC_KEY=$(echo "$KEY_OUT" | grep -o "age1[a-z0-9]\{58\}")
+NEW_SECRET_KEY=$(echo "$KEY_OUT" | grep "AGE-SECRET-KEY-" | tr -d '\r')
+NEW_PUBLIC_KEY=$(echo "$KEY_OUT" | grep -o "age1[a-z0-9]\{58\}" | tr -d '\r')
 
 echo ""
 echo "------------------------------------------------------------"
@@ -36,8 +36,9 @@ echo "Updating .sops.yaml with the new public key..."
 sed -i "s/\(- &master_key \)\(age1[a-z0-9]\{58\}\)/\1$NEW_PUBLIC_KEY/" .sops.yaml
 
 echo "Rotating secrets with sops updatekeys..."
-# 新旧の秘密鍵を繋いで環境変数に設定し、updatekeys を実行
-export SOPS_AGE_KEY="${OLD_SECRET_KEY}:${NEW_SECRET_KEY}"
+# 新旧の秘密鍵を改行区切りで環境変数に設定し、updatekeys を実行
+export SOPS_AGE_KEY="${OLD_SECRET_KEY}
+${NEW_SECRET_KEY}"
 find secrets/ -name "*.yaml" -type f -exec sops updatekeys -y {} \;
 
 # 環境変数をクリア
