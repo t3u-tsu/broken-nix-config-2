@@ -7,6 +7,7 @@
 - リビルド時に `home-manager` 側で復号用の鍵ソースが未定義であることによるアサーションエラーが発生した。
 - `nixpkgs` アップデートによる `fast-cli` パッケージ廃止に伴うビルドエラーが発生した。
 - **秘密鍵の一括管理リスク（追加修正）**: 当初は WireGuard の秘密鍵を `secrets/services/wireguard.yaml` に一括格納していたが、これではホストの1台が突破された際に全ホストの WireGuard 鍵が漏洩する脆弱性があったため、厳格な最小権限モデルへと分散設計を改善する必要があった。
+- **宣言的 age 秘密鍵生成時のデッドロック**: Home Manager にて `sops.age.keyFile` を指定したが、ファイルがまだ存在しない段階で `sops-nix` が復号（`setupSecrets`）を試みるため、サービス起動が失敗してロールバックするデッドロックが発生していた。
 
 ## 実施内容
 
@@ -35,10 +36,19 @@
 - nixpkgs アップデートで廃止された `fast-cli` パッケージをシステムパッケージリストからクリーンアップ。
 - Home Manager 側（`modules/home/default.nix`）で `Failed assertions` が発生していたため、 `sops.age.sshKeyPaths` に `/home/t3u/.ssh/id_ed25519` を指定し、ユーザー環境での秘密情報の正常な復号ルートを確立。
 
+### 6. 日常用 age 秘密鍵（keys.txt）の宣言的生成アクティベーションの実装
+- Home Manager の `modules/home/default.nix` にて、アクティベーションスクリプト `home.activation.generateAgeKey` を定義。
+- `lib.dag.entryBetween [ "writeBoundary" ] [ "setupSecrets" ]` を指定し、`sops-nix` が秘密情報を復号しようとする直前に、ユーザーの日常用 SSH 鍵（`~/.ssh/id_ed25519`）から age 秘密鍵（`~/.config/sops/age/keys.txt`）を自動的かつ安全に生成・配置するフローを実装。これにより、初期デプロイ時のデッドロックを完全に解決した。
+
 ## 検証と適用
 1. `nix flake check` を実行し、全ホスト設定で構文と依存関係の検証をパス。
 2. `sudo nixos-rebuild dry-activate --flake .#BrokenPC` で secrets の正常な復号とアクティベーションを確認。
 3. `sudo nixos-rebuild switch --flake .#BrokenPC` を実行し、実機への適用を完全にパス。
+4. **日常用 secrets 復号テスト（実機確認）**:
+   - 日常ユーザー `t3u` で `sops -d secrets/services/signing.yaml` を実行し、GPG署名鍵が正常に復号されることを確認。
+   - 日常ユーザー `t3u` で `sops -d secrets/hosts/BrokenPC.yaml` を実行し、権限不足で期待通りに失敗（FAILED）することを確認。
+   - `sudo` 権限（ホスト鍵）を用いて `BrokenPC.yaml` が正常に復号できることを確認。
+   これにより、日常用と管理者用のセキュリティ境界の完全隔離が実機で証明された。
 
 ## 次のステップ
 - **新マスターキーの保存**: ご自身でローテーションされた新しい秘密鍵を、安全なパスワードマネージャ等にオフラインで大切に保存してください。
